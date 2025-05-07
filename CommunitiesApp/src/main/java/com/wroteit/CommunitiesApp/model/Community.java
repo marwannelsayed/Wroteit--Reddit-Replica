@@ -1,5 +1,6 @@
 package com.wroteit.CommunitiesApp.model;
-// src/main/java/com/wroteit/communities/model/Community.java
+// src/main/java/com/wroteit/CommunitiesApp/model/Community.java
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,21 +9,14 @@ public class Community {
     private Long id;
     private String name;
     private String description;
+    private Long createdBy;
     private List<Long> subscribers = new ArrayList<>();
     private List<String> tags = new ArrayList<>();
     private List<Long> threads = new ArrayList<>();
     private List<Long> hiddenByUsers = new ArrayList<>();
 
-    // --- Constructors ---
     public Community() {}
-    public Community(Long id, String name, String description, List<String> tags) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.tags = tags != null ? tags : new ArrayList<>();
-    }
 
-    // --- Getters & Setters ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -31,6 +25,9 @@ public class Community {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public Long getCreatedBy() { return createdBy; }
+    public void setCreatedBy(Long createdBy) { this.createdBy = createdBy; }
 
     public List<Long> getSubscribers() { return subscribers; }
     public void setSubscribers(List<Long> subscribers) { this.subscribers = subscribers; }

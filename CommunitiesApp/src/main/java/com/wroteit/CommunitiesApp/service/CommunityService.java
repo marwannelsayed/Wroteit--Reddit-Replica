@@ -1,5 +1,5 @@
 package com.wroteit.CommunitiesApp.service;
-// src/main/java/com/wroteit/communities/service/CommunityService.java
+// src/main/java/com/wroteit/CommunitiesApp/service/CommunityService.java
 
 import com.wroteit.CommunitiesApp.model.Community;
 import com.wroteit.CommunitiesApp.repository.CommunityRepository;
@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+
 @Service
 public class CommunityService {
     private final CommunityRepository repo;
@@ -17,12 +18,12 @@ public class CommunityService {
         this.repo = repo;
     }
 
-    public Community createCommunity(Community community) {
+    public Community createCommunity(Community community, Long userId) {
         if (repo.existsByName(community.getName())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Community name already exists");
         }
-        // default: creator becomes moderator → TODO replace with real ModeratorApp check
-        // community.getSubscribers().add(creatorId);
+        community.setCreatedBy(userId);
+        community.getSubscribers().add(userId);
         return repo.save(community);
     }
 
@@ -33,24 +34,29 @@ public class CommunityService {
 
     public List<Community> getCommunitiesByTags(List<String> tags, Long userId) {
         List<Community> matched = repo.findByTagsIn(tags);
-        // filter out hidden for this user
         matched.removeIf(c -> c.getHiddenByUsers().contains(userId));
         return matched;
     }
 
-    public Community updateCommunity(Long id, Community updated) {
+//CHANGE THE MASSAGE TO ONLY THE MODERATOR CAN NOT ONLY THE CREATOR CAN!!!!!!!!!
+
+    public Community updateCommunity(Long id, Community updated, Long userId) {
         Community existing = getCommunityById(id);
-        // only creator/moderator can update → placeholder
-        // TODO: check userId against creator or ModeratorApp
+        if (!existing.getCreatedBy().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the creator can update this community");
+        }
         existing.setDescription(updated.getDescription());
         existing.setTags(updated.getTags());
         return repo.save(existing);
     }
 
-    public void deleteCommunity(Long id) {
+//CHANGE THE MASSAGE TO ONLY THE MODERATOR CAN NOT ONLY THE CREATOR CAN!!!!!!!!!
+
+    public void deleteCommunity(Long id, Long userId) {
         Community existing = getCommunityById(id);
-        // only creator/moderator can delete → placeholder
-        // TODO: check userId against creator or ModeratorApp
+        if (!existing.getCreatedBy().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the creator can delete this community");
+        }
         repo.deleteById(id);
     }
 

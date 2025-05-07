@@ -1,5 +1,5 @@
 package com.wroteit.CommunitiesApp.model;
-// src/main/java/com/wroteit/communities/model/CreateCommunityRequest.java
+// src/main/java/com/wroteit/CommunitiesApp/model/CreateCommunityRequest.java
 
 import java.util.List;
 
@@ -17,4 +17,3 @@ public class CreateCommunityRequest {
     public List<String> getTags() { return tags; }
     public void setTags(List<String> tags) { this.tags = tags; }
 }
-

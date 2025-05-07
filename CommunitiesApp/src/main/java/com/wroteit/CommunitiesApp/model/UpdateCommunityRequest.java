@@ -1,5 +1,6 @@
 package com.wroteit.CommunitiesApp.model;
-// src/main/java/com/wroteit/communities/model/UpdateCommunityRequest.java
+// src/main/java/com/wroteit/CommunitiesApp/model/UpdateCommunityRequest.java
+
 
 import java.util.List;
 

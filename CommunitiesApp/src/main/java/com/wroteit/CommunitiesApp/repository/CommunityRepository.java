@@ -1,5 +1,5 @@
 package com.wroteit.CommunitiesApp.repository;
-// src/main/java/com/wroteit/communities/repository/CommunityRepository.java
+// src/main/java/com/wroteit/CommunitiesApp/repository/CommunityRepository.java
 
 import com.wroteit.CommunitiesApp.model.Community;
 import org.springframework.data.repository.CrudRepository;
@@ -16,4 +16,3 @@ public interface CommunityRepository extends CrudRepository<Community, Long> {
     @Override
     List<Community> findAll();
 }
-
