@@ -1,0 +1,15 @@
+package com.wroteit.CommunitiesApp.model;
+// src/main/java/com/wroteit/communities/model/UpdateCommunityRequest.java
+
+import java.util.List;
+
+public class UpdateCommunityRequest {
+    private String description;
+    private List<String> tags;
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public List<String> getTags() { return tags; }
+    public void setTags(List<String> tags) { this.tags = tags; }
+}
