@@ -23,7 +23,7 @@ public class CommunityService {
         this.communityFactory = communityFactory;
     }
 
-    public Community createCommunity(String name, String description, CommunityType type, Long userId) {
+    public Community createCommunity(Long userId, String name, String description, CommunityType type) {
         if (communityRepository.existsByName(name)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Community name already exists");
         }
@@ -36,6 +36,7 @@ public class CommunityService {
         return communityRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Community not found"));
     }
+
 
     public List<Community> getCommunitiesByTags(List<String> tags, Long userId) {
         List<Community> matched = communityRepository.findByTagsIn(tags);
@@ -62,7 +63,7 @@ public class CommunityService {
     }
 
 
-    public void deleteCommunity(Long id, Long userId) {
+    public void deleteCommunity(Long id) {
         Community existing = getCommunityById(id);
         if (existing == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Community not found");
