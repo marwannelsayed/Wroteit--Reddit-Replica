@@ -2,8 +2,6 @@ package com.wroteit.CommunitiesApp.controller;
 // src/main/java/com/wroteit/CommunitiesApp/controller/CommunityController.java
 
 import com.wroteit.CommunitiesApp.model.Community;
-import com.wroteit.CommunitiesApp.model.CreateCommunityRequest;
-import com.wroteit.CommunitiesApp.model.UpdateCommunityRequest;
 import com.wroteit.CommunitiesApp.service.CommunityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

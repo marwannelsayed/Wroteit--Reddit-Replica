@@ -1,15 +1,24 @@
 package com.wroteit.CommunitiesApp.model;
-// src/main/java/com/wroteit/CommunitiesApp/model/Community.java
 
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Document(collection = "communities")
 public class Community {
-    private Long id;
+    @Id
+    private String id;
+
+    @Indexed(unique = true)
     private String name;
     private String description;
-    private Long createdBy;
     private List<Long> subscribers = new ArrayList<>();
     private List<String> tags = new ArrayList<>();
     private List<Long> threads = new ArrayList<>();
@@ -17,17 +26,18 @@ public class Community {
 
     public Community() {}
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Community(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public String getId() { return id; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-
-    public Long getCreatedBy() { return createdBy; }
-    public void setCreatedBy(Long createdBy) { this.createdBy = createdBy; }
 
     public List<Long> getSubscribers() { return subscribers; }
     public void setSubscribers(List<Long> subscribers) { this.subscribers = subscribers; }
