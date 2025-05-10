@@ -1,9 +1,7 @@
 package com.wroteit.CommunitiesApp.controller;
-// src/main/java/com/wroteit/CommunitiesApp/controller/CommunityController.java
 
 import com.wroteit.CommunitiesApp.model.Community;
-import com.wroteit.CommunitiesApp.model.CreateCommunityRequest;
-import com.wroteit.CommunitiesApp.model.UpdateCommunityRequest;
+import com.wroteit.CommunitiesApp.model.CommunityType;
 import com.wroteit.CommunitiesApp.service.CommunityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,113 +11,79 @@ import java.util.List;
 @RestController
 @RequestMapping("/communities")
 public class CommunityController {
-    private final CommunityService service;
+    private final CommunityService communityService;
 
-    public CommunityController(CommunityService service) {
-        this.service = service;
+    public CommunityController(CommunityService communityService) {
+        this.communityService = communityService;
     }
-    // TODO: When ModeratorApp is ready, inject ModeratorClient here
-    // private final ModeratorClient moderatorClient;
-    //
-    // public CommunityController(CommunityService service, ModeratorClient moderatorClient) {
-    //     this.service = service;
-    //     this.moderatorClient = moderatorClient;
-    // }
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Community createCommunity(
-            @RequestBody CreateCommunityRequest req,
-            @RequestParam Long userId) {
-        // TODO: After ModeratorApp is live, also call moderatorClient.addModerator(communityId, userId);
-        //           so the creator becomes a moderator by default.
-        Community c = new Community();
-        c.setName(req.getName());
-        c.setDescription(req.getDescription());
-        if (req.getTags() != null) c.setTags(req.getTags());
-        return service.createCommunity(c, userId);
+
+    @PostMapping("/creatorID")
+    public Community createCommunity(@PathVariable Long creatorID, @RequestBody String name, @RequestBody String description, @RequestBody CommunityType type){
+        Community community = communityService.createCommunity(creatorID, name, description, type);
+        // TODO: Add api call to make record in moderator table for new community and moderator
+        return community;
     }
 
     @GetMapping("/{id}")
-    public Community getCommunity(@PathVariable Long id) {
-        return service.getCommunityById(id);
+    public Community getCommunityById(@PathVariable Long id) {
+        return communityService.getCommunityById(id);
     }
 
-    @GetMapping("/search")
-    public List<Community> getByTags(
-            @RequestParam List<String> tags,
-            @RequestParam Long userId) {
-        return service.getCommunitiesByTags(tags, userId);
+    @GetMapping("/tags/{userId}")
+    public List<Community> getCommunitiesByTags(@RequestBody List<String> tags, @PathVariable Long userId){
+        return communityService.getCommunitiesByTags(tags, userId);
     }
 
-    @PutMapping("/{id}")
-    public Community updateCommunity(
-            @PathVariable Long id,
-            @RequestBody UpdateCommunityRequest req,
-            @RequestParam Long userId) {
-        // TODO: Replace creator check with moderatorClient.isModerator(id, userId);
-        //   throw FORBIDDEN if false.
-        Community upd = new Community();
-        upd.setDescription(req.getDescription());
-        upd.setTags(req.getTags());
-        return service.updateCommunity(id, upd, userId);
+    @GetMapping("/subtag/{userId}")
+    public List<Community> getCommunitiesBySubtag(@RequestBody String subtag, @PathVariable Long userId){
+        return communityService.getCommunitiesByTagsCointain(subtag, userId);
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCommunity(
-            @PathVariable Long id,
-            @RequestParam Long userId) {
-        // TODO: Replace creator check with moderatorClient.isModerator(id, userId);
-        //         so moderators (not just creator) can delete communities.
-        service.deleteCommunity(id, userId);
+    @PutMapping("/{userId}")
+    public Community updateCommunity(@RequestBody Long communityId, @RequestBody Community newCommunity, @PathVariable Long userId){
+        // TODO: Validate user is a moderator of the community from moderator table via API call
+        return communityService.updateCommunity(communityId, newCommunity);
     }
 
-    @PostMapping("/{id}/subscribe/{userId}")
-    public Community subscribeUser(
-            @PathVariable Long id,
-            @PathVariable Long userId) {
-        return service.subscribeUser(id, userId);
+    @DeleteMapping("/{userId}")
+    public void deleteCommunity(@RequestBody Long communityId, @PathVariable Long userId){
+        // TODO: Validate user is a moderator of the community from moderator table via API call
+        communityService.deleteCommunity(communityId);
+        // TODO: Delete threads in deleted community
     }
 
-    @DeleteMapping("/{id}/unsubscribe/{userId}")
-    public Community unsubscribeUser(
-            @PathVariable Long id,
-            @PathVariable Long userId) {
-        return service.unsubscribeUser(id, userId);
+    @PutMapping("/addTags/{userId}")
+    public Community addTags(@RequestBody Long communityId, @RequestBody List<String> tags, @PathVariable Long userId){
+        // TODO: Validate user is a moderator of the community from moderator table via API call
+        return communityService.addTags(communityId, tags);
     }
 
-    @PutMapping("/{id}/hide/{userId}")
-    public Community hideCommunityForUser(
-            @PathVariable Long id,
-            @PathVariable Long userId) {
-        return service.hideCommunityForUser(userId, id);
+    @PutMapping("/removeTags/{userId}")
+    public Community removeTags(@RequestBody Long communityId, @RequestBody List<String> tags, @PathVariable Long userId){
+        // TODO: Validate user is a moderator of the community from moderator table via API call
+        return communityService.removeTags(communityId, tags);
     }
 
-    @PutMapping("/{id}/unhide/{userId}")
-    public Community unhideCommunityForUser(
-            @PathVariable Long id,
-            @PathVariable Long userId) {
-        return service.unhideCommunityForUser(userId, id);
+    @PutMapping("/subscribe/{userId}")
+    public Community subscribeUser(@RequestBody Long communityId, @PathVariable Long userId){
+        return communityService.subscribeUser(communityId, userId);
     }
-    // TODO: implement when ModeratorApp is ready
-    // @PostMapping("/{id}/moderators/{userId}")
-    // public ResponseEntity<Void> addModerator(
-    //         @PathVariable Long id,
-    //         @PathVariable Long userId,
-    //         @RequestParam Long adminId) {
-    //     // 1. Check adminId is a moderator via moderatorClient
-    //     // 2. Call moderatorClient.addModerator(id, userId)
-    //     // 3. Return 204 NO_CONTENT
-    // }
 
-    // @DeleteMapping("/{id}/moderators/{userId}")
-    // public ResponseEntity<Void> removeModerator(
-    //         @PathVariable Long id,
-    //         @PathVariable Long userId,
-    //         @RequestParam Long adminId) {
-    //     // 1. Check adminId is a moderator via moderatorClient
-    //     // 2. Call moderatorClient.removeModerator(id, userId)
-    //     // 3. Return 204 NO_CONTENT
-    // }
+    @PutMapping("/unsubscribe/{userId}")
+    public Community unsubscribeUser(@RequestBody Long communityId, @PathVariable Long userId){
+        return communityService.unsubscribeUser(communityId, userId);
+    }
+
+    @PutMapping("/hide/{userId}")
+    public Community hideCommunityForUser(@RequestBody Long communityId, @PathVariable Long userId){
+        return communityService.hideCommunityForUser(communityId, userId);
+    }
+
+    @PutMapping("/unhide/{userId}")
+    public Community unhideCommunityForUser(@RequestBody Long communityId, @PathVariable Long userId){
+        return communityService.unhideCommunityForUser(communityId, userId);
+    }
+
+
 }
 
