@@ -3,6 +3,8 @@ package com.example.threadapp.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Document(collection = "comments")
 public class Comment {
@@ -14,6 +16,7 @@ public class Comment {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private List<EditHistory> editHistory = new ArrayList<>();
     private int upvotes;
     private int downvotes;
 
@@ -34,6 +37,13 @@ public class Comment {
         this.upvotes = 0;
         this.downvotes = 0;
     }
+    public record EditHistory(
+            LocalDateTime timestamp,
+            String fieldName,
+            Object oldValue,
+            Object newValue,
+            String editedBy
+    ) {}
 
     // Getters and Setters
     public String getId() {
@@ -107,5 +117,13 @@ public class Comment {
     public void setDownvotes(int downvotes) {
         this.downvotes = downvotes;
     }
-}
+    public List<EditHistory> getEditHistory() {
+        return editHistory;
+    }
+    
+    public void setEditHistory(List<EditHistory> editHistory) {
+        this.editHistory = editHistory;
+    }
+    
 
+}
