@@ -46,11 +46,38 @@ public class ThreadController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteThread(@PathVariable String id) {
-        if (threadService.deleteThread(id)) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Thread> deleteThread(@PathVariable String id) {
+        return threadService.getThreadById(id)
+                .map(thread -> {
+                    threadService.deleteThread(id);
+                    return ResponseEntity.ok(thread);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/author/{authorId}")
+    public List<Thread> getThreadsByAuthorId(@PathVariable String authorId) {
+        return threadService.getThreadsByAuthorId(authorId);
+    }
+
+    @GetMapping("/sorted/upvotes")
+    public List<Thread> getThreadsSortedByUpvotes() {
+        return threadService.getThreadsSortedByUpvotes();
+    }
+
+    @GetMapping("/sorted/downvotes")
+    public List<Thread> getThreadsSortedByDownvotes() {
+        return threadService.getThreadsSortedByDownvotes();
+    }
+
+    @GetMapping("/sorted/createdAt")
+    public List<Thread> getThreadsSortedByCreatedAt() {
+        return threadService.getThreadsSortedByCreatedAt();
+    }
+
+    @GetMapping("/sorted/createdAtAsc")
+    public List<Thread> getThreadsSortedByCreatedAtAsc() {
+        return threadService.getThreadsSortedByCreatedAtAsc();
     }
 }
 
