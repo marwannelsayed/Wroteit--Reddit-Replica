@@ -1,4 +1,4 @@
-package com.example.ThreadsApp;
+package com.example.threadapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
