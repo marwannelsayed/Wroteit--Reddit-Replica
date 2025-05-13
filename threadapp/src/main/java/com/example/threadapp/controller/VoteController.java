@@ -38,5 +38,19 @@ public class VoteController {
         }
         return ResponseEntity.ok(votes);
     }
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Vote>> getVotesByUser(@PathVariable String userId) {
+        List<Vote> votes = voteService.getVotesByUser(userId);
+        return votes.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(votes);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteVote(@PathVariable String id) {
+        if (voteService.deleteVote(id)) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
 }
 
