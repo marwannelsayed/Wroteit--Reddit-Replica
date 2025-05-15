@@ -1,27 +1,23 @@
 package com.wroteit.NotificationApp.service;
 
+import com.wroteit.NotificationApp.factory.NotificationFactory;
 import com.wroteit.NotificationApp.model.Notification;
 import com.wroteit.NotificationApp.repository.NotificationRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
+
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
 
-    public Notification sendNotification(String recipientId, String message, Notification.NotificationType type) {
-        Notification notification = Notification.builder()
-                .recipientId(recipientId)
-                .message(message)
-                .type(type)
-                .status(Notification.NotificationStatus.UNREAD)
-                .timestamp(LocalDateTime.now())
-                .build();
+    public NotificationService(NotificationRepository notificationRepository) {
+        this.notificationRepository = notificationRepository;
+    }
 
+    public Notification sendNotification(String recipientId, String message, Notification.NotificationType type) {
+        Notification notification = NotificationFactory.createNotification(recipientId, message, type);
         return notificationRepository.save(notification);
     }
 
@@ -29,6 +25,7 @@ public class NotificationService {
         return notificationRepository.findByRecipientId(userId);
     }
 }
+
 
 //package com.wroteit.notification.service;
 //
