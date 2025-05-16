@@ -1,6 +1,5 @@
 package com.wroteit.UserApp.controller;
 
-import com.wroteit.UserApp.DTO.*;
 import com.wroteit.UserApp.model.User;
 import com.wroteit.UserApp.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -16,132 +15,118 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@RequestBody UserRequest req) {
+    public String register(@RequestBody String username, String password, String email) {
         User user = new User.Builder()
-                .username(req.getUsername())
-                .password(req.getPassword())
-                .email(req.getEmail())
+                .username(username)
+                .password(password)
+                .email(email)
                 .build();
 
-        User savedUser = userService.register(user);
-        return ResponseEntity.ok(mapToUserResponse(savedUser));
+        try{
+            userService.register(user);
+        } catch (Exception e) {
+            return "Username already exists";
+        }
+        return "User created successfully";
+
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest req) {
-        String result = userService.login(req.getUsername(), req.getPassword());
-        return ResponseEntity.ok(result);
+    @PostMapping("/login/{id}")
+    public void login(@PathVariable Long id, String password) {
+        String result = userService.login(id, password);
+        // if result = Login successful create session token
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        return ResponseEntity.ok(mapToUserResponse(user));
+    public User getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+    public String deleteUser(@PathVariable Long id) {
+        if(!userService.userExists(id)) return "User does not exist!";
         userService.deleteUser(id);
         // TODO: Notify Moderator/Community/Threads services to delete linked records
-        return ResponseEntity.ok("User with ID " + id + " deleted successfully");
+        return "User deleted successfully!";
     }
 
     @PutMapping("/{id}/biography")
-    public ResponseEntity<UserResponse> updateBiography(
+    public String updateBiography(
             @PathVariable Long id,
             @RequestBody String bio) {
-        User user = userService.updateBiography(id, bio);
-        return ResponseEntity.ok(mapToUserResponse(user));
+        if(!userService.userExists(id)) return "User does not exist!";
+        userService.updateBiography(id, bio);
+        return "Bio updated successfully!";
     }
 
     @PostMapping("/{id}/follow/{targetId}")
-    public ResponseEntity<UserResponse> followUser(
+    public String followUser(
             @PathVariable Long id,
             @PathVariable Long targetId) {
-        User user = userService.followUser(id, targetId);
+        if(!userService.userExists(targetId)) return "User does not exist!";
+        userService.followUser(id, targetId);
         // TODO: Notify Notification microservice to inform the target user
-        return ResponseEntity.ok(mapToUserResponse(user));
+        return "User followed successfully";
     }
 
     @DeleteMapping("/{id}/unfollow/{targetId}")
-    public ResponseEntity<UserResponse> unfollowUser(
-            @PathVariable Long id,
-            @PathVariable Long targetId) {
-        User user = userService.unfollowUser(id, targetId);
-        return ResponseEntity.ok(mapToUserResponse(user));
+    public String unfollowUser(@PathVariable Long id, @PathVariable Long targetId) {
+        if (!userService.userExists(targetId)) return "User does not exist!";
+        userService.unfollowUser(id, targetId);
+        return "User unfollowed successfully!";
     }
 
     @PostMapping("/{id}/block/{targetId}")
-    public ResponseEntity<UserResponse> blockUser(
-            @PathVariable Long id,
-            @PathVariable Long targetId) {
-        User user = userService.blockUser(id, targetId);
-        // TODO: Optionally notify Community to sever shared connections
-        return ResponseEntity.ok(mapToUserResponse(user));
+    public String blockUser(@PathVariable Long id, @PathVariable Long targetId) {
+        if (!userService.userExists(targetId)) return "User does not exist!";
+        userService.blockUser(id, targetId);
+        return "User blocked successfully!";
     }
 
     @DeleteMapping("/{id}/unblock/{targetId}")
-    public ResponseEntity<UserResponse> unblockUser(
-            @PathVariable Long id,
-            @PathVariable Long targetId) {
-        User user = userService.unblockUser(id, targetId);
-        return ResponseEntity.ok(mapToUserResponse(user));
+    public String unblockUser(@PathVariable Long id, @PathVariable Long targetId) {
+        if (!userService.userExists(targetId)) return "User does not exist!";
+        userService.unblockUser(id, targetId);
+        return "User unblocked successfully!";
     }
 
     @PostMapping("/{id}/subscribe/{communityId}")
-    public ResponseEntity<UserResponse> subscribeToCommunity(
-            @PathVariable Long id,
-            @PathVariable String communityId) {
-        User user = userService.subscribeToCommunity(id, communityId);
+    public String subscribeToCommunity(@PathVariable Long id, @PathVariable Long communityId) {
+        // TODO: Check community exists first
+        userService.subscribeToCommunity(id, communityId);
         // TODO: Call Community microservice to register the subscriber
-        return ResponseEntity.ok(mapToUserResponse(user));
+        return "Subscribed to community successfully!";
     }
 
     @DeleteMapping("/{id}/unsubscribe/{communityId}")
-    public ResponseEntity<UserResponse> unsubscribeFromCommunity(
-            @PathVariable Long id,
-            @PathVariable String communityId) {
-        User user = userService.unsubscribeFromCommunity(id, communityId);
+    public String unsubscribeFromCommunity(@PathVariable Long id, @PathVariable Long communityId) {
+        if(!userService.getUserById(id).getSubscribedCommunities().contains(communityId))return "Community not in subscribed list";
+        userService.unsubscribeFromCommunity(id, communityId);
         // TODO: Call Community microservice to remove the subscriber
-        return ResponseEntity.ok(mapToUserResponse(user));
+        return "Unsubscribed from community successfully!";
     }
 
     @PostMapping("/{id}/hide/{communityId}")
-    public ResponseEntity<UserResponse> hideCommunity(
-            @PathVariable Long id,
-            @PathVariable String communityId) {
-        User user = userService.hideCommunity(id, communityId);
-        return ResponseEntity.ok(mapToUserResponse(user));
+    public String hideCommunity(@PathVariable Long id, @PathVariable Long communityId) {
+        // TODO: Check community exists first
+        userService.hideCommunity(id, communityId);
+        return "Community hidden successfully!";
     }
 
     @DeleteMapping("/{id}/unhide/{communityId}")
-    public ResponseEntity<UserResponse> unhideCommunity(
-            @PathVariable Long id,
-            @PathVariable String communityId) {
-        User user = userService.unhideCommunity(id, communityId);
-        return ResponseEntity.ok(mapToUserResponse(user));
+    public String unhideCommunity(@PathVariable Long id, @PathVariable Long communityId) {
+        if(!userService.getUserById(id).getHiddenCommunities().contains(communityId))return "Community not in hidden list";
+        userService.unhideCommunity(id, communityId);
+        return "Community unhidden successfully!";
     }
 
-
-    // Check if user exists (integration support)
     @GetMapping("/exists/{userId}")
-    public ResponseEntity<Boolean> userExists(@PathVariable Long userId) {
-        return ResponseEntity.ok(userService.userExists(userId));
+    public boolean userExists(@PathVariable Long userId) {
+        return userService.userExists(userId);
     }
 
-    //  Helper method to convert User → DTO
-    private UserResponse mapToUserResponse(User user) {
-        return new UserResponse.Builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .biography(user.getBiography())
-                .following(user.getFollowing())
-                .blockedUsers(user.getBlockedUsers())
-                .subscribedCommunities(user.getSubscribedCommunities())
-                .hiddenCommunities(user.getHiddenCommunities())
-                .build();
-    }
+
+
 
 }
 

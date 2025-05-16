@@ -22,15 +22,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public String login(String username, String password) {
-        User user = userRepository.findByUsername(username)
+    public String login(Long id, String password) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         if (!BCrypt.checkpw(password, user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
 
-        // In a real application, you would return a JWT token here
+
         return "Login successful";
     }
 
@@ -38,6 +38,8 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
+
+
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
@@ -83,7 +85,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User subscribeToCommunity(Long userId, String communityId) {
+    public User subscribeToCommunity(Long userId, Long communityId) {
         User user = getUserById(userId);
 
         if (!user.getSubscribedCommunities().contains(communityId)) {
@@ -94,13 +96,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User unsubscribeFromCommunity(Long userId, String communityId) {
+    public User unsubscribeFromCommunity(Long userId, Long communityId) {
         User user = getUserById(userId);
         user.getSubscribedCommunities().remove(communityId);
         return userRepository.save(user);
     }
 
-    public User hideCommunity(Long userId, String communityId) {
+    public User hideCommunity(Long userId, Long communityId) {
         User user = getUserById(userId);
 
         if (!user.getHiddenCommunities().contains(communityId)) {
@@ -111,7 +113,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User unhideCommunity(Long userId, String communityId) {
+    public User unhideCommunity(Long userId, Long communityId) {
         User user = getUserById(userId);
         user.getHiddenCommunities().remove(communityId);
         return userRepository.save(user);
