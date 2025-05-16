@@ -3,6 +3,7 @@ package com.wroteit.UserApp.model;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -21,7 +22,7 @@ public class User {
     private String biography;
 
     @ElementCollection
-    private List<String> subscribedCommunities = new ArrayList<>();
+    private List<Long> subscribedCommunities = new ArrayList<>();
 
     @ElementCollection
     private List<Long> followers = new ArrayList<>();
@@ -33,7 +34,7 @@ public class User {
     private List<Long> blockedUsers = new ArrayList<>();
 
     @ElementCollection
-    private List<String> hiddenCommunities = new ArrayList<>();
+    private List<Long> hiddenCommunities = new ArrayList<>();
 
     // Private constructor for Builder
     private User(Builder builder) {
@@ -53,15 +54,15 @@ public class User {
 
     // Builder class
     public static class Builder {
-        private String username;
+        private String username = "user_" + UUID.randomUUID().toString().substring(0, 8);;
         private String password;
         private String email;
         private String biography;
-        private List<String> subscribedCommunities = new ArrayList<>();
+        private List<Long> subscribedCommunities = new ArrayList<>();
         private List<Long> followers = new ArrayList<>();
         private List<Long> following = new ArrayList<>();
         private List<Long> blockedUsers = new ArrayList<>();
-        private List<String> hiddenCommunities = new ArrayList<>();
+        private List<Long> hiddenCommunities = new ArrayList<>();
 
         public Builder username(String username) {
             this.username = username;
@@ -83,7 +84,7 @@ public class User {
             return this;
         }
 
-        public Builder subscribedCommunities(List<String> subscribedCommunities) {
+        public Builder subscribedCommunities(List<Long> subscribedCommunities) {
             this.subscribedCommunities = subscribedCommunities;
             return this;
         }
@@ -103,7 +104,7 @@ public class User {
             return this;
         }
 
-        public Builder hiddenCommunities(List<String> hiddenCommunities) {
+        public Builder hiddenCommunities(List<Long> hiddenCommunities) {
             this.hiddenCommunities = hiddenCommunities;
             return this;
         }
@@ -135,7 +136,7 @@ public class User {
         return biography;
     }
 
-    public List<String> getSubscribedCommunities() {
+    public List<Long> getSubscribedCommunities() {
         return subscribedCommunities;
     }
 
@@ -151,7 +152,7 @@ public class User {
         return blockedUsers;
     }
 
-    public List<String> getHiddenCommunities() {
+    public List<Long> getHiddenCommunities() {
         return hiddenCommunities;
     }
 
@@ -177,7 +178,7 @@ public class User {
         this.biography = biography;
     }
 
-    public void setSubscribedCommunities(List<String> subscribedCommunities) {
+    public void setSubscribedCommunities(List<Long> subscribedCommunities) {
         this.subscribedCommunities = subscribedCommunities;
     }
 
@@ -193,7 +194,7 @@ public class User {
         this.blockedUsers = blockedUsers;
     }
 
-    public void setHiddenCommunities(List<String> hiddenCommunities) {
+    public void setHiddenCommunities(List<Long> hiddenCommunities) {
         this.hiddenCommunities = hiddenCommunities;
     }
 }
