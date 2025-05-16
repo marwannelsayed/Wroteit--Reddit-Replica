@@ -30,7 +30,6 @@ public class Notification {
         UNREAD
     }
 
-    // Constructors
     public Notification() {}
 
     public Notification(String recipientId, String message, NotificationType type, NotificationStatus status, LocalDateTime timestamp) {
@@ -41,7 +40,6 @@ public class Notification {
         this.timestamp = timestamp;
     }
 
-    // Getters & Setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
