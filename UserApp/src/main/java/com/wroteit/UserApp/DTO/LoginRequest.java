@@ -1,5 +1,8 @@
 package com.wroteit.UserApp.DTO;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class LoginRequest {
@@ -9,6 +12,14 @@ public class LoginRequest {
     private LoginRequest(Builder builder) {
         this.username = builder.username;
         this.password = builder.password;
+    }
+
+    @JsonCreator
+    public LoginRequest(
+            @JsonProperty("username") String username,
+            @JsonProperty("password") String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public static class Builder {

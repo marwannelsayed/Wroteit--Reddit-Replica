@@ -1,5 +1,8 @@
 package com.wroteit.UserApp.DTO;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -13,6 +16,27 @@ public class UserResponse {
     private final List<String> subscribedCommunities;
     private final List<String> hiddenCommunities;
 
+
+    @JsonCreator
+    public UserResponse(
+            @JsonProperty("id") Long id,
+            @JsonProperty("username") String username,
+            @JsonProperty("email") String email,
+            @JsonProperty("biography") String biography,
+            @JsonProperty("following") List<Long> following,
+            @JsonProperty("blockedUsers") List<Long> blockedUsers,
+            @JsonProperty("subscribedCommunities") List<String> subscribedCommunities,
+            @JsonProperty("hiddenCommunities") List<String> hiddenCommunities) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.biography = biography;
+        this.following = following;
+        this.blockedUsers = blockedUsers;
+        this.subscribedCommunities = subscribedCommunities;
+        this.hiddenCommunities = hiddenCommunities;
+    }
+
     private UserResponse(Builder builder) {
         this.id = builder.id;
         this.username = builder.username;
@@ -23,6 +47,8 @@ public class UserResponse {
         this.subscribedCommunities = builder.subscribedCommunities;
         this.hiddenCommunities = builder.hiddenCommunities;
     }
+
+
 
     public static class Builder {
         private Long id;

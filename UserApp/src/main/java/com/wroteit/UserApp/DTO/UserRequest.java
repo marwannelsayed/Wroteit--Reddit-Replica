@@ -1,5 +1,8 @@
 package com.wroteit.UserApp.DTO;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class UserRequest {
@@ -11,6 +14,17 @@ public class UserRequest {
         this.username = builder.username;
         this.password = builder.password;
         this.email = builder.email;
+    }
+
+    // Add this constructor for Jackson
+    @JsonCreator
+    public UserRequest(
+            @JsonProperty("username") String username,
+            @JsonProperty("password") String password,
+            @JsonProperty("email") String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
     }
 
     public static class Builder {
