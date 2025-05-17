@@ -1,26 +1,27 @@
-package com.wroteit.UserApp.NotificationApp.command;
+package com.wroteit.UserApp.NotificationApp.strategy;
+
 import com.wroteit.UserApp.NotificationApp.repository.NotificationRepository;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DeleteNotificationCommand implements Command {
+public class MarkNotificationAsReadStrategy implements NotificationStrategy {
     private final NotificationRepository notificationRepository;
-    private Long notificationId;
+
+    @Setter
+    private String notificationId;
 
     @Autowired
-    public DeleteNotificationCommand(NotificationRepository notificationRepository) {
+    public MarkNotificationAsReadStrategy(NotificationRepository notificationRepository) {
         this.notificationRepository = notificationRepository;
-    }
-
-    public void setNotificationId(Long notificationId) {
-        this.notificationId = notificationId;
     }
 
     @Override
     public Object execute() {
+        // Just check if notification exists
         if (notificationRepository.existsById(notificationId)) {
-            notificationRepository.deleteById(notificationId);
+            // Return true to indicate notification exists, but don't try to update it here
             return true;
         }
         return false;

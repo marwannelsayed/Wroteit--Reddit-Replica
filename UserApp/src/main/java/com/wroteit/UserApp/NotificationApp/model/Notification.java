@@ -1,56 +1,53 @@
-// Notification.java
 package com.wroteit.UserApp.NotificationApp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "notifications")
+@Document(collection = "notifications")
 public class Notification {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private Long recipientId;
+    @Id
+    private String id;
+
+    private Long userId;
     private String type;
-    private String message;
+    private String content;
     private boolean isRead;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    // Default constructor
+    // Constructors
     public Notification() {
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
         this.isRead = false;
     }
 
-    // Constructor with parameters
-    public Notification(Long recipientId, String type, String message) {
-        this.recipientId = recipientId;
+    public Notification(Long userId, String type, String content) {
+        this.userId = userId;
         this.type = type;
-        this.message = message;
+        this.content = content;
         this.isRead = false;
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     // Getters and Setters
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getRecipientId() {
-        return recipientId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setRecipientId(Long recipientId) {
-        this.recipientId = recipientId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getType() {
@@ -61,12 +58,12 @@ public class Notification {
         this.type = type;
     }
 
-    public String getMessage() {
-        return message;
+    public String getContent() {
+        return content;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public boolean isRead() {
@@ -75,6 +72,7 @@ public class Notification {
 
     public void setRead(boolean read) {
         isRead = read;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public LocalDateTime getCreatedAt() {
@@ -83,5 +81,13 @@ public class Notification {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
