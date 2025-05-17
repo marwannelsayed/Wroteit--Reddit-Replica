@@ -16,7 +16,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody String username, String password, String email) {
+    public String register(@RequestBody String username, @RequestBody String password, @RequestBody String email) {
         User user = new User.Builder()
                 .username(username)
                 .password(password)
