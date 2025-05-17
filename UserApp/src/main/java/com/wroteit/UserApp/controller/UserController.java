@@ -16,28 +16,32 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody String username, @RequestBody String password, @RequestBody String email) {
-        User user = new User.Builder()
-                .username(username)
-                .password(password)
-                .email(email)
-                .build();
-
-        try{
+    public String register(@RequestBody User user) {
+        try {
             userService.register(user);
         } catch (Exception e) {
             return "Username already exists";
         }
         return "User created successfully";
-
     }
+
 
     @PostMapping("/login/{id}")
-    public String login(@PathVariable Long id, @RequestBody String password) {
-        String result = userService.login(id, password);
-        if (!result.equals("Login successful")) return "Invalid credentials";
-        return TokenManager.getInstance().generateToken(id);
+    public ResponseEntity<?> login(@PathVariable Long id, @RequestBody User user) {
+        try {
+            String result = userService.login(id, user.getPassword());
+            if (!"Login successful".equals(result)) {
+                return ResponseEntity.status(401).body("{\"message\": \"Invalid credentials\"}");
+            }
+
+            String token = TokenManager.getInstance().generateToken(id);
+            return ResponseEntity.ok().body("{\"message\": \"Login successful\", \"token\": \"" + token + "\"}");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).body("{\"message\": \"" + e.getMessage() + "\"}");
+        }
     }
+
+
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {

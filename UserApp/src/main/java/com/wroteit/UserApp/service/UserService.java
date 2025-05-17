@@ -59,14 +59,26 @@ public class UserService {
             user.getFollowing().add(targetId);
         }
 
+        if (!target.getFollowers().contains(userId)) {
+            target.getFollowers().add(userId);
+        }
+
+        userRepository.save(target); // Save target FIRST
         return userRepository.save(user);
     }
 
+
     public User unfollowUser(Long userId, Long targetId) {
         User user = getUserById(userId);
+        User target = getUserById(targetId);
+
         user.getFollowing().remove(targetId);
-        return userRepository.save(user);
+        target.getFollowers().remove(userId);
+
+        userRepository.save(target); // Save target
+        return userRepository.save(user); // Return updated user
     }
+
 
     public User blockUser(Long userId, Long targetId) {
         User user = getUserById(userId);
