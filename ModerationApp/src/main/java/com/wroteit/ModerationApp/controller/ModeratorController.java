@@ -42,4 +42,32 @@ public class ModeratorController {
     }
 
     // karim osama
+    @PostMapping("/ban")
+    public ResponseEntity<String> banUser(@RequestBody Map<String, Object> request) {
+        Long userId = Long.valueOf(request.get("userId").toString());
+        Long communityId = Long.valueOf(request.get("communityId").toString());
+        Long moderatorId = Long.valueOf(request.get("moderatorId").toString());
+        
+        moderatorService.banUser(userId, communityId, moderatorId);
+        return new ResponseEntity<>("User banned successfully", HttpStatus.OK);
+    }
+    @DeleteMapping("/content/{postId}")
+    public ResponseEntity<String> deletePost(@PathVariable Long postId, @RequestBody Map<String, Object> request) {
+        Long communityId = Long.valueOf(request.get("communityId").toString());
+        Long moderatorId = Long.valueOf(request.get("moderatorId").toString());
+        
+        moderatorService.deletePost(postId, communityId, moderatorId);
+        return new ResponseEntity<>("Post deleted successfully", HttpStatus.OK);
+    }
+    @GetMapping("/check-moderator")
+    public ResponseEntity<Boolean> isModeratorForCommunity(@RequestParam Long userId, @RequestParam Long communityId) {
+        boolean isModerator = moderatorService.isModeratorForCommunity(userId, communityId);
+        return new ResponseEntity<>(isModerator, HttpStatus.OK);
+    }
+    //TODO: Integration with ThreadsApp - Add endpoints to fetch thread information
+    // Example: GET /moderators/thread/{threadId}/info to get thread info
+    
+    
+    // TODO: Integration with UserApp - Add endpoints to fetch user information
+    // Example: GET /moderators/user/{userId}/info to get user info for moderation purposes
 }
