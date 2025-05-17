@@ -1,3 +1,4 @@
+
 package com.wroteit.NotificationApp.repository;
 
 import com.wroteit.NotificationApp.model.Notification;
@@ -9,7 +10,38 @@ import java.util.List;
 @Repository
 public interface NotificationRepository extends MongoRepository<Notification, String> {
     List<Notification> findByRecipientId(String recipientId);
+    List<Notification> findByRecipientIdAndIsReadFalse(String recipientId);
+    void deleteById(String id);
 }
+
+//package com.wroteit.NotificationApp.repository;
+//
+//import com.wroteit.NotificationApp.model.Notification;
+//import org.springframework.data.mongodb.repository.MongoRepository;
+//import org.springframework.stereotype.Repository;
+//
+//import java.util.List;
+//
+//@Repository
+//public interface NotificationRepository extends MongoRepository<Notification, String> {
+//    List<Notification> findByRecipientId(String recipientId);
+//    List<Notification> findByRecipientIdAndIsReadFalse(String recipientId);
+//    void deleteById(String id);
+//}
+
+
+//package com.wroteit.NotificationApp.repository;
+//
+//import com.wroteit.NotificationApp.model.Notification;
+//import org.springframework.data.mongodb.repository.MongoRepository;
+//import org.springframework.stereotype.Repository;
+//
+//import java.util.List;
+//
+//@Repository
+//public interface NotificationRepository extends MongoRepository<Notification, String> {
+//    List<Notification> findByRecipientId(String recipientId);
+//}
 
 //package com.wroteit.notification.repository;
 //
