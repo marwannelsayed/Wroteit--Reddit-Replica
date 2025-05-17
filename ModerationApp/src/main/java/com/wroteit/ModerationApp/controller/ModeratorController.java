@@ -41,7 +41,7 @@ public class ModeratorController {
         return new ResponseEntity<>(communities, HttpStatus.OK);
     }
 
-    // karim osama
+   
     @PostMapping("/ban")
     public ResponseEntity<String> banUser(@RequestBody Map<String, Object> request) {
         Long userId = Long.valueOf(request.get("userId").toString());
@@ -66,8 +66,18 @@ public class ModeratorController {
     }
     //TODO: Integration with ThreadsApp - Add endpoints to fetch thread information
     // Example: GET /moderators/thread/{threadId}/info to get thread info
+    @GetMapping("/thread/{threadId}/info")
+    public ResponseEntity<String> getThreadInfo(@PathVariable Long threadId) {
+        Long threadInfo = moderatorService.getThreadDetails(threadId);
+        return new ResponseEntity<>(threadInfo.toString(), HttpStatus.OK);
+    }
     
     
     // TODO: Integration with UserApp - Add endpoints to fetch user information
     // Example: GET /moderators/user/{userId}/info to get user info for moderation purposes
+    @GetMapping("/user/{userId}/info")
+    public ResponseEntity<String> getUserInfo(@PathVariable Long userId) {
+        String userInfo = moderatorService.getUserDetails(userId);
+        return new ResponseEntity<>(userInfo, HttpStatus.OK);
+    }
 }

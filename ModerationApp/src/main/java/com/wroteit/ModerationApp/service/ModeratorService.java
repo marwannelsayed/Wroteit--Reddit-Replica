@@ -35,7 +35,7 @@ public class ModeratorService {
         return moderatorRepository.findByUserId(userId);
     }
 
-    // karim osama
+   
     public void banUser(Long userId, Long communityId, Long moderatorId) {
         ModerationCommand command = new BanUserCommand(moderatorRepository, userId, communityId, moderatorId);
         command.execute();
