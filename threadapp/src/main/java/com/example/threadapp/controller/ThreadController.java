@@ -46,11 +46,17 @@ public class ThreadController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteThread(@PathVariable String id) {
-        if (threadService.deleteThread(id)) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Void> deleteThread(
+        @PathVariable String id,
+        @RequestHeader("X-User-Id") String userId,
+        @RequestHeader("X-User-Role") String role) {
+
+    if (threadService.deleteThreadWithAuthorization(id, userId, role)) {
+        return ResponseEntity.noContent().build();
+    } else {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // unauthorized attempt
     }
+}
+
 }
 
