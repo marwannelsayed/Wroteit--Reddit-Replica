@@ -37,35 +37,52 @@ public class ThreadService {
     public Optional<Thread> updateThread(String id, Thread threadDetails) {
         return threadRepository.findById(id)
                 .map(existingThread -> {
-                    existingThread.setTitle(threadDetails.getTitle());
-                    existingThread.setContent(threadDetails.getContent());
+                    if (threadDetails.getTitle() != null) {
+                        existingThread.setTitle(threadDetails.getTitle());
+                    }
+                    if (threadDetails.getContent() != null) {
+                        existingThread.setContent(threadDetails.getContent());
+                    }
                     existingThread.setUpdatedAt(LocalDateTime.now());
                     // Implement reflection for logging edits here if required
                     return threadRepository.save(existingThread);
                 });
     }
 
-    public boolean deleteThreadWithAuthorization(String id, String userId, String role) {
-        Optional<Thread> optionalThread = threadRepository.findById(id);
-        if (optionalThread.isEmpty()) return false;
-    
-        Thread thread = optionalThread.get();
-        boolean isModerator = "MODERATOR".equalsIgnoreCase(role);
-        boolean isOwner = thread.getAuthorId().equals(userId);
-    
-        if (isModerator || isOwner) {
+    public boolean deleteThread(String id) {
+        if (threadRepository.existsById(id)) {
             threadRepository.deleteById(id);
+            // Add logic to delete associated comments and votes if necessary
             return true;
         }
-    
-        return false; // forbidden
+        return false;
     }
     
 
-    // Placeholder for reflection-based logging
-    private void logEditAction(Object entity, String actionType) {
-        // Implement reflection logic to detect changes and log them
-        System.out.println("Action: " + actionType + " on entity: " + entity.toString());
+    // // Placeholder for reflection-based logging
+    // private void logEditAction(Object entity, String actionType) {
+    //     // Implement reflection logic to detect changes and log them
+    //     System.out.println("Action: " + actionType + " on entity: " + entity.toString());
+    // }
+
+    public List<Thread> getThreadsByAuthorId(String authorId) {
+        return threadRepository.findByAuthorId(authorId);
+    }
+
+    public List<Thread> getThreadsSortedByUpvotes() {
+        return threadRepository.findAllByOrderByUpvotesDesc();
+    }
+
+    public List<Thread> getThreadsSortedByDownvotes() {
+        return threadRepository.findAllByOrderByDownvotesDesc();
+    }
+
+    public List<Thread> getThreadsSortedByCreatedAt() {
+        return threadRepository.findAllByOrderByCreatedAtDesc();
+    }
+
+    public List<Thread> getThreadsSortedByCreatedAtAsc() {
+        return threadRepository.findAllByOrderByCreatedAtAsc();
     }
 }
 
