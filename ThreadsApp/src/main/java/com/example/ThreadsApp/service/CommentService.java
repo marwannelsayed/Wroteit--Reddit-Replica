@@ -1,8 +1,8 @@
-package com.example.threadapp.service;
+package com.example.ThreadsApp.service;
 
-import com.example.threadapp.model.Comment;
-import com.example.threadapp.model.Comment.EditHistory;
-import com.example.threadapp.repository.CommentRepository;
+import com.example.ThreadsApp.model.Comment;
+import com.example.ThreadsApp.model.Comment.EditHistory;
+import com.example.ThreadsApp.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

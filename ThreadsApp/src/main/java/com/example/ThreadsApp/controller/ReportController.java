@@ -1,8 +1,9 @@
-package com.example.threadapp.controller;
+package com.example.ThreadsApp.controller;
 
-import com.example.threadapp.model.Report;
-import com.example.threadapp.repository.ReportRepository;
+import com.example.ThreadsApp.model.Report;
+import com.example.ThreadsApp.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,11 @@ import java.util.Optional;
 public class ReportController {
 
     private final ReportRepository reportRepo;
+
+    @Autowired
+    public ReportController(ReportRepository reportRepo) {
+        this.reportRepo = reportRepo;
+    }
 
     @PostMapping
     public ResponseEntity<?> submitReport(@RequestBody Report report) {
