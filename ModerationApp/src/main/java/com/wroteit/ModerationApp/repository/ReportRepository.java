@@ -1,6 +1,6 @@
-package main.java.com.wroteit.ModerationApp.repository;
+package com.wroteit.ModerationApp.repository;
 
-import main.java.com.wroteit.ModerationApp.model.Report;
+import com.wroteit.ModerationApp.model.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-import com.moderationapp.model.Report;
+//import com.moderationapp.model.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

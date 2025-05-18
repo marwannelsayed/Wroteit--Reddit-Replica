@@ -1,4 +1,4 @@
-package main.java.com.wroteit.ModerationApp.controller;
+package com.wroteit.ModerationApp.controller;
 
 import com.wroteit.ModerationApp.model.Report;
 import com.wroteit.ModerationApp.service.ReportService;
@@ -39,14 +39,14 @@ public class ReportController {
     }
 
     @PostMapping("/assign")
-    public ResponseEntity<String> assignModerator(@RequestBody AssignRequest request) {
-        String result = reportService.assignModerator(request.getUserId(), request.getCommunityId());
+    public ResponseEntity<String> assignModerator(@RequestBody Long userId, @RequestBody Long communityId) {
+        String result = reportService.assignModerator(userId, communityId);
         return ResponseEntity.ok(result);
     }
 
     @PostMapping("/ban")
-    public ResponseEntity<String> banUser(@RequestBody BanRequest request) {
-        String result = reportService.banUser(request.getUserId(), request.getCommunityId());
+    public ResponseEntity<String> banUser(@RequestBody Long userId, @RequestBody Long communityId) {
+        String result = reportService.banUser(userId, communityId);
         return ResponseEntity.ok(result);
     }
 

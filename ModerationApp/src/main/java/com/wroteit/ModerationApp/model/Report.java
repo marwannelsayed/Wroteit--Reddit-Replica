@@ -1,4 +1,4 @@
-package main.java.com.wroteit.ModerationApp.model;
+package com.wroteit.ModerationApp.model;
 
 import java.time.LocalDateTime;
 

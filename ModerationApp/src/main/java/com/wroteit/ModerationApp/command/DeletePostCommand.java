@@ -1,5 +1,5 @@
 
-package main.java.com.wroteit.ModerationApp.command;
+package com.wroteit.ModerationApp.command;
 
 import com.wroteit.ModerationApp.repository.ModeratorRepository;
 import org.springframework.http.HttpStatus;

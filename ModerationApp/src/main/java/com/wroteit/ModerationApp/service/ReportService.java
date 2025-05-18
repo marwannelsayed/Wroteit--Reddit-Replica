@@ -1,4 +1,4 @@
-package main.java.com.wroteit.ModerationApp.service;
+package com.wroteit.ModerationApp.service;
 
 import com.wroteit.ModerationApp.model.Report;
 import com.wroteit.ModerationApp.repository.ReportRepository;

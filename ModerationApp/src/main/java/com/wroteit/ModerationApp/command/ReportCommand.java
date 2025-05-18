@@ -1,5 +1,5 @@
-package main.java.com.wroteit.ModerationApp.command;
+package com.wroteit.ModerationApp.command;
 
-public interface ModerationCommand {
+public interface ReportCommand {
     void execute();
 }
