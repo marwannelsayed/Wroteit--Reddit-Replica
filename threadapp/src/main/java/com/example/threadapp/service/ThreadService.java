@@ -49,20 +49,13 @@ public class ThreadService {
                 });
     }
 
-    public boolean deleteThreadWithAuthorization(String id, String userId, String role) {
-        Optional<Thread> optionalThread = threadRepository.findById(id);
-        if (optionalThread.isEmpty()) return false;
-    
-        Thread thread = optionalThread.get();
-        boolean isModerator = "MODERATOR".equalsIgnoreCase(role);
-        boolean isOwner = thread.getAuthorId().equals(userId);
-    
-        if (isModerator || isOwner) {
+    public boolean deleteThread(String id) {
+        if (threadRepository.existsById(id)) {
             threadRepository.deleteById(id);
+            // Add logic to delete associated comments and votes if necessary
             return true;
         }
-    
-        return false; // forbidden
+        return false;
     }
     
 
