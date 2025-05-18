@@ -4,6 +4,10 @@ import com.wroteit.ModerationApp.command.AssignModeratorCommand;
 import com.wroteit.ModerationApp.command.ModerationCommand;
 import com.wroteit.ModerationApp.model.Moderator;
 import com.wroteit.ModerationApp.repository.ModeratorRepository;
+
+import main.java.com.wroteit.ModerationApp.command.BanUserCommand;
+import main.java.com.wroteit.ModerationApp.command.DeletePostCommand;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +35,32 @@ public class ModeratorService {
         return moderatorRepository.findByUserId(userId);
     }
 
-    // karim osama
+   
+    public void banUser(Long userId, Long communityId, Long moderatorId) {
+        ModerationCommand command = new BanUserCommand(moderatorRepository, userId, communityId, moderatorId);
+        command.execute();
+    }
+     public void deletePost(Long postId, Long communityId, Long moderatorId) {
+        ModerationCommand command = new DeletePostCommand(moderatorRepository, postId, communityId, moderatorId);
+        command.execute();
+    }
+    public boolean isModeratorForCommunity(Long userId, Long communityId) {
+        return moderatorRepository.existsByUserIdAndCommunityId(userId, communityId);
+    }
+ // TODO: Integration with UserApp - Add methods to retrieve user information
+    // Example: getUserDetails(Long userId) to fetch user details from UserApp
+    public void getUserDetails(Long userId) {
+        User user = userAppClient.getUserDetails(userId);
+        return user;
+       
+
+    }
+    
+    // TODO: Integration with ThreadsApp - Add methods to retrieve thread information
+    // Example: getThreadDetails(Long threadId) to fetch thread details from ThreadsApp
+    public Thread getThreadDetails(Long threadId) {
+        Thread thread = threadsAppClient.getThreadDetails(threadId);
+        return thread;
+    }
 }
+
