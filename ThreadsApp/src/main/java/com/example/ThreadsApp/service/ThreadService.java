@@ -1,7 +1,7 @@
-package com.example.threadapp.service;
+package com.example.ThreadsApp.service;
 
-import com.example.threadapp.model.Thread;
-import com.example.threadapp.repository.ThreadRepository;
+import com.example.ThreadsApp.model.Thread;
+import com.example.ThreadsApp.repository.ThreadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;

@@ -1,11 +1,11 @@
-package com.example.threadapp.config;
+package com.example.ThreadsApp.config;
 
-import com.example.threadapp.model.Comment;
-import com.example.threadapp.model.Thread;
-import com.example.threadapp.model.Vote;
-import com.example.threadapp.repository.CommentRepository;
-import com.example.threadapp.repository.ThreadRepository;
-import com.example.threadapp.repository.VoteRepository;
+import com.example.ThreadsApp.model.Comment;
+import com.example.ThreadsApp.model.Thread;
+import com.example.ThreadsApp.model.Vote;
+import com.example.ThreadsApp.repository.CommentRepository;
+import com.example.ThreadsApp.repository.ThreadRepository;
+import com.example.ThreadsApp.repository.VoteRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;

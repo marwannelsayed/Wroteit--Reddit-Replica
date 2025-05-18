@@ -1,6 +1,6 @@
-package com.example.threadapp.repository;
+package com.example.ThreadsApp.repository;
 
-import com.example.threadapp.model.Thread;
+import com.example.ThreadsApp.model.Thread;
 
 import java.util.List;
 

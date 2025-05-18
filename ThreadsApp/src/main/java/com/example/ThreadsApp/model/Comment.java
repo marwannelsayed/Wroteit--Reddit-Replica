@@ -1,4 +1,4 @@
-package com.example.threadapp.model;
+package com.example.ThreadsApp.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

@@ -1,4 +1,4 @@
-package com.example.threadapp;
+package com.example.ThreadsApp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

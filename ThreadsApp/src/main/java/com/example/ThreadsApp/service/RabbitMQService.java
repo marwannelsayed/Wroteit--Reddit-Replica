@@ -1,6 +1,6 @@
-package com.example.threadapp.service;
+package com.example.ThreadsApp.service;
 
-import com.example.threadapp.config.RabbitMQConfig;
+import com.example.ThreadsApp.config.RabbitMQConfig;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

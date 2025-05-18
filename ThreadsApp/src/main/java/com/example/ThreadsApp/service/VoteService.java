@@ -1,10 +1,10 @@
-package com.example.threadapp.service;
+package com.example.ThreadsApp.service;
 
-import com.example.threadapp.model.Thread;
-import com.example.threadapp.model.Vote;
-import com.example.threadapp.repository.ThreadRepository;
-import com.example.threadapp.repository.VoteRepository;
-import com.example.threadapp.repository.CommentRepository;
+import com.example.ThreadsApp.model.Thread;
+import com.example.ThreadsApp.model.Vote;
+import com.example.ThreadsApp.repository.ThreadRepository;
+import com.example.ThreadsApp.repository.VoteRepository;
+import com.example.ThreadsApp.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

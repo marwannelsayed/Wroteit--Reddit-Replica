@@ -1,4 +1,4 @@
-package com.example.threadapp.model;
+package com.example.ThreadsApp.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

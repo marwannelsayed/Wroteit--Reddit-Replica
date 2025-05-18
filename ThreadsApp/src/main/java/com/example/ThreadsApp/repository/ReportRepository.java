@@ -1,6 +1,6 @@
-package com.example.threadapp.repository;
+package com.example.ThreadsApp.repository;
 
-import com.example.threadapp.model.Report;
+import com.example.ThreadsApp.model.Report;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

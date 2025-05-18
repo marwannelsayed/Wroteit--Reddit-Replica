@@ -1,4 +1,4 @@
-package com.example.threadapp.listener;
+package com.example.ThreadsApp.listener;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;

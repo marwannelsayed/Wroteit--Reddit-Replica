@@ -1,7 +1,7 @@
-package com.example.threadapp.service;
+package com.example.ThreadsApp.service;
 
-import com.example.threadapp.model.Report;
-import com.example.threadapp.repository.ReportRepository;
+import com.example.ThreadsApp.model.Report;
+import com.example.ThreadsApp.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

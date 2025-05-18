@@ -1,6 +1,6 @@
-package com.example.threadapp.repository;
+package com.example.ThreadsApp.repository;
 
-import com.example.threadapp.model.Vote;
+import com.example.ThreadsApp.model.Vote;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

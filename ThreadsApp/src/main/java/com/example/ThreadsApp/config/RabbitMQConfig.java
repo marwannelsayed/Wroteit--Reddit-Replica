@@ -1,4 +1,4 @@
-package com.example.threadapp.config;
+package com.example.ThreadsApp.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

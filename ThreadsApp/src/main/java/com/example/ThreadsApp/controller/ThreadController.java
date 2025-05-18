@@ -1,7 +1,7 @@
-package com.example.threadapp.controller;
+package com.example.ThreadsApp.controller;
 
-import com.example.threadapp.model.Thread;
-import com.example.threadapp.service.ThreadService;
+import com.example.ThreadsApp.model.Thread;
+import com.example.ThreadsApp.service.ThreadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

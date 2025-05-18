@@ -1,8 +1,8 @@
-package com.example.threadapp.controller;
+package com.example.ThreadsApp.controller;
 
-import com.example.threadapp.model.Comment;
-import com.example.threadapp.model.Comment.EditHistory;
-import com.example.threadapp.service.CommentService;
+import com.example.ThreadsApp.model.Comment;
+import com.example.ThreadsApp.model.Comment.EditHistory;
+import com.example.ThreadsApp.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
