@@ -37,8 +37,12 @@ public class ThreadService {
     public Optional<Thread> updateThread(String id, Thread threadDetails) {
         return threadRepository.findById(id)
                 .map(existingThread -> {
-                    existingThread.setTitle(threadDetails.getTitle());
-                    existingThread.setContent(threadDetails.getContent());
+                    if (threadDetails.getTitle() != null) {
+                        existingThread.setTitle(threadDetails.getTitle());
+                    }
+                    if (threadDetails.getContent() != null) {
+                        existingThread.setContent(threadDetails.getContent());
+                    }
                     existingThread.setUpdatedAt(LocalDateTime.now());
                     // Implement reflection for logging edits here if required
                     return threadRepository.save(existingThread);
@@ -62,10 +66,30 @@ public class ThreadService {
     }
     
 
-    // Placeholder for reflection-based logging
-    private void logEditAction(Object entity, String actionType) {
-        // Implement reflection logic to detect changes and log them
-        System.out.println("Action: " + actionType + " on entity: " + entity.toString());
+    // // Placeholder for reflection-based logging
+    // private void logEditAction(Object entity, String actionType) {
+    //     // Implement reflection logic to detect changes and log them
+    //     System.out.println("Action: " + actionType + " on entity: " + entity.toString());
+    // }
+
+    public List<Thread> getThreadsByAuthorId(String authorId) {
+        return threadRepository.findByAuthorId(authorId);
+    }
+
+    public List<Thread> getThreadsSortedByUpvotes() {
+        return threadRepository.findAllByOrderByUpvotesDesc();
+    }
+
+    public List<Thread> getThreadsSortedByDownvotes() {
+        return threadRepository.findAllByOrderByDownvotesDesc();
+    }
+
+    public List<Thread> getThreadsSortedByCreatedAt() {
+        return threadRepository.findAllByOrderByCreatedAtDesc();
+    }
+
+    public List<Thread> getThreadsSortedByCreatedAtAsc() {
+        return threadRepository.findAllByOrderByCreatedAtAsc();
     }
 }
 
