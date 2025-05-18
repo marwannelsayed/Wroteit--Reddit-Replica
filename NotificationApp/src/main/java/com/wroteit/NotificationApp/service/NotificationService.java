@@ -1,68 +1,71 @@
 
 package com.wroteit.NotificationApp.service;
 
-import com.wroteit.NotificationApp.command.CommandInvoker;
-import com.wroteit.NotificationApp.command.DeleteNotificationCommand;
-import com.wroteit.NotificationApp.command.GetUnreadNotificationsCommand;
-import com.wroteit.NotificationApp.command.MarkNotificationAsReadCommand;
+
+import com.wroteit.NotificationApp.Strategy.*;
+import com.wroteit.NotificationApp.factory.NotificationFactory;
 import com.wroteit.NotificationApp.model.Notification;
 import com.wroteit.NotificationApp.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class NotificationService {
     private final NotificationRepository notificationRepository;
-    private final CommandInvoker commandInvoker;
-    private final GetUnreadNotificationsCommand getUnreadNotificationsCommand;
-    private final MarkNotificationAsReadCommand markNotificationAsReadCommand;
-    private final DeleteNotificationCommand deleteNotificationCommand;
+
 
     @Autowired
     public NotificationService(
-            NotificationRepository notificationRepository,
-            CommandInvoker commandInvoker,
-            GetUnreadNotificationsCommand getUnreadNotificationsCommand,
-            MarkNotificationAsReadCommand markNotificationAsReadCommand,
-            DeleteNotificationCommand deleteNotificationCommand) {
+            NotificationRepository notificationRepository) {
         this.notificationRepository = notificationRepository;
-        this.commandInvoker = commandInvoker;
-        this.getUnreadNotificationsCommand = getUnreadNotificationsCommand;
-        this.markNotificationAsReadCommand = markNotificationAsReadCommand;
-        this.deleteNotificationCommand = deleteNotificationCommand;
     }
 
     // Send notif
-    public Notification sendNotification(String recipientId, String message, Notification.NotificationType type) {
-        Notification notification = new Notification(recipientId, type.name(), message);
-        notification.setCreatedAt(LocalDateTime.now());
-        notification.setRead(false);       // unread on creation
-        return notificationRepository.save(notification);
+    public Notification sendNotification(Long recipientId, String message, Notification.NotificationType type, List<Notification.DeliveryMethod> deliveryMethods) {
+        Notification notification = NotificationFactory.createNotification(recipientId, message, type, deliveryMethods);
+        List<NotificationStrategy> strategies = new ArrayList<>();
+        if(notification.getDeliveryMethods().contains(Notification.DeliveryMethod.IN_APP)){
+            strategies.add(new InAppNotification(notificationRepository));
+        }
+        if(notification.getDeliveryMethods().contains(Notification.DeliveryMethod.MOBILE_BANNER)){
+            strategies.add(new MobileBannerNotification());
+        }
+        if(notification.getDeliveryMethods().contains(Notification.DeliveryMethod.EMAIL)){
+            strategies.add(new EmailNotification());
+        }
+        NotificationContext notificationContext = new NotificationContext(strategies);
+        notificationContext.notify(notification);
+        return notification;
     }
 
-    public List<Notification> getUserNotifications(String userId) {
+    public List<Notification> getUserNotifications(Long userId) {
         return notificationRepository.findByRecipientId(userId);
     }
 
-    // Get unread
-    @SuppressWarnings("unchecked")
-    public List<Notification> getUnreadNotifications(String userId) {
-        getUnreadNotificationsCommand.setUserId(userId);
-        return (List<Notification>) commandInvoker.executeCommand(getUnreadNotificationsCommand);
+    public List<Notification> getUnreadNotifications(Long userId) {
+        return notificationRepository.findByRecipientIdAndIsReadFalse(userId);
     }
 
     // Mark notification as read
-    public Notification markAsRead(String notificationId) {
-        markNotificationAsReadCommand.setNotificationId(notificationId);
-        return (Notification) commandInvoker.executeCommand(markNotificationAsReadCommand);
+    public Notification markAsRead(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId).orElse(null);
+        if(notification!=null){
+            notification.setRead(true);
+        }
+        return notification;
     }
 
     // Delete notif
-    public boolean deleteNotification(String notificationId) {
-        deleteNotificationCommand.setNotificationId(notificationId);
-        return (boolean) commandInvoker.executeCommand(deleteNotificationCommand);
+    public String deleteNotification(Long notificationId) {
+        if(notificationRepository.existsById(notificationId)){
+            notificationRepository.deleteById(notificationId);
+            return "Notification deleted successfully!";
+        }else{
+            return "Notification not found.";
+        }
     }
 }

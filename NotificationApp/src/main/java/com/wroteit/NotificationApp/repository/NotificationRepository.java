@@ -8,8 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface NotificationRepository extends MongoRepository<Notification, String> {
-    List<Notification> findByRecipientId(String recipientId);
-    List<Notification> findByRecipientIdAndIsReadFalse(String recipientId);
-    void deleteById(String id);
+public interface NotificationRepository extends MongoRepository<Notification, Long> {
+    List<Notification> findByRecipientId(Long recipientId);
+    List<Notification> findByRecipientIdAndIsReadFalse(Long recipientId);
 }

@@ -4,44 +4,47 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Document(collection = "notifications")
 public class Notification {
 
     @Id
-    private String id;
-    private String recipientId;
+    private Long id;
+    private Long recipientId;
     private String message;
     private NotificationType type;
     private boolean isRead;                 // Changed from enum to boolean
     private LocalDateTime createdAt;
+    private List<DeliveryMethod> deliveryMethods;
+
 
     public enum NotificationType {
-        COMMENT,
-        MENTION,
-        LIKE,
-        FOLLOW,
-        MESSAGE,
-        SYSTEM
+        COMMENT_REPLY,
+        THREAD_REPLY,
+        BAN,
+        SUBSCRIPTION,
+        REPORT
+    }
+
+    public enum DeliveryMethod {
+        IN_APP, EMAIL, MOBILE_BANNER
     }
 
     public Notification() {}
 
-    public Notification(String recipientId, String type, String message) {
+    public Notification(Long recipientId, NotificationType type, String message) {
         this.recipientId = recipientId;
-        this.type = NotificationType.valueOf(type);
+        this.type = type;
         this.message = message;
-        this.isRead = false;               // Initialize as unread
-        this.createdAt = LocalDateTime.now();
     }
 
     // Getters and setters
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public Long getId() { return id; }
 
-    public String getRecipientId() { return recipientId; }
-    public void setRecipientId(String recipientId) { this.recipientId = recipientId; }
+    public Long getRecipientId() { return recipientId; }
+    public void setRecipientId(Long recipientId) { this.recipientId = recipientId; }
 
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }
@@ -54,5 +57,13 @@ public class Notification {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public List<DeliveryMethod> getDeliveryMethods() {
+        return deliveryMethods;
+    }
+
+    public void setDeliveryMethods(List<DeliveryMethod> deliveryMethods) {
+        this.deliveryMethods = deliveryMethods;
+    }
 }
 
