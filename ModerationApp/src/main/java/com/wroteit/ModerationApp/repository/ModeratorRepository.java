@@ -8,5 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface ModeratorRepository extends JpaRepository<Moderator, Long> {
-    Optional<Moderator> findByReportId(Long reportId);
+    boolean existsByUserIdAndCommunityId(Long userId, Long communityId);
+
+
 }

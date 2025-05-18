@@ -3,8 +3,10 @@ package com.wroteit.ModerationApp.command;
 import com.wroteit.ModerationApp.model.Moderator;
 import com.wroteit.ModerationApp.repository.ModeratorRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+@Component
 public class AssignModeratorCommand implements ModerationCommand {
     private final ModeratorRepository moderatorRepository;
     private final Long userId;
@@ -27,6 +29,5 @@ public class AssignModeratorCommand implements ModerationCommand {
         Moderator moderator = new Moderator(userId, communityId);
         moderatorRepository.save(moderator);
 
-        // TODO: Add notification to the user through NotificationApp by kareem
     }
 }

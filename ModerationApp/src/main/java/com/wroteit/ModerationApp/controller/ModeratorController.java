@@ -1,9 +1,9 @@
 package com.wroteit.ModerationApp.controller;
 
+import com.wroteit.ModerationApp.model.EntityType;
 import com.wroteit.ModerationApp.model.Report;
 import com.wroteit.ModerationApp.service.ModeratorService;
-import com.wroteit.ModerationApp.dto.AssignRequest;
-import com.wroteit.ModerationApp.dto.BanRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +14,7 @@ public class ModeratorController {
 
     private final ModeratorService moderatorService;
 
+    @Autowired
     public ModeratorController(ModeratorService moderatorService) {
         this.moderatorService = moderatorService;
     }
@@ -23,33 +24,38 @@ public class ModeratorController {
         return moderatorService.fileReport(report);
     }
 
-    @GetMapping("/reports/status/{status}")
-    public List<Report> getReportsByStatus(@PathVariable String status) {
-        return moderatorService.getReportsByStatus(status);
+    @GetMapping("/reports/{communityId}")
+    public List<Report> findByCommunityId(Long communityId){
+        return moderatorService.findByCommunityId(communityId);
     }
 
-    @PutMapping("/reports/{id}/review")
-    public Report reviewReport(@PathVariable Long id, @RequestBody String newStatus) {
-        return moderatorService.reviewReport(id, newStatus);
-    }
 
     @DeleteMapping("/reports/{id}")
-    public void deleteReport(@PathVariable Long id) {
-        moderatorService.deleteReport(id);
+    public String closeReport(@PathVariable Long id) {
+        return moderatorService.closeReport(id);
     }
 
     @PostMapping("/assign")
-    public String assignModerator(@RequestBody AssignRequest request) {
-        return moderatorService.assignModerator(request.getUserId(), request.getCommunityId());
+    public String assignModerator(@RequestBody Long userId, @RequestBody Long communityId) {
+        return moderatorService.assignModerator(userId, communityId);
     }
 
     @PostMapping("/ban")
-    public String banUser(@RequestBody BanRequest request) {
-        return moderatorService.banUser(request.getUserId(), request.getCommunityId());
+    public String banUser(@RequestBody Long userId, @RequestBody Long communityId) {
+        // TODO: Update community to have user banned
+        return "User banned";
     }
 
     @DeleteMapping("/content/{entityType}/{postId}")
-    public String deleteContent(@PathVariable String entityType, @PathVariable Long postId) {
-        return moderatorService.deleteContent(entityType, postId);
+    public String deleteContent(@PathVariable EntityType entityType, @PathVariable Long postId) {
+       // TODO: Update relevant table by deleting entity
+        switch(entityType){
+            case THREAD: // API call to delete thread
+                break;
+            case COMMENT: // API call to delete comment
+                break;
+            default: return "Invalid content type";
+        }
+        return entityType + "deleted successfully";
     }
 }

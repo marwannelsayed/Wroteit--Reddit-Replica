@@ -84,6 +84,9 @@ public class CommunityController {
         return communityService.unhideCommunityForUser(communityId, userId);
     }
 
-
+    @PutMapping("/ban/{userId}")
+    public Community banCommunityForUser(@RequestBody Long communityId, @PathVariable Long userId){
+        return communityService.banCommunityForUser(communityId, userId);
+    }
 }
 

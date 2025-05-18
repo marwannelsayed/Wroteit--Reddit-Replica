@@ -136,4 +136,15 @@ public class CommunityService {
         communityRepository.save(c);
         return c;
     }
+
+    public Community banCommunityForUser(Long userId, Long communityId) {
+        Community c = getCommunityById(communityId);
+        if (!c.getBannedUsers().contains(userId)) {
+            c.getBannedUsers().add(userId);
+            communityRepository.save(c);
+        }
+        return c;
+    }
+
+
 }

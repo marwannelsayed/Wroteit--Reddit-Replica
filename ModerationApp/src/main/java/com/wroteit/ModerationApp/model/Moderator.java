@@ -24,10 +24,6 @@ public class Moderator {
         return moderatorId;
     }
 
-    public void setModeratorId(Long moderatorId) {
-        this.moderatorId = moderatorId;
-    }
-
     public Long getUserId() {
         return userId;
     }

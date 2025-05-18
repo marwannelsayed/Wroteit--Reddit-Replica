@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
-    List<Report> findByStatus(String status);
     List<Report> findByEntityTypeAndReportedEntityId(String entityType, Long reportedEntityId);
-    Optional<Report> findById(Long id);
+    List<Report> findByCommunityId(Long communityId);
 }

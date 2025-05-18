@@ -23,6 +23,7 @@ public class Community {
     private List<String> tags = new ArrayList<>();
     private List<Long> threads = new ArrayList<>();
     private List<Long> hiddenByUsers = new ArrayList<>();
+    private List<Long> bannedUsers = new ArrayList<>();
 
     public Community() {}
 
@@ -50,4 +51,12 @@ public class Community {
 
     public List<Long> getHiddenByUsers() { return hiddenByUsers; }
     public void setHiddenByUsers(List<Long> hiddenByUsers) { this.hiddenByUsers = hiddenByUsers; }
+
+    public List<Long> getBannedUsers() {
+        return bannedUsers;
+    }
+
+    public void setBannedUsers(List<Long> bannedUsers) {
+        this.bannedUsers = bannedUsers;
+    }
 }

@@ -1,5 +1,8 @@
 package com.wroteit.ModerationApp.service;
 
+import com.wroteit.ModerationApp.command.AssignModeratorCommand;
+import com.wroteit.ModerationApp.command.CloseReportCommand;
+import com.wroteit.ModerationApp.model.Moderator;
 import com.wroteit.ModerationApp.model.Report;
 import com.wroteit.ModerationApp.repository.ReportRepository;
 import com.wroteit.ModerationApp.repository.ModeratorRepository;
@@ -21,46 +24,30 @@ public class ModeratorService {
     }
 
     public Report fileReport(Report report) {
-        report.setStatus("pending");
-        report.setTimestamp(LocalDateTime.now());
         return reportRepository.save(report);
     }
 
-    public Report reviewReport(Long reportId, String newStatus) {
-        Optional<Report> optionalReport = reportRepository.findById(reportId);
-        if (optionalReport.isEmpty()) {
-            return null;
-        }
-        Report report = optionalReport.get();
-        report.setStatus(newStatus);
-        return reportRepository.save(report);
+    public List<Report> findByCommunityId(Long communityId){
+        return reportRepository.findByCommunityId(communityId);
     }
 
-    public List<Report> getReportsByStatus(String status) {
-        return reportRepository.findByStatus(status);
-    }
 
-    public void deleteReport(Long reportId) {
-        reportRepository.deleteById(reportId);
-    }
+
 
     public String assignModerator(Long userId, Long communityId) {
-        // Your logic to assign a moderator
-        return "Moderator " + userId + " assigned to community " + communityId;
+        AssignModeratorCommand assignModeratorCommand = new AssignModeratorCommand(moderatorRepository, userId, communityId);
+        try {
+            assignModeratorCommand.execute();
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+        return "Moderator added to community successfully";
     }
 
-    public String banUser(Long userId, Long communityId) {
-        // Your logic to ban user
-        return "User " + userId + " banned from community " + communityId;
-    }
 
-    public String deleteContent(String entityType, Long entityId) {
-        // Your logic to delete a post or comment
-        return "Deleted " + entityType + " with ID " + entityId;
-    }
 
-    public String moderateReport(Long reportId, Long moderatorId, String action) {
-        // Your logic to record or perform moderation
-        return "Moderator " + moderatorId + " performed action '" + action + "' on report " + reportId;
+    public String closeReport(Long reportId) {
+        CloseReportCommand closeReportCommand = new CloseReportCommand(reportRepository, reportId);
+        return "Report closed successfully";
     }
 }
