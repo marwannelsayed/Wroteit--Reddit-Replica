@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>thread-app</artifactId>
+    <artifactId>ThreadsApp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>thread-app</name>
     <description>Thread App project for Spring Boot</description>
