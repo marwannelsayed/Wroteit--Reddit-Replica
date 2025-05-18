@@ -6,13 +6,25 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class ReportService {
 
     private final ReportRepository reportRepo;
+
+    public ReportService(ReportRepository reportRepo) {
+        this.reportRepo = reportRepo;
+    }
+
+    public Optional<Report> findById(String id) {
+        return reportRepo.findById(id);
+    }
+
+    public List<Report> findAll() {
+        return reportRepo.findAll();
+    }
 
     public Optional<Report> findDuplicate(String reporterId, String targetType, String targetId) {
         return reportRepo.findByReporterIdAndTargetTypeAndTargetId(reporterId, targetType, targetId);
