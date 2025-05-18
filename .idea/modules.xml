@@ -3,9 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Scalable-Final-Project-Wroteit.iml" filepath="$PROJECT_DIR$/.idea/Scalable-Final-Project-Wroteit.iml" />
-
-      <module fileurl="file://$PROJECT_DIR$/UserApp/UserApp.iml" filepath="$PROJECT_DIR$/UserApp/UserApp.iml" />
-
     </modules>
   </component>
 </project>
