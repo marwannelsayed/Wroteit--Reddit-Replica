@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/ThreadsApp/pom.xml" />
         <option value="$PROJECT_DIR$/ModerationApp/pom.xml" />
         <option value="$PROJECT_DIR$/NotificationApp/pom.xml" />
+        <option value="$PROJECT_DIR$/GatewayApp/pom.xml" />
       </list>
     </option>
   </component>
