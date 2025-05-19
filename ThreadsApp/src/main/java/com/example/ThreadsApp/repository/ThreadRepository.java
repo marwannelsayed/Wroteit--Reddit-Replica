@@ -6,11 +6,9 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface ThreadRepository extends MongoRepository<Thread, String> {
-    List<Thread> findByAuthorId(String authorId);
-    List<Thread> findAllByOrderByUpvotesDesc();
-    List<Thread> findAllByOrderByDownvotesDesc();
-    List<Thread> findAllByOrderByCreatedAtDesc();
-    List<Thread> findAllByOrderByCreatedAtAsc();
+public interface ThreadRepository extends MongoRepository<Thread, Long> {
+    List<Thread> findByAuthorId(Long authorId);
+    List<Thread> findByCommunityId(Long communityId);
+
 }
 

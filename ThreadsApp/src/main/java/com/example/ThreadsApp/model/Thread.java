@@ -1,46 +1,45 @@
 package com.example.ThreadsApp.model;
 
+import com.example.ThreadsApp.composite.CommentComponent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Document(collection = "threads")
 public class Thread {
     @Id
-    private String id;
+    private Long id;
+    private Long authorId;
+    private Long communityId;
     private String title;
     private String content;
-    private String authorId;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private boolean deleted;
     private int upvotes;
     private int downvotes;
+    private List<Comment> comments = new ArrayList<>();
 
     // Constructors
     public Thread() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
         this.upvotes = 0;
         this.downvotes = 0;
+        deleted = false;
     }
 
-    public Thread(String title, String content, String authorId) {
+    public Thread(String title, String content, Long authorId, Long communityId) {
         this.title = title;
         this.content = content;
         this.authorId = authorId;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.communityId = communityId;
         this.upvotes = 0;
         this.downvotes = 0;
+        deleted = false;
     }
 
     // Getters and Setters
-    public String getId() {
+    public Long getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -59,28 +58,20 @@ public class Thread {
         this.content = content;
     }
 
-    public String getAuthorId() {
+    public Long getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(String authorId) {
+    public void setAuthorId(Long authorId) {
         this.authorId = authorId;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public Long getCommunityId() {
+        return communityId;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setCommunityId(Long communityId) {
+        this.communityId = communityId;
     }
 
     public int getUpvotes() {
@@ -98,5 +89,43 @@ public class Thread {
     public void setDownvotes(int downvotes) {
         this.downvotes = downvotes;
     }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public void addComment(Comment comment){
+        comments.add(comment);
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public void addUpvote(){
+        upvotes++;
+    }
+
+    public void removeUpvote(){
+        upvotes--;
+    }
+
+    public void addDownvote(){
+        downvotes++;
+    }
+
+    public void removeDownvote(){
+        downvotes--;
+    }
+
+
 }
 

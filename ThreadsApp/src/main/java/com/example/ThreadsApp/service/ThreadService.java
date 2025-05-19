@@ -1,5 +1,8 @@
 package com.example.ThreadsApp.service;
 
+import com.example.ThreadsApp.command.BanThreadCommand;
+import com.example.ThreadsApp.command.DeleteCommentCommand;
+import com.example.ThreadsApp.command.DeleteThreadCommand;
 import com.example.ThreadsApp.model.Thread;
 import com.example.ThreadsApp.repository.ThreadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,40 +25,40 @@ public class ThreadService {
         return threadRepository.findAll();
     }
 
-    public Optional<Thread> getThreadById(String id) {
-        return threadRepository.findById(id);
+    public List<Thread> getCommunityThreads(Long communityId){return threadRepository.findByCommunityId(communityId);}
+
+    public Thread getThreadById(Long id) {
+        return threadRepository.findById(id).orElse(null);
     }
 
     public Thread createThread(Thread thread) {
-        // Additional logic for creation, e.g., setting authorId if not set
-        // For now, assuming authorId is set in the controller or from security context
-        thread.setCreatedAt(LocalDateTime.now());
-        thread.setUpdatedAt(LocalDateTime.now());
         return threadRepository.save(thread);
     }
 
-    public Optional<Thread> updateThread(String id, Thread threadDetails) {
-        return threadRepository.findById(id)
-                .map(existingThread -> {
-                    if (threadDetails.getTitle() != null) {
-                        existingThread.setTitle(threadDetails.getTitle());
-                    }
-                    if (threadDetails.getContent() != null) {
-                        existingThread.setContent(threadDetails.getContent());
-                    }
-                    existingThread.setUpdatedAt(LocalDateTime.now());
-                    // Implement reflection for logging edits here if required
-                    return threadRepository.save(existingThread);
-                });
+    public Thread updateThread(Long id, String newContent) {
+        Thread thread = getThreadById(id);
+        if(thread!=null && !thread.isDeleted()){
+            thread.setContent(newContent);
+        }
+        return thread;
     }
 
-    public boolean deleteThread(String id) {
-        if (threadRepository.existsById(id)) {
-            threadRepository.deleteById(id);
-            // Add logic to delete associated comments and votes if necessary
-            return true;
+    public String deleteThread(Long id) {
+        if(threadRepository.existsById(id) && !getThreadById(id).isDeleted()){
+            DeleteThreadCommand deleteThreadCommand = new DeleteThreadCommand(threadRepository, id);
+            deleteThreadCommand.execute();
+            return "Thread deleted successfully!";
         }
-        return false;
+        return "Thread not found";
+    }
+
+    public String banThread(Long id) {
+        if(threadRepository.existsById(id) && !getThreadById(id).isDeleted()){
+            BanThreadCommand banThreadCommand = new BanThreadCommand(threadRepository, id);
+            banThreadCommand.execute();
+            return "Thread banned successfully!";
+        }
+        return "Thread not found";
     }
     
 
@@ -65,24 +68,14 @@ public class ThreadService {
     //     System.out.println("Action: " + actionType + " on entity: " + entity.toString());
     // }
 
-    public List<Thread> getThreadsByAuthorId(String authorId) {
+    public List<Thread> getThreadsByAuthorId(Long authorId) {
         return threadRepository.findByAuthorId(authorId);
     }
 
-    public List<Thread> getThreadsSortedByUpvotes() {
-        return threadRepository.findAllByOrderByUpvotesDesc();
+    public List<Thread> getThreadsByCommunityId(Long communityId){
+        return threadRepository.findByCommunityId(communityId);
     }
 
-    public List<Thread> getThreadsSortedByDownvotes() {
-        return threadRepository.findAllByOrderByDownvotesDesc();
-    }
 
-    public List<Thread> getThreadsSortedByCreatedAt() {
-        return threadRepository.findAllByOrderByCreatedAtDesc();
-    }
-
-    public List<Thread> getThreadsSortedByCreatedAtAsc() {
-        return threadRepository.findAllByOrderByCreatedAtAsc();
-    }
 }
 

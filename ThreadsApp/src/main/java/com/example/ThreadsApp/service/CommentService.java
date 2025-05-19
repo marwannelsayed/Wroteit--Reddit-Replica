@@ -1,8 +1,14 @@
 package com.example.ThreadsApp.service;
 
+import com.example.ThreadsApp.command.BanCommentCommand;
+import com.example.ThreadsApp.command.BanThreadCommand;
+import com.example.ThreadsApp.command.CreateCommentCommand;
+import com.example.ThreadsApp.command.DeleteCommentCommand;
+import com.example.ThreadsApp.composite.CommentComponent;
 import com.example.ThreadsApp.model.Comment;
-import com.example.ThreadsApp.model.Comment.EditHistory;
+import com.example.ThreadsApp.model.Thread;
 import com.example.ThreadsApp.repository.CommentRepository;
+import com.example.ThreadsApp.repository.ThreadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,79 +21,69 @@ import java.util.Optional;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final ThreadRepository threadRepository;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository) {
+    public CommentService(CommentRepository commentRepository, ThreadRepository threadRepository) {
         this.commentRepository = commentRepository;
+        this.threadRepository = threadRepository;
     }
 
-    public List<Comment> getCommentsByThreadId(String threadId) {
-        return commentRepository.findByThreadId(threadId);
+    public List<Comment> getCommentsByThreadId(Long threadId) {
+        Thread thread = threadRepository.findById(threadId).orElse(null);
+        if(thread!=null){
+            return thread.getComments();
+        }
+        return null;
     }
 
-    public Optional<Comment> getCommentById(String id) {
-        return commentRepository.findById(id);
+    public List<CommentComponent> getCommentsByParentId(Long parentId){
+        Comment parent = commentRepository.findById(parentId).orElse(null);
+        if(parent!=null){
+            return parent.getReplies();
+        }
+        return null;
+    }
+
+    public Comment getCommentById(Long id) {
+        return commentRepository.findById(id).orElse(null);
     }
 
     public Comment createComment(Comment comment) {
-        comment.setCreatedAt(LocalDateTime.now());
-        comment.setUpdatedAt(LocalDateTime.now());
-        return commentRepository.save(comment);
+        CreateCommentCommand createCommentCommand = new CreateCommentCommand(commentRepository, threadRepository, comment);
+        createCommentCommand.execute();
+        return getCommentById(comment.getId());
     }
 
-    public Optional<Comment> updateComment(String id, Comment updatedComment, String editorId) {
-        return commentRepository.findById(id)
-                .map(existing -> {
-                    trackChanges(existing, updatedComment, editorId);
-                    return commentRepository.save(existing);
-                });
-    }
-    
-public List<EditHistory> getEditHistory(String commentId) {
-    return commentRepository.findById(commentId)
-            .map(Comment::getEditHistory)
-            .orElseThrow();
-}
-
-private void trackChanges(Comment existing, Comment updated, String editorId) {
-    try {
-        Field[] fields = Comment.class.getDeclaredFields();
-
-        for (Field field : fields) {
-            field.setAccessible(true);
-
-         
-            if (List.of("id", "createdAt", "updatedAt", "editHistory", "childIds").contains(field.getName())) {
-                continue;
-            }
-
-            Object oldValue = field.get(existing);
-            Object newValue = field.get(updated);
-
-            if (newValue != null && !newValue.equals(oldValue)) {
-                existing.getEditHistory().add(new EditHistory(
-                        LocalDateTime.now(),
-                        field.getName(),
-                        oldValue,
-                        newValue,
-                        editorId
-                ));
-                field.set(existing, newValue);
-            }
+    public Comment updateComment(Long id, String updatedComment) {
+        Comment comment = commentRepository.findById(id).orElse(null);
+        if(comment!=null && !comment.isDeleted()){
+            comment.setContent(updatedComment);
+            commentRepository.save(comment);
         }
+        return comment;
+    }
 
-        existing.setUpdatedAt(LocalDateTime.now());
-    } catch (IllegalAccessException e) {
-        throw new RuntimeException("Failed to track changes via reflection", e);
+
+    public String deleteComment(Long id) {
+        if(commentRepository.existsById(id) && !getCommentById(id).isDeleted()){
+            DeleteCommentCommand deleteCommentCommand = new DeleteCommentCommand(commentRepository, id);
+            deleteCommentCommand.execute();
+            return "Comment deleted successfully!";
+        }
+        return "Comment not found";
     }
-}
-public boolean deleteComment(String id) {
-    if (commentRepository.existsById(id)) {
-        commentRepository.deleteById(id);
-        return true;
+
+    public String banComment(Long id) {
+        if(commentRepository.existsById(id) && !getCommentById(id).isDeleted()){
+            BanCommentCommand banCommentCommand = new BanCommentCommand(commentRepository, id);
+            banCommentCommand.execute();
+            return "Comment banned successfully!";
+        }
+        return "Comment not found";
     }
-    return false;
-}
+
+
 }
 
 
