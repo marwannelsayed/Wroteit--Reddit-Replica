@@ -21,12 +21,12 @@ public class CommentController {
     }
 
     @GetMapping("/threads/{threadId}/comments")
-    public List<Comment> getCommentsByThreadId(@PathVariable Long threadId) {
+    public List<Comment> getCommentsByThreadId(@PathVariable String threadId) {
         return commentService.getCommentsByThreadId(threadId);
     }
 
     @GetMapping("/comments/{id}")
-    public Comment getCommentById(@PathVariable Long id) {
+    public Comment getCommentById(@PathVariable String id) {
         return commentService.getCommentById(id);
     }
 
@@ -37,18 +37,18 @@ public class CommentController {
     }
 
     @PutMapping("/comments/{id}")
-    public Comment updateComment(@PathVariable Long id, @RequestBody String commentDetails) {
+    public Comment updateComment(@PathVariable String id, @RequestBody String commentDetails) {
         return commentService.updateComment(id, commentDetails);
     }
 
 
     @DeleteMapping("/comments/{id}")
-    public String deleteComment(@PathVariable Long id) {
+    public String deleteComment(@PathVariable String id) {
         return commentService.deleteComment(id);
     }
 
     @DeleteMapping("/ban/{id}")
-    public String banComment(@PathVariable Long id) {
+    public String banComment(@PathVariable String id) {
         return commentService.banComment(id);
     }
 }

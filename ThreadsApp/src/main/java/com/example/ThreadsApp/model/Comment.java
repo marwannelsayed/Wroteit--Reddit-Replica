@@ -10,9 +10,9 @@ import java.util.List;
 @Document(collection = "comments")
 public class Comment implements CommentComponent {
     @Id
-    private Long id;
+    private String id;
     private Long authorId;
-    private Long parentId;
+    private String parentId;
     private String content;
     private boolean deleted;
     private int upvotes;
@@ -26,7 +26,7 @@ public class Comment implements CommentComponent {
         deleted = false;
     }
 
-    public Comment(Long parentId, Long authorId, String content) {
+    public Comment(String parentId, Long authorId, String content) {
         this.authorId = authorId;
         this.parentId = parentId;
         this.content = content;
@@ -37,7 +37,7 @@ public class Comment implements CommentComponent {
 
 
     // Getters and Setters
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -49,11 +49,11 @@ public class Comment implements CommentComponent {
         this.authorId = authorId;
     }
 
-    public Long getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
 

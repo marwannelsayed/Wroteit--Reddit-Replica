@@ -97,7 +97,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User subscribeToCommunity(Long userId, Long communityId) {
+    public User subscribeToCommunity(Long userId, String communityId) {
         User user = getUserById(userId);
 
         if (!user.getSubscribedCommunities().contains(communityId)) {
@@ -108,13 +108,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User unsubscribeFromCommunity(Long userId, Long communityId) {
+    public User unsubscribeFromCommunity(Long userId, String communityId) {
         User user = getUserById(userId);
         user.getSubscribedCommunities().remove(communityId);
         return userRepository.save(user);
     }
 
-    public User hideCommunity(Long userId, Long communityId) {
+    public User hideCommunity(Long userId, String communityId) {
         User user = getUserById(userId);
 
         if (!user.getHiddenCommunities().contains(communityId)) {
@@ -125,7 +125,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User unhideCommunity(Long userId, Long communityId) {
+    public User unhideCommunity(Long userId, String communityId) {
         User user = getUserById(userId);
         user.getHiddenCommunities().remove(communityId);
         return userRepository.save(user);

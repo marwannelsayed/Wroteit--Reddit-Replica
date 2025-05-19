@@ -28,7 +28,7 @@ public class ThreadService {
     }
 
 
-    public Thread getThreadById(Long id) {
+    public Thread getThreadById(String id) {
         Thread thread = threadRepository.findById(id).orElse(null);
         if(thread == null || thread.isDeleted()) {
             System.out.println("Thread not found");
@@ -44,7 +44,7 @@ public class ThreadService {
         return createdThread;
     }
 
-    public Thread updateThread(Long id, String newContent) {
+    public Thread updateThread(String id, String newContent) {
         Thread thread = getThreadById(id);
         if(thread != null && !thread.isDeleted()) {
             thread.setContent(newContent);
@@ -56,7 +56,7 @@ public class ThreadService {
         return thread;
     }
 
-    public String deleteThread(Long id) {
+    public String deleteThread(String id) {
         if(threadRepository.existsById(id) && !getThreadById(id).isDeleted()){
             DeleteThreadCommand deleteThreadCommand = new DeleteThreadCommand(threadRepository, id);
             deleteThreadCommand.execute();
@@ -67,7 +67,7 @@ public class ThreadService {
         return "Thread not found";
     }
 
-    public String banThread(Long id) {
+    public String banThread(String id) {
         if(threadRepository.existsById(id) && !getThreadById(id).isDeleted()){
             BanThreadCommand banThreadCommand = new BanThreadCommand(threadRepository, id);
             banThreadCommand.execute();
@@ -96,7 +96,7 @@ public class ThreadService {
         return threads;
     }
 
-    public List<Thread> getThreadsByCommunityId(Long communityId) {
+    public List<Thread> getThreadsByCommunityId(String communityId) {
         List<Thread> threads = threadRepository.findByCommunityId(communityId);
         if(threads.isEmpty()){
             System.out.println("No threads in community yet!");

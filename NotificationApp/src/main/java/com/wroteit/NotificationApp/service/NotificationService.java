@@ -51,7 +51,7 @@ public class NotificationService {
     }
 
     // Mark notification as read
-    public Notification markAsRead(Long notificationId) {
+    public Notification markAsRead(String notificationId) {
         Notification notification = notificationRepository.findById(notificationId).orElse(null);
         if(notification!=null){
             notification.setRead(true);
@@ -60,7 +60,7 @@ public class NotificationService {
     }
 
     // Delete notif
-    public String deleteNotification(Long notificationId) {
+    public String deleteNotification(String notificationId) {
         if(notificationRepository.existsById(notificationId)){
             notificationRepository.deleteById(notificationId);
             return "Notification deleted successfully!";

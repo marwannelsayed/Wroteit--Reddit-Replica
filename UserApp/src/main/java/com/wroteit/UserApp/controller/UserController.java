@@ -1,18 +1,31 @@
 package com.wroteit.UserApp.controller;
 
+import com.wroteit.NotificationApp.model.Notification;
 import com.wroteit.UserApp.model.User;
 import com.wroteit.UserApp.security.TokenManager;
 import com.wroteit.UserApp.service.UserService;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    RestTemplate restTemplate;
+    String baseUrl;
 
     public UserController(UserService userService) {
         this.userService = userService;
+        restTemplate = new RestTemplate();
+        baseUrl = "http://api-gateway:8080";
     }
 
     @PostMapping("/register")
@@ -53,7 +66,8 @@ public class UserController {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
         if(!userService.userExists(id)) return "User does not exist!";
         userService.deleteUser(id);
-        // TODO: Notify Moderator/Community/Threads services to delete linked records
+        restTemplate.delete(baseUrl + "/communities/user/" + id);
+        restTemplate.delete(baseUrl + "/moderators/user/" + id);
         return "User deleted successfully!";
     }
 
@@ -72,7 +86,6 @@ public class UserController {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
         if(!userService.userExists(targetId)) return "User does not exist!";
         userService.followUser(id, targetId);
-        // TODO: Notify Notification microservice to inform the target user
         return "User followed successfully";
     }
 
@@ -101,33 +114,52 @@ public class UserController {
     }
 
     @PostMapping("/{id}/subscribe/{communityId}")
-    public String subscribeToCommunity(@PathVariable Long id, @PathVariable Long communityId, @RequestHeader("Authorization") String token) {
+    public String subscribeToCommunity(@PathVariable Long id, @PathVariable String communityId, @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
-        // TODO: Check community exists first
+
+        Object community = restTemplate.getForObject(baseUrl + "/communities/" + id, LinkedHashMap.class);
+        if(community == null) return "Community does not exist";
         userService.subscribeToCommunity(id, communityId);
-        // TODO: Call Community microservice to register the subscriber
+        restTemplate.put(baseUrl + "/communities/subscribe/" + id, communityId);
+        List<Long> moderatorIds = restTemplate.exchange(
+                baseUrl + "/moderators/community/" + communityId,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Long>>() {}
+        ).getBody();
+        for(Long modId: moderatorIds){
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("recipientId", modId);
+            requestBody.put("message", "User with id " + id + " just subscribed to community with id " + communityId);
+            requestBody.put("deliveryMethods", List.of(Notification.DeliveryMethod.EMAIL, Notification.DeliveryMethod.MOBILE_BANNER));
+
+            restTemplate.postForObject(baseUrl + "/notifications/subscribe", requestBody, Void.class);
+        }
         return "Subscribed to community successfully!";
     }
 
     @DeleteMapping("/{id}/unsubscribe/{communityId}")
-    public String unsubscribeFromCommunity(@PathVariable Long id, @PathVariable Long communityId, @RequestHeader("Authorization") String token) {
+    public String unsubscribeFromCommunity(@PathVariable Long id, @PathVariable String communityId, @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
         if(!userService.getUserById(id).getSubscribedCommunities().contains(communityId))return "Community not in subscribed list";
         userService.unsubscribeFromCommunity(id, communityId);
         // TODO: Call Community microservice to remove the subscriber
+        restTemplate.put(baseUrl + "/communities/unsubscribe/" + id, communityId);
         return "Unsubscribed from community successfully!";
     }
 
     @PostMapping("/{id}/hide/{communityId}")
-    public String hideCommunity(@PathVariable Long id, @PathVariable Long communityId, @RequestHeader("Authorization") String token) {
+    public String hideCommunity(@PathVariable Long id, @PathVariable String communityId, @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
         // TODO: Check community exists first
+        Object community = restTemplate.getForObject(baseUrl + "/communities" + id, LinkedHashMap.class);
+        if(community == null) return "Community does not exist";
         userService.hideCommunity(id, communityId);
         return "Community hidden successfully!";
     }
 
     @DeleteMapping("/{id}/unhide/{communityId}")
-    public String unhideCommunity(@PathVariable Long id, @PathVariable Long communityId, @RequestHeader("Authorization") String token) {
+    public String unhideCommunity(@PathVariable Long id, @PathVariable String communityId, @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
         if(!userService.getUserById(id).getHiddenCommunities().contains(communityId))return "Community not in hidden list";
         userService.unhideCommunity(id, communityId);

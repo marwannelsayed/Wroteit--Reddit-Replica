@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/GatewayApp/GatewayApp.iml" filepath="$PROJECT_DIR$/GatewayApp/GatewayApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Scalable-Final-Project-Wroteit.iml" filepath="$PROJECT_DIR$/.idea/Scalable-Final-Project-Wroteit.iml" />
     </modules>
   </component>
 </project>

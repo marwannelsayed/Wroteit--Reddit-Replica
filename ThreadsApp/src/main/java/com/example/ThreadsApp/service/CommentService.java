@@ -29,7 +29,7 @@ public class CommentService {
         this.threadRepository = threadRepository;
     }
 
-    public List<Comment> getCommentsByThreadId(Long threadId) {
+    public List<Comment> getCommentsByThreadId(String threadId) {
         Thread thread = threadRepository.findById(threadId).orElse(null);
         if(thread!=null){
             List<Comment> comments = thread.getComments();
@@ -40,7 +40,7 @@ public class CommentService {
         return null;
     }
 
-    public List<CommentComponent> getCommentsByParentId(Long parentId){
+    public List<CommentComponent> getCommentsByParentId(String parentId){
         Comment parent = commentRepository.findById(parentId).orElse(null);
         if(parent!=null){
             List<CommentComponent> replies = parent.getReplies();
@@ -51,7 +51,7 @@ public class CommentService {
         return null;
     }
 
-    public Comment getCommentById(Long id) {
+    public Comment getCommentById(String id) {
         Comment comment = commentRepository.findById(id).orElse(null);
         if(comment!=null){
             System.out.println("Comment fetched successfully!");
@@ -69,7 +69,7 @@ public class CommentService {
         return created;
     }
 
-    public Comment updateComment(Long id, String updatedComment) {
+    public Comment updateComment(String id, String updatedComment) {
         Comment comment = commentRepository.findById(id).orElse(null);
         if(comment!=null && !comment.isDeleted()){
             comment.setContent(updatedComment);
@@ -82,7 +82,7 @@ public class CommentService {
     }
 
 
-    public String deleteComment(Long id) {
+    public String deleteComment(String id) {
         if(commentRepository.existsById(id) && !getCommentById(id).isDeleted()){
             DeleteCommentCommand deleteCommentCommand = new DeleteCommentCommand(commentRepository, id);
             deleteCommentCommand.execute();
@@ -93,7 +93,7 @@ public class CommentService {
         return "Comment not found or already deleted.";
     }
 
-    public String banComment(Long id) {
+    public String banComment(String id) {
         if(commentRepository.existsById(id) && !getCommentById(id).isDeleted()){
             BanCommentCommand banCommentCommand = new BanCommentCommand(commentRepository, id);
             banCommentCommand.execute();

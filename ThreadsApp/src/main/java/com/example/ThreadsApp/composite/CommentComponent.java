@@ -3,7 +3,7 @@ package com.example.ThreadsApp.composite;
 import java.util.List;
 
 public interface CommentComponent {
-    Long getId();
+    String getId();
     Long getAuthorId();
     String getContent();
     List<CommentComponent> getReplies();

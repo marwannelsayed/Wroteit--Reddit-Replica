@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public class BanCommentCommand implements Command {
     private final CommentRepository commentRepository;
-    private final Long commentId;
+    private final String commentId;
 
-    public BanCommentCommand(CommentRepository commentRepository, Long commentId) {
+    public BanCommentCommand(CommentRepository commentRepository, String commentId) {
         this.commentRepository = commentRepository;
         this.commentId = commentId;
     }

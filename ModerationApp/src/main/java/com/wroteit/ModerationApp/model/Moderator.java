@@ -10,12 +10,12 @@ public class Moderator {
     private Long moderatorId;
 
     private Long userId;
-    private Long communityId;
+    private String communityId;
 
     public Moderator() {
     }
 
-    public Moderator(Long userId, Long communityId) {
+    public Moderator(Long userId, String communityId) {
         this.userId = userId;
         this.communityId = communityId;
     }
@@ -32,11 +32,11 @@ public class Moderator {
         this.userId = userId;
     }
 
-    public Long getCommunityId() {
+    public String getCommunityId() {
         return communityId;
     }
 
-    public void setCommunityId(Long communityId) {
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
 }

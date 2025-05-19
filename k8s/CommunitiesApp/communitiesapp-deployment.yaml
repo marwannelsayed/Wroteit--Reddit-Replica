@@ -17,3 +17,9 @@ spec:
           image: communitiesapp:latest
           ports:
             - containerPort: 8080
+          env:
+            - name: SPRING_DATA_MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: COMMUNITIES_URI

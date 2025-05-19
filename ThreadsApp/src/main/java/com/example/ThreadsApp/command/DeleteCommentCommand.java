@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public class DeleteCommentCommand implements Command {
     private final CommentRepository commentRepository;
-    private final Long commentId;
+    private final String commentId;
 
-    public DeleteCommentCommand(CommentRepository commentRepository, Long commentId) {
+    public DeleteCommentCommand(CommentRepository commentRepository, String commentId) {
         this.commentRepository = commentRepository;
         this.commentId = commentId;
     }

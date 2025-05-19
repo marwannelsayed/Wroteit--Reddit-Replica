@@ -10,9 +10,9 @@ import org.springframework.web.server.ResponseStatusException;
 public class AssignModeratorCommand implements ModerationCommand {
     private final ModeratorRepository moderatorRepository;
     private final Long userId;
-    private final Long communityId;
+    private final String communityId;
 
-    public AssignModeratorCommand(ModeratorRepository moderatorRepository, Long userId, Long communityId) {
+    public AssignModeratorCommand(ModeratorRepository moderatorRepository, Long userId, String communityId) {
         this.moderatorRepository = moderatorRepository;
         this.userId = userId;
         this.communityId = communityId;

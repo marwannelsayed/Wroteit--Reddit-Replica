@@ -26,7 +26,7 @@ public class ThreadController {
     }
 
     @GetMapping("/{id}")
-    public Thread getThreadById(@PathVariable Long id) {
+    public Thread getThreadById(@PathVariable String id) {
         return threadService.getThreadById(id);
     }
 
@@ -37,17 +37,17 @@ public class ThreadController {
     }
 
     @PutMapping("/{id}")
-    public Thread updateThread(@PathVariable Long id, @RequestBody String threadDetails) {
+    public Thread updateThread(@PathVariable String id, @RequestBody String threadDetails) {
         return threadService.updateThread(id, threadDetails);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteThread(@PathVariable Long id) {
+    public String deleteThread(@PathVariable String id) {
         return threadService.deleteThread(id);
     }
 
     @DeleteMapping("/ban/{id}")
-    public String ban(@PathVariable Long id) {
+    public String ban(@PathVariable String id) {
         return threadService.banThread(id);
     }
 
@@ -57,9 +57,10 @@ public class ThreadController {
     }
 
     @GetMapping("/community/{authorId}")
-    public List<Thread> getThreadsByCommunityId(@PathVariable Long communityId) {
+    public List<Thread> getThreadsByCommunityId(@PathVariable String communityId) {
         return threadService.getThreadsByCommunityId(communityId);
     }
+
 }
 
 

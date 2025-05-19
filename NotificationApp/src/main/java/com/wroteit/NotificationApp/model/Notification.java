@@ -10,7 +10,7 @@ import java.util.List;
 public class Notification {
 
     @Id
-    private Long id;
+    private String id;
     private Long recipientId;
     private String message;
     private NotificationType type;
@@ -41,7 +41,7 @@ public class Notification {
 
     // Getters and setters
 
-    public Long getId() { return id; }
+    public String getId() { return id; }
 
     public Long getRecipientId() { return recipientId; }
     public void setRecipientId(Long recipientId) { this.recipientId = recipientId; }

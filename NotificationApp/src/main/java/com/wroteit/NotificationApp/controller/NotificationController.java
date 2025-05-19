@@ -26,27 +26,27 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
-    @PostMapping
+    @PostMapping("/comment")
     public Notification createPostCommentNotification(@RequestBody Long recipientId, @RequestBody String message,  @RequestBody List<Notification.DeliveryMethod> deliveryMethods) { // Call to parent when commenting on post
         return notificationService.sendNotification(recipientId, message, Notification.NotificationType.THREAD_REPLY, deliveryMethods);
     }
 
-    @PostMapping
+    @PostMapping("/reply")
     public Notification createCommentReplyNotification(@RequestBody Long recipientId, @RequestBody String message,  @RequestBody List<Notification.DeliveryMethod> deliveryMethods) { // Call to parent when commenting on comment
         return notificationService.sendNotification(recipientId, message, Notification.NotificationType.COMMENT_REPLY, deliveryMethods);
     }
 
-    @PostMapping
+    @PostMapping("/ban")
     public Notification createBanNotification(@RequestBody Long recipientId, @RequestBody String message,  @RequestBody List<Notification.DeliveryMethod> deliveryMethods) { // Call to user when banned via ModerationApp
         return notificationService.sendNotification(recipientId, message, Notification.NotificationType.BAN, deliveryMethods);
     }
 
-    @PostMapping
+    @PostMapping("/subscribe")
     public Notification createSubscriptionNotification(@RequestBody Long recipientId, @RequestBody String message,  @RequestBody List<Notification.DeliveryMethod> deliveryMethods) { // Call to each moderator of community when user subscribes
         return notificationService.sendNotification(recipientId, message, Notification.NotificationType.SUBSCRIPTION, deliveryMethods);
     }
 
-    @PostMapping
+    @PostMapping("/report")
     public Notification createReportNotification(@RequestBody Long recipientId, @RequestBody String message,  @RequestBody List<Notification.DeliveryMethod> deliveryMethods) { // Call to each moderator of community when thread is reported in their community
         return notificationService.sendNotification(recipientId, message, Notification.NotificationType.REPORT, deliveryMethods);
     }
@@ -64,12 +64,12 @@ public class NotificationController {
     }
 
     @PutMapping("/{id}/read")
-    public Notification markNotificationAsRead(@PathVariable Long id) {
+    public Notification markNotificationAsRead(@PathVariable String id) {
         return notificationService.markAsRead(id);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteNotification(@PathVariable Long id) {
+    public String deleteNotification(@PathVariable String id) {
         return notificationService.deleteNotification(id);
     }
 

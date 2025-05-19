@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.wroteit</groupId>
-	<artifactId>NotificationApp</artifactId>
+	<artifactId>UserApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>NotificationApp</name>
-	<description>Notification service for Wroteit</description>
+	<name>UserApp</name>
+	<description>User service for Wroteit</description>
 	<properties>
 		<java.version>23</java.version>
 	</properties>
@@ -33,6 +33,12 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mindrot</groupId>
+			<artifactId>jbcrypt</artifactId>
+			<version>0.4</version>
 		</dependency>
 
 		<!-- Remove PostgreSQL dependency -->
@@ -67,6 +73,22 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
+		</dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.wroteit</groupId>
+            <artifactId>CommunitiesApp</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+		<dependency>
+			<groupId>com.wroteit</groupId>
+			<artifactId>NotificationApp</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
