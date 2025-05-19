@@ -119,7 +119,7 @@ public class CommentService {
 
     public String deleteComment(String id) {
         if(commentRepository.existsById(id) && !getCommentById(id).isDeleted()){
-            DeleteCommentCommand deleteCommentCommand = new DeleteCommentCommand(commentRepository, id);
+            DeleteCommentCommand deleteCommentCommand = new DeleteCommentCommand(commentRepository, threadRepository, id);
             deleteCommentCommand.execute();
             System.out.println("Comment deleted successfully.");
             return "Comment deleted successfully!";
@@ -130,7 +130,7 @@ public class CommentService {
 
     public String banComment(String id) {
         if(commentRepository.existsById(id) && !getCommentById(id).isDeleted()){
-            BanCommentCommand banCommentCommand = new BanCommentCommand(commentRepository, id);
+            BanCommentCommand banCommentCommand = new BanCommentCommand(commentRepository, threadRepository, id);
             banCommentCommand.execute();
             System.out.println("Comment banned successfully.");
             return "Comment banned successfully!";
