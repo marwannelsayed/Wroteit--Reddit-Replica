@@ -26,8 +26,8 @@ public class ThreadController {
     }
 
     @GetMapping("/{id}")
-    public Thread getThreadById(@PathVariable String id) {
-        return threadService.getThreadById(id).orElse(null);
+    public Thread getThreadById(@PathVariable Long id) {
+        return threadService.getThreadById(id);
     }
 
     @PostMapping
