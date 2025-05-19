@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: userapp
-          image: userapp:latest  # TODO: Replace with Docker Hub image
+          image: userapp:1.0
           ports:
             - containerPort: 8080
           env:
