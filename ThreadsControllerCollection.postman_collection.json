@@ -1,0 +1,490 @@
+{
+	"info": {
+		"_postman_id": "40c8c694-1aaa-4a21-88f8-46cdd5a6589c",
+		"name": "ThreadsControllerCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30217073"
+	},
+	"item": [
+		{
+			"name": "Create Thread",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Maro Thread 3\",\n  \"content\": \"This is the content of the maro thread.\",\n  \"authorId\": 9696,\n  \"communityId\": \"67890\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/threads/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"threads",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Threads",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/threads",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"threads"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Thread By ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "This is the edited content of the maro thread.",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/threads/682b95c784e3b85bd6660751",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"threads",
+						"682b95c784e3b85bd6660751"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Thread",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "This is the edited content of the maro thread.",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/threads/682b95d784e3b85bd6660752",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"threads",
+						"682b95d784e3b85bd6660752"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Thread",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/threads/682b971284e3b85bd6660754",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"threads",
+						"682b971284e3b85bd6660754"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ban Thread",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/threads/ban/682b971284e3b85bd6660754",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"threads",
+						"ban",
+						"682b971284e3b85bd6660754"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Threads By Author",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Maro Thread\",\n  \"content\": \"This is the content of the maro thread.\",\n  \"authorId\": 12345,\n  \"communityId\": 67890\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/threads/author/9696",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"threads",
+						"author",
+						"9696"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Threads By Community",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/threads/community/67890",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"threads",
+						"community",
+						"67890"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Comment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"authorId\": 9696,\n    \"parentId\": \"682b95c784e3b85bd6660751\",\n    \"content\": \"This will be deleted\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/comments/threads/682b95c784e3b85bd6660751/comments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"comments",
+						"threads",
+						"682b95c784e3b85bd6660751",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Comments At Thread",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/comments/threads/682b95c784e3b85bd6660751/comments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"comments",
+						"threads",
+						"682b95c784e3b85bd6660751",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Comment By ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/comments/comments/682b9d8090f68060a507d98d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"comments",
+						"comments",
+						"682b9d8090f68060a507d98d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Comment",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "this is very awesome (i edited it)",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/comments/comments/682b9a9990f68060a507d98c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"comments",
+						"comments",
+						"682b9a9990f68060a507d98c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Comment",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/comments/comments/682b9d8090f68060a507d98d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"comments",
+						"comments",
+						"682b9d8090f68060a507d98d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ban Comment",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/comments/ban/682b9d8090f68060a507d98d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"comments",
+						"ban",
+						"682b9d8090f68060a507d98d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upvote",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/votes/9696/upvote/682b95c784e3b85bd6660751",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"votes",
+						"9696",
+						"upvote",
+						"682b95c784e3b85bd6660751"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Downvote",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/votes/6969/downvote/682b95c784e3b85bd6660751",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"votes",
+						"6969",
+						"downvote",
+						"682b95c784e3b85bd6660751"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Votes By Content",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/votes/target/THREAD/682b95c784e3b85bd6660751",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"votes",
+						"target",
+						"THREAD",
+						"682b95c784e3b85bd6660751"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Vote",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/votes/682b9fb090f68060a507d98f",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"votes",
+						"682b9fb090f68060a507d98f"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
