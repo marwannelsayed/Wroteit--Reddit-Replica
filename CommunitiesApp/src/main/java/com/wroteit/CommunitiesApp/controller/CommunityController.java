@@ -3,7 +3,11 @@ package com.wroteit.CommunitiesApp.controller;
 import com.wroteit.CommunitiesApp.model.Community;
 import com.wroteit.CommunitiesApp.model.CommunityType;
 import com.wroteit.CommunitiesApp.service.CommunityService;
+import com.wroteit.NotificationApp.model.Notification;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -102,6 +106,17 @@ public class CommunityController {
 
     @PutMapping("/ban/{userId}")
     public Community banCommunityForUser(@RequestBody String communityId, @PathVariable Long userId){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("recipientId", userId);
+        body.put("message", "You have been banned from community with id " + communityId);
+        body.put("deliveryMethods", List.of(Notification.DeliveryMethod.EMAIL, Notification.DeliveryMethod.IN_APP));
+
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+        restTemplate.postForObject(baseUrl + "/notifications/ban", request, Notification.class);
+
         return communityService.banCommunityForUser(userId, communityId);
     }
 

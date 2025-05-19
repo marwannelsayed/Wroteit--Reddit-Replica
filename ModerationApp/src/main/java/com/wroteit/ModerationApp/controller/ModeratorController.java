@@ -4,18 +4,25 @@ import com.wroteit.ModerationApp.model.Report;
 import com.wroteit.ModerationApp.service.ModeratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/moderators")
 public class ModeratorController {
 
     private final ModeratorService moderatorService;
+    RestTemplate restTemplate;
+    String baseUrl;
 
     @Autowired
     public ModeratorController(ModeratorService moderatorService) {
         this.moderatorService = moderatorService;
+        restTemplate = new RestTemplate();
+        baseUrl = "http://api-gateway:8080";
     }
 
     @GetMapping("/community/{communityId}")
@@ -46,7 +53,10 @@ public class ModeratorController {
 
     @PostMapping("/ban")
     public String banUser(@RequestBody Long userId, @RequestBody String communityId) {
-        // TODO: Update community to have user banned
+        Map<String, String> body = new HashMap<>();
+        body.put("communityId", communityId);
+
+        restTemplate.put(baseUrl + "/communities/ban/" + userId, body);
         return "User banned";
     }
 
