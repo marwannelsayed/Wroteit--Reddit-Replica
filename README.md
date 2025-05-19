@@ -9,4 +9,4 @@ You can find the Postman collection for testing the NotificationController here:
 
 You can find the Postman collection for testing the ThreadsController here:
 
-
+[ThreadsController Postman Collection](ThreadsControllerCollection.json)
