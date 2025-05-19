@@ -54,26 +54,29 @@ public class CommunityController {
 
     @PutMapping("/{userId}")
     public Community updateCommunity(@RequestBody String communityId, @RequestBody Community newCommunity, @PathVariable Long userId){
-        // TODO: Validate user is a moderator of the community from moderator table via API call
+        Boolean isModerator = restTemplate.getForObject(baseUrl + "/moderators/" + userId + "/isModerator/" + communityId, Boolean.class);
+        if (isModerator == null || !isModerator) return null;
         return communityService.updateCommunity(communityId, newCommunity);
     }
 
     @DeleteMapping("/{userId}")
     public void deleteCommunity(@RequestBody String communityId, @PathVariable Long userId){
-        // TODO: Validate user is a moderator of the community from moderator table via API call
+        Boolean isModerator = restTemplate.getForObject(baseUrl + "/moderators/" + userId + "/isModerator/" + communityId, Boolean.class);
+        if (isModerator == null || !isModerator) return;
         communityService.deleteCommunity(communityId);
-        // TODO: Delete threads in deleted community
     }
 
     @PutMapping("/addTags/{userId}")
     public Community addTags(@RequestBody String communityId, @RequestBody List<String> tags, @PathVariable Long userId){
-        // TODO: Validate user is a moderator of the community from moderator table via API call
+        Boolean isModerator = restTemplate.getForObject(baseUrl + "/moderators/" + userId + "/isModerator/" + communityId, Boolean.class);
+        if (isModerator == null || !isModerator) return null;
         return communityService.addTags(communityId, tags);
     }
 
     @PutMapping("/removeTags/{userId}")
     public Community removeTags(@RequestBody String communityId, @RequestBody List<String> tags, @PathVariable Long userId){
-        // TODO: Validate user is a moderator of the community from moderator table via API call
+        Boolean isModerator = restTemplate.getForObject(baseUrl + "/moderators/" + userId + "/isModerator/" + communityId, Boolean.class);
+        if (isModerator == null || !isModerator) return null;
         return communityService.removeTags(communityId, tags);
     }
 

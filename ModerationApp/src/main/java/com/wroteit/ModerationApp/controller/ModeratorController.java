@@ -45,7 +45,7 @@ public class ModeratorController {
     }
 
     @PostMapping("/ban")
-    public String banUser(@RequestBody Long userId, @RequestBody Long communityId) {
+    public String banUser(@RequestBody Long userId, @RequestBody String communityId) {
         // TODO: Update community to have user banned
         return "User banned";
     }
@@ -58,5 +58,10 @@ public class ModeratorController {
     @DeleteMapping("/thread/{postId}")
     public String deleteThread(@PathVariable Long postId) {
        return "Not implemented";
+    }
+
+    @GetMapping("/{userId}/isModerator/{communityId}")
+    public boolean checkUserIsModerator(@PathVariable Long userId, @PathVariable String communityId){
+        return moderatorService.getAllModeratorsOfCommunity(communityId).contains(userId);
     }
 }
