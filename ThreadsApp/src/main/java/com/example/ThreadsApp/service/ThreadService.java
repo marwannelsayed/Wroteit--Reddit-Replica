@@ -55,13 +55,14 @@ public class ThreadService {
             thread.setContent(newContent);
             System.out.println("Thread updated successfully");
         }
-        return thread;
+        return "Thread not found or already deleted";
     }
 
     public String deleteThread(Long id) {
         if(threadRepository.existsById(id) && !getThreadById(id).isDeleted()){
             DeleteThreadCommand deleteThreadCommand = new DeleteThreadCommand(threadRepository, id);
             deleteThreadCommand.execute();
+            System.out.println("ThreadService.deleteThread executed successfully");
             return "Thread deleted successfully!";
         }
         return "Thread not found";
@@ -71,6 +72,7 @@ public class ThreadService {
         if(threadRepository.existsById(id) && !getThreadById(id).isDeleted()){
             BanThreadCommand banThreadCommand = new BanThreadCommand(threadRepository, id);
             banThreadCommand.execute();
+            System.out.println("ThreadService.banThread executed successfully");
             return "Thread banned successfully!";
         }
         return "Thread not found";

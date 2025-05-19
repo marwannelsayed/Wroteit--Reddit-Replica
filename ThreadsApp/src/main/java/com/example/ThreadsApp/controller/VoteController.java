@@ -21,34 +21,21 @@ public class VoteController {
     }
 
     @PostMapping
-    public ResponseEntity<Vote> castVote(@RequestBody Vote vote) {
-        // Basic validation: Ensure targetId, targetType, userId, and voteType are present
-        if (vote.getUserId() == null || vote.getTargetId() == null || vote.getTargetType() == null || vote.getVoteType() == null) {
-            return ResponseEntity.badRequest().build(); // Or a more specific error response
-        }
-        Vote castedVote = voteService.castVote(vote);
-        return new ResponseEntity<>(castedVote, HttpStatus.CREATED);
+    public Vote castVote(@RequestBody Vote vote) {
+        return voteService.castVote(vote);
     }
 
     @GetMapping("/target/{targetType}/{targetId}")
-    public ResponseEntity<List<Vote>> getVotesForTarget(@PathVariable Vote.TargetType targetType, @PathVariable String targetId) {
-        List<Vote> votes = voteService.getVotesForTarget(targetId, targetType);
-        if (votes.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(votes);
+    public List<Vote> getVotesForTarget(@PathVariable Vote.TargetType targetType, @PathVariable String targetId) {
+        return voteService.getVotesForTarget(targetType, targetId);
     }
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Vote>> getVotesByUser(@PathVariable String userId) {
-        List<Vote> votes = voteService.getVotesByUser(userId);
-        return votes.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(votes);
+    public List<Vote> getVotesByUser(@PathVariable String userId) {
+        return voteService.getVotesByUser(userId);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteVote(@PathVariable String id) {
-        if (voteService.deleteVote(id)) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    public void deleteVote(@PathVariable String id) {
+        voteService.deleteVote(id);
     }
 
 

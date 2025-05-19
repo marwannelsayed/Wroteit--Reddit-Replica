@@ -74,6 +74,7 @@ public class CommentService {
         if(comment!=null && !comment.isDeleted()){
             comment.setContent(updatedComment);
             commentRepository.save(comment);
+            return "Comment updated successfully.";
         }
         System.out.println("Comment updated successfully!");
         return comment;
@@ -81,21 +82,21 @@ public class CommentService {
 
 
     public String deleteComment(Long id) {
-        if(commentRepository.existsById(id) && !getCommentById(id).isDeleted()){
+        if(commentRepository.existsById(id) && !getCommentById(id).equals("Comment not found or is deleted.")){
             DeleteCommentCommand deleteCommentCommand = new DeleteCommentCommand(commentRepository, id);
             deleteCommentCommand.execute();
             return "Comment deleted successfully!";
         }
-        return "Comment not found";
+        return "Comment not found or already deleted.";
     }
 
     public String banComment(Long id) {
-        if(commentRepository.existsById(id) && !getCommentById(id).isDeleted()){
+        if(commentRepository.existsById(id) && !getCommentById(id).equals("Comment not found or is deleted.")){
             BanCommentCommand banCommentCommand = new BanCommentCommand(commentRepository, id);
             banCommentCommand.execute();
             return "Comment banned successfully!";
         }
-        return "Comment not found";
+        return "Comment not found or already deleted.";
     }
 
 
