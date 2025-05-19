@@ -68,7 +68,7 @@ public class ThreadController {
         return threadService.getThreadsByAuthorId(authorId);
     }
 
-    @GetMapping("/community/{authorId}")
+    @GetMapping("/community/{communityId}")
     public List<Thread> getThreadsByCommunityId(@PathVariable String communityId) {
         return threadService.getThreadsByCommunityId(communityId);
     }
