@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: communitiesapp-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: communitiesapp
+  template:
+    metadata:
+      labels:
+        app: communitiesapp
+    spec:
+      containers:
+        - name: communitiesapp
+          image: communitiesapp:latest
+          ports:
+            - containerPort: 8080

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apiapp-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apiapp
+  template:
+    metadata:
+      labels:
+        app: apiapp
+    spec:
+      containers:
+        - name: apiapp
+          image: apiapp:latest
+          ports:
+            - containerPort: 8080
+
+#ToDo: check implementation

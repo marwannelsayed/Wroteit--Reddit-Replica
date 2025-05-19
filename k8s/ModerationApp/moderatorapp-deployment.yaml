@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moderatorapp-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: moderatorapp
+  template:
+    metadata:
+      labels:
+        app: moderatorapp
+    spec:
+      containers:
+        - name: moderatorapp
+          image: moderatorapp:latest
+          ports:
+            - containerPort: 8080
