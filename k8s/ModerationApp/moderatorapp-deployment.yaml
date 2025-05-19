@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: moderatorapp
-          image: moderatorapp:latest
+          image: moderationapp:1.0
           ports:
             - containerPort: 8080
