@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface ThreadRepository extends MongoRepository<Thread, Long> {
+public interface ThreadRepository extends MongoRepository<Thread, String> {
     List<Thread> findByAuthorId(Long authorId);
-    List<Thread> findByCommunityId(Long communityId);
+    List<Thread> findByCommunityId(String communityId);
 
 }
 

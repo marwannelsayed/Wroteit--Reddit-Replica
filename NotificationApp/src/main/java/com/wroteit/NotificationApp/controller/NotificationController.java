@@ -64,12 +64,12 @@ public class NotificationController {
     }
 
     @PutMapping("/{id}/read")
-    public Notification markNotificationAsRead(@PathVariable Long id) {
+    public Notification markNotificationAsRead(@PathVariable String id) {
         return notificationService.markAsRead(id);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteNotification(@PathVariable Long id) {
+    public String deleteNotification(@PathVariable String id) {
         return notificationService.deleteNotification(id);
     }
 

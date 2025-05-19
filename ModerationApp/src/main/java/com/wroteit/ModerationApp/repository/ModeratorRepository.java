@@ -11,11 +11,11 @@ import java.util.Optional;
 
 @Repository
 public interface ModeratorRepository extends JpaRepository<Moderator, Long> {
-    boolean existsByUserIdAndCommunityId(Long userId, Long communityId);
+    boolean existsByUserIdAndCommunityId(Long userId, String communityId);
 
 
     List<Moderator> findByUserId(Long userId);
     @Query("SELECT m.userId FROM Moderator m WHERE m.communityId = :communityId")
-    List<Long> findUserIdsByCommunityId(@Param("communityId") Long communityId);
+    List<Long> findUserIdsByCommunityId(@Param("communityId") String communityId);
 
 }

@@ -20,7 +20,7 @@ public class CreateCommentCommand implements Command {
 
     @Override
     public void execute() {
-        Long parentId = comment.getParentId();
+        String parentId = comment.getParentId();
         if (parentId == null) return;
 
         // Try thread first

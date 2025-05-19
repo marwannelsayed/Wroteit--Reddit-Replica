@@ -9,12 +9,12 @@ import com.example.ThreadsApp.repository.VoteRepository;
 
 public class UpvoteCommand implements VoteCommand {
     private final Long userId;
-    private final Long contentId;
+    private final String contentId;
     private final VoteRepository voteRepository;
     private final ThreadRepository threadRepository;
     private final CommentRepository commentRepository;
 
-    public UpvoteCommand(Long userId, Long contentId,
+    public UpvoteCommand(Long userId, String contentId,
                          VoteRepository voteRepository,
                          ThreadRepository threadRepository,
                          CommentRepository commentRepository) {

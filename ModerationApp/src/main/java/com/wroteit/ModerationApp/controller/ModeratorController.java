@@ -19,7 +19,7 @@ public class ModeratorController {
     }
 
     @GetMapping("/community/{communityId}")
-    public List<Long> getAllModeratorsOfCommunity(Long communityId){
+    public List<Long> getAllModeratorsOfCommunity(String communityId){
         return moderatorService.getAllModeratorsOfCommunity(communityId);
     }
 
@@ -29,7 +29,7 @@ public class ModeratorController {
     }
 
     @GetMapping("/reports/{communityId}")
-    public List<Report> findByCommunityId(Long communityId){
+    public List<Report> findByCommunityId(String communityId){
         return moderatorService.findByCommunityId(communityId);
     }
 
@@ -40,7 +40,7 @@ public class ModeratorController {
     }
 
     @PostMapping("/assign")
-    public String assignModerator(@RequestBody Long userId, @RequestBody Long communityId) {
+    public String assignModerator(@RequestBody Long userId, @RequestBody String communityId) {
         return moderatorService.assignModerator(userId, communityId);
     }
 

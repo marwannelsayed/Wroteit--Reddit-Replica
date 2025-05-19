@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 @Document(collection = "votes")
 public class Vote {
     @Id
-    private Long id;
+    private String id;
     private Long userId;
-    private Long targetId; // ID of the thread or comment being voted on
+    private String targetId; // ID of the thread or comment being voted on
     private TargetType targetType; // Enum: THREAD or COMMENT
     private VoteType voteType; // Enum: UPVOTE or DOWNVOTE
 
@@ -27,7 +27,7 @@ public class Vote {
     public Vote() {
     }
 
-    public Vote(Long userId, Long targetId, TargetType targetType, VoteType voteType) {
+    public Vote(Long userId, String targetId, TargetType targetType, VoteType voteType) {
         this.userId = userId;
         this.targetId = targetId;
         this.targetType = targetType;
@@ -35,7 +35,7 @@ public class Vote {
     }
 
     // Getters and Setters
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -47,11 +47,11 @@ public class Vote {
         this.userId = userId;
     }
 
-    public Long getTargetId() {
+    public String getTargetId() {
         return targetId;
     }
 
-    public void setTargetId(Long targetId) {
+    public void setTargetId(String targetId) {
         this.targetId = targetId;
     }
 

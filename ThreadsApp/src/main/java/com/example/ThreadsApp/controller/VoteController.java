@@ -21,24 +21,24 @@ public class VoteController {
     }
 
     @PostMapping("/{userId}/upvote/{contentId}")
-    public String upvote(@PathVariable Long userId, @PathVariable Long contentId) {
+    public String upvote(@PathVariable Long userId, @PathVariable String contentId) {
         return voteService.upvote(userId, contentId);
     }
 
     @PostMapping("/{userId}/downvote/{contentId}")
-    public String downvote(@PathVariable Long userId, @PathVariable Long contentId) {
+    public String downvote(@PathVariable Long userId, @PathVariable String contentId) {
         return voteService.downvote(userId, contentId);
     }
 
 
     @GetMapping("/target/{targetType}/{targetId}")
-    public List<Vote> getVotesForTarget( @PathVariable Long targetId) {
+    public List<Vote> getVotesForTarget( @PathVariable String targetId) {
         return voteService.getVotesForTarget(targetId);
     }
 
 
     @DeleteMapping("/{id}")
-    public void deleteVote(@PathVariable Long id) {
+    public void deleteVote(@PathVariable String id) {
         voteService.deleteVote(id);
     }
 

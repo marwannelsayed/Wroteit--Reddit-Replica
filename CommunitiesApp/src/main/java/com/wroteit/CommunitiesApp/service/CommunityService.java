@@ -32,7 +32,7 @@ public class CommunityService {
         return communityRepository.save(newCommunity);
     }
 
-    public Community getCommunityById(Long id) {
+    public Community getCommunityById(String id) {
         return communityRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Community not found"));
     }
@@ -52,7 +52,7 @@ public class CommunityService {
     }
 
 
-    public Community updateCommunity(Long id, Community updated) {
+    public Community updateCommunity(String id, Community updated) {
         Community existing = getCommunityById(id);
         existing.setDescription(updated.getDescription());
         existing.setTags(updated.getTags());
@@ -63,7 +63,7 @@ public class CommunityService {
     }
 
 
-    public void deleteCommunity(Long id) {
+    public void deleteCommunity(String id) {
         Community existing = getCommunityById(id);
         if (existing == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Community not found");
@@ -71,7 +71,7 @@ public class CommunityService {
         communityRepository.deleteById(id);
     }
 
-    public Community addTags(Long communityId, List<String> tags) {
+    public Community addTags(String communityId, List<String> tags) {
         Community c = getCommunityById(communityId);
         if (c == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Community not found");
@@ -85,7 +85,7 @@ public class CommunityService {
         return communityRepository.save(c);
     }
 
-    public Community removeTags(Long communityId, List<String> tags) {
+    public Community removeTags(String communityId, List<String> tags) {
         Community c = getCommunityById(communityId);
         if (c == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Community not found");
@@ -99,7 +99,7 @@ public class CommunityService {
         return communityRepository.save(c);
     }
 
-    public Community subscribeUser(Long communityId, Long userId) {
+    public Community subscribeUser(String communityId, Long userId) {
         Community c = getCommunityById(communityId);
         if (c == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Community not found");
@@ -111,7 +111,7 @@ public class CommunityService {
         return c;
     }
 
-    public Community unsubscribeUser(Long communityId, Long userId) {
+    public Community unsubscribeUser(String communityId, Long userId) {
         Community c = getCommunityById(communityId);
         if (c == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Community not found");
@@ -121,7 +121,7 @@ public class CommunityService {
         return c;
     }
 
-    public Community hideCommunityForUser(Long userId, Long communityId) {
+    public Community hideCommunityForUser(Long userId, String communityId) {
         Community c = getCommunityById(communityId);
         if (!c.getHiddenByUsers().contains(userId)) {
             c.getHiddenByUsers().add(userId);
@@ -130,14 +130,14 @@ public class CommunityService {
         return c;
     }
 
-    public Community unhideCommunityForUser(Long userId, Long communityId) {
+    public Community unhideCommunityForUser(Long userId, String communityId) {
         Community c = getCommunityById(communityId);
         c.getHiddenByUsers().remove(userId);
         communityRepository.save(c);
         return c;
     }
 
-    public Community banCommunityForUser(Long userId, Long communityId) {
+    public Community banCommunityForUser(Long userId, String communityId) {
         Community c = getCommunityById(communityId);
         if (!c.getBannedUsers().contains(userId)) {
             c.getBannedUsers().add(userId);

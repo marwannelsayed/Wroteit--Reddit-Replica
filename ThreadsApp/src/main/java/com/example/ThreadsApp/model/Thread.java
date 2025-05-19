@@ -10,9 +10,9 @@ import java.util.List;
 @Document(collection = "threads")
 public class Thread {
     @Id
-    private Long id;
+    private String id;
     private Long authorId;
-    private Long communityId;
+    private String communityId;
     private String title;
     private String content;
     private boolean deleted;
@@ -27,7 +27,7 @@ public class Thread {
         deleted = false;
     }
 
-    public Thread(String title, String content, Long authorId, Long communityId) {
+    public Thread(String title, String content, Long authorId, String communityId) {
         this.title = title;
         this.content = content;
         this.authorId = authorId;
@@ -38,7 +38,7 @@ public class Thread {
     }
 
     // Getters and Setters
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -66,11 +66,11 @@ public class Thread {
         this.authorId = authorId;
     }
 
-    public Long getCommunityId() {
+    public String getCommunityId() {
         return communityId;
     }
 
-    public void setCommunityId(Long communityId) {
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
 

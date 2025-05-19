@@ -27,14 +27,14 @@ public class ModeratorService {
         return reportRepository.save(report);
     }
 
-    public List<Report> findByCommunityId(Long communityId){
+    public List<Report> findByCommunityId(String communityId){
         return reportRepository.findByCommunityId(communityId);
     }
 
 
 
 
-    public String assignModerator(Long userId, Long communityId) {
+    public String assignModerator(Long userId, String communityId) {
         AssignModeratorCommand assignModeratorCommand = new AssignModeratorCommand(moderatorRepository, userId, communityId);
         try {
             assignModeratorCommand.execute();
@@ -58,7 +58,7 @@ public class ModeratorService {
         );
     }
 
-    public List<Long> getAllModeratorsOfCommunity(Long communityId){
+    public List<Long> getAllModeratorsOfCommunity(String communityId){
         return moderatorRepository.findUserIdsByCommunityId(communityId);
     }
 }

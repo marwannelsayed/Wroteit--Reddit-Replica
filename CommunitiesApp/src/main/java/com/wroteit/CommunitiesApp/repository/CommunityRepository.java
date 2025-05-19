@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface CommunityRepository extends CrudRepository<Community, Long> {
+public interface CommunityRepository extends CrudRepository<Community, String> {
     List<Community> findByTagsIn(List<String> tags);
     List<Community> findByTagsContaining(String subTag);
     boolean existsByName(String name);

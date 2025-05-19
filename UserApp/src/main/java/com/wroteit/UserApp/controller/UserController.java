@@ -114,7 +114,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/subscribe/{communityId}")
-    public String subscribeToCommunity(@PathVariable Long id, @PathVariable Long communityId, @RequestHeader("Authorization") String token) {
+    public String subscribeToCommunity(@PathVariable Long id, @PathVariable String communityId, @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
 
         Object community = restTemplate.getForObject(baseUrl + "/communities/" + id, LinkedHashMap.class);
@@ -139,7 +139,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}/unsubscribe/{communityId}")
-    public String unsubscribeFromCommunity(@PathVariable Long id, @PathVariable Long communityId, @RequestHeader("Authorization") String token) {
+    public String unsubscribeFromCommunity(@PathVariable Long id, @PathVariable String communityId, @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
         if(!userService.getUserById(id).getSubscribedCommunities().contains(communityId))return "Community not in subscribed list";
         userService.unsubscribeFromCommunity(id, communityId);
@@ -149,7 +149,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/hide/{communityId}")
-    public String hideCommunity(@PathVariable Long id, @PathVariable Long communityId, @RequestHeader("Authorization") String token) {
+    public String hideCommunity(@PathVariable Long id, @PathVariable String communityId, @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
         // TODO: Check community exists first
         Object community = restTemplate.getForObject(baseUrl + "/communities" + id, LinkedHashMap.class);
@@ -159,7 +159,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}/unhide/{communityId}")
-    public String unhideCommunity(@PathVariable Long id, @PathVariable Long communityId, @RequestHeader("Authorization") String token) {
+    public String unhideCommunity(@PathVariable Long id, @PathVariable String communityId, @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
         if(!userService.getUserById(id).getHiddenCommunities().contains(communityId))return "Community not in hidden list";
         userService.unhideCommunity(id, communityId);

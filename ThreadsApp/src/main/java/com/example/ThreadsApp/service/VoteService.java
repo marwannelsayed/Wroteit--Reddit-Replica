@@ -36,7 +36,7 @@ public class VoteService {
         this.rabbitMQService = rabbitMQService;
     }
 
-    public String upvote(Long userId, Long contentId){
+    public String upvote(Long userId, String contentId){
         UpvoteCommand upvoteCommand = new UpvoteCommand(userId, contentId, voteRepository, threadRepository, commentRepository);
         String result = upvoteCommand.execute();
         System.out.println(result);
@@ -44,7 +44,7 @@ public class VoteService {
     }
 
 
-    public String downvote(Long userId, Long contentId){
+    public String downvote(Long userId, String contentId){
         DownvoteCommand downvoteCommand = new DownvoteCommand(userId, contentId, voteRepository, threadRepository, commentRepository);
         String result = downvoteCommand.execute();
         System.out.println(result);
@@ -52,7 +52,7 @@ public class VoteService {
     }
 
 
-    public String deleteVote(Long id) {
+    public String deleteVote(String id) {
         if (voteRepository.existsById(id)) {
             voteRepository.deleteById(id);
             return "Vote deleted successfully!";
@@ -61,7 +61,7 @@ public class VoteService {
     }
 
 
-    public List<Vote> getVotesForTarget(Long targetId) {
+    public List<Vote> getVotesForTarget(String targetId) {
         List<Vote> votes = voteRepository.findByTargetId(targetId);
         System.out.println("votes fetched for target successfully");
         return votes;

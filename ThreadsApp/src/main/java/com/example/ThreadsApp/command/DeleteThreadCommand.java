@@ -9,16 +9,16 @@ import java.util.Optional;
 
 public class DeleteThreadCommand implements Command {
     private final ThreadRepository threadRepository;
-    private final Long commentId;
+    private final String threadId;
 
-    public DeleteThreadCommand(ThreadRepository threadRepository, Long commentId) {
+    public DeleteThreadCommand(ThreadRepository threadRepository, String threadId) {
         this.threadRepository = threadRepository;
-        this.commentId = commentId;
+        this.threadId = threadId;
     }
 
     @Override
     public void execute() {
-        Optional<Thread> threadOpt = threadRepository.findById(commentId);
+        Optional<Thread> threadOpt = threadRepository.findById(threadId);
         if (threadOpt.isPresent()) {
             Thread thread = threadOpt.get();
             thread.setContent("[deleted]");
