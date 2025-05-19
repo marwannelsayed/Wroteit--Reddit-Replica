@@ -3,7 +3,11 @@ package com.wroteit.CommunitiesApp.controller;
 import com.wroteit.CommunitiesApp.model.Community;
 import com.wroteit.CommunitiesApp.model.CommunityType;
 import com.wroteit.CommunitiesApp.service.CommunityService;
+import com.wroteit.NotificationApp.model.Notification;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -54,26 +58,29 @@ public class CommunityController {
 
     @PutMapping("/{userId}")
     public Community updateCommunity(@RequestBody String communityId, @RequestBody Community newCommunity, @PathVariable Long userId){
-        // TODO: Validate user is a moderator of the community from moderator table via API call
+        Boolean isModerator = restTemplate.getForObject(baseUrl + "/moderators/" + userId + "/isModerator/" + communityId, Boolean.class);
+        if (isModerator == null || !isModerator) return null;
         return communityService.updateCommunity(communityId, newCommunity);
     }
 
     @DeleteMapping("/{userId}")
     public void deleteCommunity(@RequestBody String communityId, @PathVariable Long userId){
-        // TODO: Validate user is a moderator of the community from moderator table via API call
+        Boolean isModerator = restTemplate.getForObject(baseUrl + "/moderators/" + userId + "/isModerator/" + communityId, Boolean.class);
+        if (isModerator == null || !isModerator) return;
         communityService.deleteCommunity(communityId);
-        // TODO: Delete threads in deleted community
     }
 
     @PutMapping("/addTags/{userId}")
     public Community addTags(@RequestBody String communityId, @RequestBody List<String> tags, @PathVariable Long userId){
-        // TODO: Validate user is a moderator of the community from moderator table via API call
+        Boolean isModerator = restTemplate.getForObject(baseUrl + "/moderators/" + userId + "/isModerator/" + communityId, Boolean.class);
+        if (isModerator == null || !isModerator) return null;
         return communityService.addTags(communityId, tags);
     }
 
     @PutMapping("/removeTags/{userId}")
     public Community removeTags(@RequestBody String communityId, @RequestBody List<String> tags, @PathVariable Long userId){
-        // TODO: Validate user is a moderator of the community from moderator table via API call
+        Boolean isModerator = restTemplate.getForObject(baseUrl + "/moderators/" + userId + "/isModerator/" + communityId, Boolean.class);
+        if (isModerator == null || !isModerator) return null;
         return communityService.removeTags(communityId, tags);
     }
 
@@ -99,12 +106,19 @@ public class CommunityController {
 
     @PutMapping("/ban/{userId}")
     public Community banCommunityForUser(@RequestBody String communityId, @PathVariable Long userId){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("recipientId", userId);
+        body.put("message", "You have been banned from community with id " + communityId);
+        body.put("deliveryMethods", List.of(Notification.DeliveryMethod.EMAIL, Notification.DeliveryMethod.IN_APP));
+
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+        restTemplate.postForObject(baseUrl + "/notifications/ban", request, Notification.class);
+
         return communityService.banCommunityForUser(userId, communityId);
     }
 
-    @DeleteMapping("/user/{userId}")
-    public void deleteUserRecords(@PathVariable Long userId){
-        communityService.deleteUserRecords(userId);
-    }
 }
 

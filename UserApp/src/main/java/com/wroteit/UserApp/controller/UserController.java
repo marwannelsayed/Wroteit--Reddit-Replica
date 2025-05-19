@@ -4,6 +4,7 @@ import com.wroteit.NotificationApp.model.Notification;
 import com.wroteit.UserApp.model.User;
 import com.wroteit.UserApp.security.TokenManager;
 import com.wroteit.UserApp.service.UserService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +20,13 @@ import java.util.Map;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final RabbitTemplate rabbitTemplate;
     RestTemplate restTemplate;
     String baseUrl;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, RabbitTemplate rabbitTemplate) {
         this.userService = userService;
+        this.rabbitTemplate = rabbitTemplate;
         restTemplate = new RestTemplate();
         baseUrl = "http://api-gateway:8080";
     }
@@ -66,7 +69,7 @@ public class UserController {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
         if(!userService.userExists(id)) return "User does not exist!";
         userService.deleteUser(id);
-        restTemplate.delete(baseUrl + "/communities/user/" + id);
+        rabbitTemplate.convertAndSend("deleteUserQueue", id);
         restTemplate.delete(baseUrl + "/moderators/user/" + id);
         return "User deleted successfully!";
     }
