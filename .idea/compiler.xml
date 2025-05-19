@@ -7,7 +7,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-
         <module name="NotificationApp" />
         <module name="ModerationApp" />
         <module name="GatewayApp" />
@@ -16,9 +15,6 @@
         <module name="CommunitiesApp" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="GatewayApp" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
