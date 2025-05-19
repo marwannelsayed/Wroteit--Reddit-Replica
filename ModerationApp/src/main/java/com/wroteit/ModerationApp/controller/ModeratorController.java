@@ -1,6 +1,5 @@
 package com.wroteit.ModerationApp.controller;
 
-import com.wroteit.ModerationApp.model.EntityType;
 import com.wroteit.ModerationApp.model.Report;
 import com.wroteit.ModerationApp.service.ModeratorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,11 @@ public class ModeratorController {
     @Autowired
     public ModeratorController(ModeratorService moderatorService) {
         this.moderatorService = moderatorService;
+    }
+
+    @GetMapping("/community/{communityId}")
+    public List<Long> getAllModeratorsOfCommunity(Long communityId){
+        return moderatorService.getAllModeratorsOfCommunity(communityId);
     }
 
     @PostMapping("/reports")
@@ -46,16 +50,13 @@ public class ModeratorController {
         return "User banned";
     }
 
-    @DeleteMapping("/content/{entityType}/{postId}")
-    public String deleteContent(@PathVariable EntityType entityType, @PathVariable Long postId) {
-       // TODO: Update relevant table by deleting entity
-        switch(entityType){
-            case THREAD: // API call to delete thread
-                break;
-            case COMMENT: // API call to delete comment
-                break;
-            default: return "Invalid content type";
-        }
-        return entityType + "deleted successfully";
+    @DeleteMapping("/user/{userId}")
+    public void deleteUserRecords(@PathVariable Long userId){
+        moderatorService.deleteUserRecords(userId);
+    }
+
+    @DeleteMapping("/thread/{postId}")
+    public String deleteThread(@PathVariable Long postId) {
+       return "Not implemented";
     }
 }

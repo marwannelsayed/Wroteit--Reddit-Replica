@@ -60,6 +60,7 @@ public class ThreadController {
     public List<Thread> getThreadsByCommunityId(@PathVariable Long communityId) {
         return threadService.getThreadsByCommunityId(communityId);
     }
+
 }
 
 

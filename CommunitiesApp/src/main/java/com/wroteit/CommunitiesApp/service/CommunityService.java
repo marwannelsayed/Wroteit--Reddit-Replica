@@ -147,4 +147,11 @@ public class CommunityService {
     }
 
 
+    public void deleteUserRecords(Long userId) {
+        List<Community> communities = communityRepository.findAll();
+        for(Community c: communities){
+            c.getSubscribers().remove(userId);
+            communityRepository.save(c);
+        }
+    }
 }

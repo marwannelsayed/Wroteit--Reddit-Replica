@@ -48,6 +48,17 @@ public class ModeratorService {
 
     public String closeReport(Long reportId) {
         CloseReportCommand closeReportCommand = new CloseReportCommand(reportRepository, reportId);
+        closeReportCommand.execute();
         return "Report closed successfully";
+    }
+
+    public void deleteUserRecords(Long userId) {
+        moderatorRepository.deleteAll(
+                moderatorRepository.findByUserId(userId)
+        );
+    }
+
+    public List<Long> getAllModeratorsOfCommunity(Long communityId){
+        return moderatorRepository.findUserIdsByCommunityId(communityId);
     }
 }

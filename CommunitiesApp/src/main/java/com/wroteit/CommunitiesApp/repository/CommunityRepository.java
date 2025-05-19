@@ -10,4 +10,5 @@ public interface CommunityRepository extends CrudRepository<Community, Long> {
     List<Community> findByTagsIn(List<String> tags);
     List<Community> findByTagsContaining(String subTag);
     boolean existsByName(String name);
+    List<Community> findAll();
 }
