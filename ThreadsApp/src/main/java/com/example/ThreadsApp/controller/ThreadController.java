@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/threads")
+@RequestMapping("/threads")
 public class ThreadController {
 
     private final ThreadService threadService;
@@ -26,10 +26,8 @@ public class ThreadController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Thread> getThreadById(@PathVariable String id) {
-        return threadService.getThreadById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Thread getThreadById(@PathVariable String id) {
+        return threadService.getThreadById(id).orElse(null);
     }
 
     @PostMapping
@@ -39,45 +37,28 @@ public class ThreadController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Thread> updateThread(@PathVariable String id, @RequestBody Thread threadDetails) {
-        return threadService.updateThread(id, threadDetails)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Thread updateThread(@PathVariable Long id, @RequestBody String threadDetails) {
+        return threadService.updateThread(id, threadDetails);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Thread> deleteThread(@PathVariable String id) {
-        return threadService.getThreadById(id)
-                .map(thread -> {
-                    threadService.deleteThread(id);
-                    return ResponseEntity.ok(thread);
-                })
-                .orElse(ResponseEntity.notFound().build());
+    public String deleteThread(@PathVariable Long id) {
+        return threadService.deleteThread(id);
+    }
+
+    @DeleteMapping("/ban/{id}")
+    public String ban(@PathVariable Long id) {
+        return threadService.banThread(id);
     }
 
     @GetMapping("/author/{authorId}")
-    public List<Thread> getThreadsByAuthorId(@PathVariable String authorId) {
+    public List<Thread> getThreadsByAuthorId(@PathVariable Long authorId) {
         return threadService.getThreadsByAuthorId(authorId);
     }
 
-    @GetMapping("/sorted/upvotes")
-    public List<Thread> getThreadsSortedByUpvotes() {
-        return threadService.getThreadsSortedByUpvotes();
-    }
-
-    @GetMapping("/sorted/downvotes")
-    public List<Thread> getThreadsSortedByDownvotes() {
-        return threadService.getThreadsSortedByDownvotes();
-    }
-
-    @GetMapping("/sorted/createdAt")
-    public List<Thread> getThreadsSortedByCreatedAt() {
-        return threadService.getThreadsSortedByCreatedAt();
-    }
-
-    @GetMapping("/sorted/createdAtAsc")
-    public List<Thread> getThreadsSortedByCreatedAtAsc() {
-        return threadService.getThreadsSortedByCreatedAtAsc();
+    @GetMapping("/community/{authorId}")
+    public List<Thread> getThreadsByCommunityId(@PathVariable Long communityId) {
+        return threadService.getThreadsByCommunityId(communityId);
     }
 }
 

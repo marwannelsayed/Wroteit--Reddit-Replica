@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/votes")
+@RequestMapping("/votes")
 public class VoteController {
 
     private final VoteService voteService;
@@ -20,35 +20,26 @@ public class VoteController {
         this.voteService = voteService;
     }
 
-    @PostMapping
-    public ResponseEntity<Vote> castVote(@RequestBody Vote vote) {
-        // Basic validation: Ensure targetId, targetType, userId, and voteType are present
-        if (vote.getUserId() == null || vote.getTargetId() == null || vote.getTargetType() == null || vote.getVoteType() == null) {
-            return ResponseEntity.badRequest().build(); // Or a more specific error response
-        }
-        Vote castedVote = voteService.castVote(vote);
-        return new ResponseEntity<>(castedVote, HttpStatus.CREATED);
+    @PostMapping("/{userId}/upvote/{contentId}")
+    public String upvote(@PathVariable Long userId, @PathVariable Long contentId) {
+        return voteService.upvote(userId, contentId);
     }
 
+    @PostMapping("/{userId}/downvote/{contentId}")
+    public String downvote(@PathVariable Long userId, @PathVariable Long contentId) {
+        return voteService.downvote(userId, contentId);
+    }
+
+
     @GetMapping("/target/{targetType}/{targetId}")
-    public ResponseEntity<List<Vote>> getVotesForTarget(@PathVariable Vote.TargetType targetType, @PathVariable String targetId) {
-        List<Vote> votes = voteService.getVotesForTarget(targetId, targetType);
-        if (votes.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(votes);
+    public List<Vote> getVotesForTarget( @PathVariable Long targetId) {
+        return voteService.getVotesForTarget(targetId);
     }
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Vote>> getVotesByUser(@PathVariable String userId) {
-        List<Vote> votes = voteService.getVotesByUser(userId);
-        return votes.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(votes);
-    }
+
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteVote(@PathVariable String id) {
-        if (voteService.deleteVote(id)) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    public void deleteVote(@PathVariable Long id) {
+        voteService.deleteVote(id);
     }
 
 
