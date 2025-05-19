@@ -22,30 +22,24 @@ public class CommentController {
     }
 
     @GetMapping("/threads/{threadId}/comments")
-    public List<Comment> getCommentsByThreadId(@PathVariable String threadId) {
+    public List<Comment> getCommentsByThreadId(@PathVariable Long threadId) {
         return commentService.getCommentsByThreadId(threadId);
     }
 
     @GetMapping("/comments/{id}")
-    public ResponseEntity<Comment> getCommentById(@PathVariable String id) {
-        return commentService.getCommentById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Comment getCommentById(@PathVariable Long id) {
+        return commentService.getCommentById(id);
     }
 
     // Assuming comments are created in the context of a thread
     @PostMapping("/threads/{threadId}/comments")
-    public ResponseEntity<Comment> createComment(@PathVariable String threadId, @RequestBody Comment comment) {
-        comment.setThreadId(threadId); // Ensure the comment is associated with the correct thread
-        Comment createdComment = commentService.createComment(comment);
-        return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
+    public Comment createComment(@RequestBody Comment comment) {
+        return commentService.createComment(comment);
     }
 
     @PutMapping("/comments/{id}")
-    public ResponseEntity<Comment> updateComment(@PathVariable String id, @RequestBody Comment commentDetails) {
-        return commentService.updateComment(id, commentDetails, id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Comment updateComment(@PathVariable Long id, @RequestBody String commentDetails) {
+        return commentService.updateComment(id, commentDetails);
     }
     @GetMapping("/{id}/history")
     public List<EditHistory> getEditHistory(@PathVariable String id) {

@@ -1,5 +1,8 @@
 package com.example.ThreadsApp.service;
 
+import com.example.ThreadsApp.command.BanThreadCommand;
+import com.example.ThreadsApp.command.DeleteCommentCommand;
+import com.example.ThreadsApp.command.DeleteThreadCommand;
 import com.example.ThreadsApp.model.Thread;
 import com.example.ThreadsApp.repository.ThreadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,50 +25,57 @@ public class ThreadService {
         return threadRepository.findAll();
     }
 
-    public Optional<Thread> getThreadById(String id) {
-        return threadRepository.findById(id);
+    public List<Thread> getCommunityThreads(Long communityId){return threadRepository.findByCommunityId(communityId);}
+
+    public Thread getThreadById(Long id) {
+        return threadRepository.findById(id).orElse(null);
     }
 
     public Thread createThread(Thread thread) {
-        // Additional logic for creation, e.g., setting authorId if not set
-        // For now, assuming authorId is set in the controller or from security context
-        thread.setCreatedAt(LocalDateTime.now());
-        thread.setUpdatedAt(LocalDateTime.now());
         return threadRepository.save(thread);
     }
 
-    public Optional<Thread> updateThread(String id, Thread threadDetails) {
-        return threadRepository.findById(id)
-                .map(existingThread -> {
-                    existingThread.setTitle(threadDetails.getTitle());
-                    existingThread.setContent(threadDetails.getContent());
-                    existingThread.setUpdatedAt(LocalDateTime.now());
-                    // Implement reflection for logging edits here if required
-                    return threadRepository.save(existingThread);
-                });
-    }
-
-    public boolean deleteThreadWithAuthorization(String id, String userId, String role) {
-        Optional<Thread> optionalThread = threadRepository.findById(id);
-        if (optionalThread.isEmpty()) return false;
-    
-        Thread thread = optionalThread.get();
-        boolean isModerator = "MODERATOR".equalsIgnoreCase(role);
-        boolean isOwner = thread.getAuthorId().equals(userId);
-    
-        if (isModerator || isOwner) {
-            threadRepository.deleteById(id);
-            return true;
+    public Thread updateThread(Long id, String newContent) {
+        Thread thread = getThreadById(id);
+        if(thread!=null && !thread.isDeleted()){
+            thread.setContent(newContent);
         }
-    
-        return false; // forbidden
+        return thread;
+    }
+
+    public String deleteThread(Long id) {
+        if(threadRepository.existsById(id) && !getThreadById(id).isDeleted()){
+            DeleteThreadCommand deleteThreadCommand = new DeleteThreadCommand(threadRepository, id);
+            deleteThreadCommand.execute();
+            return "Thread deleted successfully!";
+        }
+        return "Thread not found";
+    }
+
+    public String banThread(Long id) {
+        if(threadRepository.existsById(id) && !getThreadById(id).isDeleted()){
+            BanThreadCommand banThreadCommand = new BanThreadCommand(threadRepository, id);
+            banThreadCommand.execute();
+            return "Thread banned successfully!";
+        }
+        return "Thread not found";
     }
     
 
-    // Placeholder for reflection-based logging
-    private void logEditAction(Object entity, String actionType) {
-        // Implement reflection logic to detect changes and log them
-        System.out.println("Action: " + actionType + " on entity: " + entity.toString());
+    // // Placeholder for reflection-based logging
+    // private void logEditAction(Object entity, String actionType) {
+    //     // Implement reflection logic to detect changes and log them
+    //     System.out.println("Action: " + actionType + " on entity: " + entity.toString());
+    // }
+
+    public List<Thread> getThreadsByAuthorId(Long authorId) {
+        return threadRepository.findByAuthorId(authorId);
     }
+
+    public List<Thread> getThreadsByCommunityId(Long communityId){
+        return threadRepository.findByCommunityId(communityId);
+    }
+
+
 }
 

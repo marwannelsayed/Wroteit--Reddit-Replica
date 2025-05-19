@@ -1,5 +1,8 @@
 package com.example.ThreadsApp.service;
 
+import com.example.ThreadsApp.command.DownvoteCommand;
+import com.example.ThreadsApp.command.UpvoteCommand;
+import com.example.ThreadsApp.model.Comment;
 import com.example.ThreadsApp.model.Thread;
 import com.example.ThreadsApp.model.Vote;
 import com.example.ThreadsApp.repository.ThreadRepository;
@@ -7,6 +10,8 @@ import com.example.ThreadsApp.repository.VoteRepository;
 import com.example.ThreadsApp.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -17,33 +22,71 @@ public class VoteService {
     private final VoteRepository voteRepository;
     private final ThreadRepository threadRepository; // To update vote counts on threads
     private final CommentRepository commentRepository; // To update vote counts on comments
-    // private final RabbitMQService rabbitMQService; // For sending notifications
+    private final RabbitMQService rabbitMQService;
+
 
     @Autowired
-    public VoteService(VoteRepository voteRepository, ThreadRepository threadRepository, CommentRepository commentRepository) {
+    public VoteService(VoteRepository voteRepository,
+                       ThreadRepository threadRepository,
+                       CommentRepository commentRepository,
+                       RabbitMQService rabbitMQService) {
         this.voteRepository = voteRepository;
         this.threadRepository = threadRepository;
         this.commentRepository = commentRepository;
-        // this.rabbitMQService = rabbitMQService;
+        this.rabbitMQService = rabbitMQService;
     }
 
-    public Vote castVote(Vote vote) {
-        // Basic validation: Ensure user hasn't voted on this target already (or allow changing vote)
-        // This is a simplified version. A more robust implementation would check existing votes by userId and targetId.
-
-        vote.setCreatedAt(LocalDateTime.now());
-        Vote savedVote = voteRepository.save(vote);
-
-        // Update vote counts on the target entity (Thread or Comment)
-        updateTargetVoteCount(vote.getTargetId(), vote.getTargetType(), vote.getVoteType());
-
-        // Send notification via RabbitMQ (placeholder)
-        // String message = String.format("User %s %s your %s.", vote.getUserId(), vote.getVoteType().toString().toLowerCase(), vote.getTargetType().toString().toLowerCase());
-        // rabbitMQService.sendNotification(message);
-        // logVoteAction(savedVote);
-
-        return savedVote;
+    public String upvote(Long userId, Long contentId){
+        UpvoteCommand upvoteCommand = new UpvoteCommand(userId, contentId, voteRepository, threadRepository, commentRepository);
+        return upvoteCommand.execute();
     }
+
+
+    public String downvote(Long userId, Long contentId){
+        DownvoteCommand downvoteCommand = new DownvoteCommand(userId, contentId, voteRepository, threadRepository, commentRepository);
+        return downvoteCommand.execute();
+    }
+
+
+
+
+
+
+
+    public List<Vote> getVotesByUser(String userId) {
+        return voteRepository.findAll().stream()
+                .filter(v -> v.getUserId().equals(userId))
+                .toList();
+    }
+
+    public boolean deleteVote(String id) {
+        if (voteRepository.existsById(id)) {
+            voteRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+
+
+    private void logVoteChanges(Vote oldVote, Vote newVote) {
+        try {
+            Field[] fields = Vote.class.getDeclaredFields();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                Object oldValue = field.get(oldVote);
+                Object newValue = field.get(newVote);
+
+                if (newValue != null && !newValue.equals(oldValue)) {
+                    System.out.printf("Field '%s' changed from '%s' to '%s'%n",
+                            field.getName(), oldValue, newValue);
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Failed to log vote changes", e);
+        }
+    }
+
 
     private void updateTargetVoteCount(String targetId, Vote.TargetType targetType, Vote.VoteType voteType) {
         if (targetType == Vote.TargetType.THREAD) {

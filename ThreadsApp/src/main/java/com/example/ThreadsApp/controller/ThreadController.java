@@ -46,17 +46,39 @@ public class ThreadController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteThread(
-        @PathVariable String id,
-        @RequestHeader("X-User-Id") String userId,
-        @RequestHeader("X-User-Role") String role) {
+    public ResponseEntity<Thread> deleteThread(@PathVariable String id) {
+        return threadService.getThreadById(id)
+                .map(thread -> {
+                    threadService.deleteThread(id);
+                    return ResponseEntity.ok(thread);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 
-    if (threadService.deleteThreadWithAuthorization(id, userId, role)) {
-        return ResponseEntity.noContent().build();
-    } else {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // unauthorized attempt
+    @GetMapping("/author/{authorId}")
+    public List<Thread> getThreadsByAuthorId(@PathVariable String authorId) {
+        return threadService.getThreadsByAuthorId(authorId);
+    }
+
+    @GetMapping("/sorted/upvotes")
+    public List<Thread> getThreadsSortedByUpvotes() {
+        return threadService.getThreadsSortedByUpvotes();
+    }
+
+    @GetMapping("/sorted/downvotes")
+    public List<Thread> getThreadsSortedByDownvotes() {
+        return threadService.getThreadsSortedByDownvotes();
+    }
+
+    @GetMapping("/sorted/createdAt")
+    public List<Thread> getThreadsSortedByCreatedAt() {
+        return threadService.getThreadsSortedByCreatedAt();
+    }
+
+    @GetMapping("/sorted/createdAtAsc")
+    public List<Thread> getThreadsSortedByCreatedAtAsc() {
+        return threadService.getThreadsSortedByCreatedAtAsc();
     }
 }
 
-}
 
