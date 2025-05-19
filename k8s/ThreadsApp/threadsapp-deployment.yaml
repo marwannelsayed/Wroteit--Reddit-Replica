@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: threadsapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: threadsapp
+  template:
+    metadata:
+      labels:
+        app: threadsapp
+    spec:
+      containers:
+        - name: threadsapp
+          image: threadsapp:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATA_MONGODB_URI
+              value: mongodb://
