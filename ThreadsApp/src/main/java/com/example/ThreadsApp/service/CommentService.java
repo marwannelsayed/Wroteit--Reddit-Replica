@@ -32,27 +32,41 @@ public class CommentService {
     public List<Comment> getCommentsByThreadId(Long threadId) {
         Thread thread = threadRepository.findById(threadId).orElse(null);
         if(thread!=null){
-            return thread.getComments();
+            List<Comment> comments = thread.getComments();
+            System.out.println("Comments by threadId fetched successfully!");
+            return comments;
         }
+        System.out.println("Failed to fetch comments by threadId");
         return null;
     }
 
     public List<CommentComponent> getCommentsByParentId(Long parentId){
         Comment parent = commentRepository.findById(parentId).orElse(null);
         if(parent!=null){
-            return parent.getReplies();
+            List<CommentComponent> replies = parent.getReplies();
+            System.out.println("Comments by parentId fetched successfully!");
+            return replies;
         }
+        System.out.println("Failed to fetch comments by parentId");
         return null;
     }
 
     public Comment getCommentById(Long id) {
-        return commentRepository.findById(id).orElse(null);
+        Comment comment = commentRepository.findById(id).orElse(null);
+        if(comment!=null){
+            System.out.println("Comment fetched successfully!");
+            return comment;
+        }
+        System.out.println("Failed to fetch comment by id");
+        return null;
     }
 
     public Comment createComment(Comment comment) {
         CreateCommentCommand createCommentCommand = new CreateCommentCommand(commentRepository, threadRepository, comment);
         createCommentCommand.execute();
-        return getCommentById(comment.getId());
+        Comment created = getCommentById(comment.getId());
+        System.out.println("CommentService.createComment returning: " + created);
+        return created;
     }
 
     public Comment updateComment(Long id, String updatedComment) {
@@ -61,6 +75,7 @@ public class CommentService {
             comment.setContent(updatedComment);
             commentRepository.save(comment);
         }
+        System.out.println("Comment updated successfully!");
         return comment;
     }
 

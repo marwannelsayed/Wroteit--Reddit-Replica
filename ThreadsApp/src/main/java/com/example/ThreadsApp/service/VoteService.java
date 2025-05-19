@@ -38,13 +38,17 @@ public class VoteService {
 
     public String upvote(Long userId, Long contentId){
         UpvoteCommand upvoteCommand = new UpvoteCommand(userId, contentId, voteRepository, threadRepository, commentRepository);
-        return upvoteCommand.execute();
+        String result = upvoteCommand.execute();
+        System.out.println("Upvote successful");
+        return result;
     }
 
 
     public String downvote(Long userId, Long contentId){
         DownvoteCommand downvoteCommand = new DownvoteCommand(userId, contentId, voteRepository, threadRepository, commentRepository);
-        return downvoteCommand.execute();
+        String result = downvoteCommand.execute();
+        System.out.println("Downvote successful");
+        return result;
     }
 
 
@@ -54,17 +58,19 @@ public class VoteService {
 
 
     public List<Vote> getVotesByUser(String userId) {
-        return voteRepository.findAll().stream()
+        List<Vote> votes = voteRepository.findAll().stream()
                 .filter(v -> v.getUserId().equals(userId))
                 .toList();
+        System.out.println("Votes by user fetched successfully");
+        return votes;
     }
 
-    public boolean deleteVote(String id) {
+    public String deleteVote(String id) {
         if (voteRepository.existsById(id)) {
             voteRepository.deleteById(id);
-            return true;
+            return "Vote deleted successfully!";
         }
-        return false;
+        return "Vote not found!";
     }
 
 
@@ -111,7 +117,9 @@ public class VoteService {
     }
 
     public List<Vote> getVotesForTarget(String targetId, Vote.TargetType targetType) {
-        return voteRepository.findByTargetIdAndTargetType(targetId, targetType.name());
+        List<Vote> votes = voteRepository.findByTargetIdAndTargetType(targetId, targetType.name());
+        System.out.println("votes fetched for target successfully");
+        return votes;
     }
 
     // Placeholder for reflection-based logging of vote actions

@@ -22,23 +22,38 @@ public class ThreadService {
     }
 
     public List<Thread> getAllThreads() {
-        return threadRepository.findAll();
+        List<Thread> threads = threadRepository.findAll();
+        System.out.println("Threads fetched successfully");
+        return threads;
     }
 
-    public List<Thread> getCommunityThreads(Long communityId){return threadRepository.findByCommunityId(communityId);}
+    public List<Thread> getCommunityThreads(Long communityId) {
+        List<Thread> threads = threadRepository.findByCommunityId(communityId);
+        System.out.println("Community threads fetched successfully");
+        return threads;
+    }
 
     public Thread getThreadById(Long id) {
-        return threadRepository.findById(id).orElse(null);
+        Thread thread = threadRepository.findById(id);
+        if(thread == null || thread.isDeleted()) {
+            System.out.println("Thread not found");
+            return null;
+        }
+        System.out.println("Thread by id fetched successfully");
+        return thread;
     }
 
     public Thread createThread(Thread thread) {
-        return threadRepository.save(thread);
+        Thread createdThread = threadRepository.save(thread);
+        System.out.println("Thread created successfully");
+        return createdThread;
     }
 
     public Thread updateThread(Long id, String newContent) {
         Thread thread = getThreadById(id);
-        if(thread!=null && !thread.isDeleted()){
+        if(thread != null && !thread.isDeleted()) {
             thread.setContent(newContent);
+            System.out.println("Thread updated successfully");
         }
         return thread;
     }
@@ -69,11 +84,15 @@ public class ThreadService {
     // }
 
     public List<Thread> getThreadsByAuthorId(Long authorId) {
-        return threadRepository.findByAuthorId(authorId);
+        List<Thread> threads = threadRepository.findByAuthorId(authorId);
+        System.out.println("Threads by author fetched successfully");
+        return threads;
     }
 
-    public List<Thread> getThreadsByCommunityId(Long communityId){
-        return threadRepository.findByCommunityId(communityId);
+    public List<Thread> getThreadsByCommunityId(Long communityId) {
+        List<Thread> threads = threadRepository.findByCommunityId(communityId);
+        System.out.println("Threads by community fetched successfully");
+        return threads;
     }
 
 
