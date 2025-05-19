@@ -120,9 +120,5 @@ public class CommunityController {
         return communityService.banCommunityForUser(userId, communityId);
     }
 
-    @DeleteMapping("/user/{userId}")
-    public void deleteUserRecords(@PathVariable Long userId){
-        communityService.deleteUserRecords(userId);
-    }
 }
 

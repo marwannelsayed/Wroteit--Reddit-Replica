@@ -69,16 +69,51 @@ public class CommentService {
         return created;
     }
 
-    public Comment updateComment(String id, String updatedComment) {
-        Comment comment = commentRepository.findById(id).orElse(null);
-        if(comment!=null && !comment.isDeleted()){
+    public Comment updateComment(String commentId, String updatedComment) {
+        Comment comment = commentRepository.findById(commentId).orElse(null);
+        if (comment == null || comment.isDeleted()) return comment;
+
+        String parentId = comment.getParentId();
+        Optional<Thread> threadOpt = threadRepository.findById(parentId);
+        if (threadOpt.isPresent()) {
+            Thread thread = threadOpt.get();
+            updateCommentContent(thread.getComments(), commentId, updatedComment);
+            threadRepository.save(thread);
             comment.setContent(updatedComment);
             commentRepository.save(comment);
-            System.out.println("Comment updated successfully.");
             return comment;
+        } else {
+            Comment parentComment = commentRepository.findById(parentId).orElse(null);
+            if (parentComment != null) {
+                updateCommentContentComposite(parentComment.getReplies(), commentId, updatedComment);
+                commentRepository.save(parentComment);
+                comment.setContent(updatedComment);
+                commentRepository.save(comment);
+                return comment;
+            }
         }
-        System.out.println("Comment not found or already deleted.");
-        return comment;
+        return null;
+    }
+
+    private void updateCommentContent(List<Comment> comments, String commentId, String updatedContent) {
+        for (Comment c : comments) {
+            if (c.getId().equals(commentId) && !c.isDeleted()) {
+                c.setContent(updatedContent);
+                return;
+            }
+        }
+    }
+
+    private void updateCommentContentComposite(List<CommentComponent> comments, String commentId, String updatedContent) {
+        for (CommentComponent cc : comments) {
+            if (cc instanceof Comment) {
+                Comment c = (Comment) cc;
+                if (c.getId().equals(commentId) && !c.isDeleted()) {
+                    c.setContent(updatedContent);
+                    return;
+                }
+            }
+        }
     }
 
 
