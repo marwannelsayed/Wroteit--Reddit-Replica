@@ -117,7 +117,7 @@ public class UserController {
     public String subscribeToCommunity(@PathVariable Long id, @PathVariable Long communityId, @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
 
-        Object community = restTemplate.getForObject(baseUrl + "/communities" + id, LinkedHashMap.class);
+        Object community = restTemplate.getForObject(baseUrl + "/communities/" + id, LinkedHashMap.class);
         if(community == null) return "Community does not exist";
         userService.subscribeToCommunity(id, communityId);
         restTemplate.put(baseUrl + "/communities/subscribe/" + id, communityId);
