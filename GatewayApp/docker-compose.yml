@@ -1,0 +1,16 @@
+services:
+  api-gateway:
+    build: .
+    ports:
+      - "8080:8080"
+    networks:
+      - wroteit
+    depends_on:
+      - user-app
+      - communities-app
+      - moderation-app
+      - notification-app
+      - threads-app
+networks:
+  wroteit:
+    external: true

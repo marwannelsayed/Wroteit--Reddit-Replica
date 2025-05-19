@@ -10,3 +10,7 @@ services:
 
 volumes:
   mongodb_data:
+
+networks:
+  wroteit:
+    driver: bridge
