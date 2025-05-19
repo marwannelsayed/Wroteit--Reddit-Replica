@@ -26,10 +26,8 @@ public class ThreadController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Thread> getThreadById(@PathVariable String id) {
-        return threadService.getThreadById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Thread getThreadById(@PathVariable String id) {
+        return threadService.getThreadById(id).orElse(null);
     }
 
     @PostMapping
@@ -40,19 +38,12 @@ public class ThreadController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Thread> updateThread(@PathVariable String id, @RequestBody Thread threadDetails) {
-        return threadService.updateThread(id, threadDetails)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return threadService.updateThread(id, threadDetails).orElse(null);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Thread> deleteThread(@PathVariable String id) {
-        return threadService.getThreadById(id)
-                .map(thread -> {
-                    threadService.deleteThread(id);
-                    return ResponseEntity.ok(thread);
-                })
-                .orElse(ResponseEntity.notFound().build());
+        return threadService.deleteThread(id).orElse(null);
     }
 
     @GetMapping("/author/{authorId}")

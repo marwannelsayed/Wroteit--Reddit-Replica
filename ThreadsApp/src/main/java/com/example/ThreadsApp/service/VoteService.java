@@ -38,13 +38,15 @@ public class VoteService {
 
     public String upvote(Long userId, Long contentId){
         UpvoteCommand upvoteCommand = new UpvoteCommand(userId, contentId, voteRepository, threadRepository, commentRepository);
-        return upvoteCommand.execute();
+        String result = upvoteCommand.execute();
+        return result != null ? result : "Upvote failed";
     }
 
 
     public String downvote(Long userId, Long contentId){
         DownvoteCommand downvoteCommand = new DownvoteCommand(userId, contentId, voteRepository, threadRepository, commentRepository);
-        return downvoteCommand.execute();
+        String result = downvoteCommand.execute();
+        return result != null ? result : "Downvote failed";
     }
 
 
@@ -59,12 +61,12 @@ public class VoteService {
                 .toList();
     }
 
-    public boolean deleteVote(String id) {
+    public String deleteVote(String id) {
         if (voteRepository.existsById(id)) {
             voteRepository.deleteById(id);
-            return true;
+            return "Vote deleted successfully!";
         }
-        return false;
+        return "Vote not found";
     }
 
 

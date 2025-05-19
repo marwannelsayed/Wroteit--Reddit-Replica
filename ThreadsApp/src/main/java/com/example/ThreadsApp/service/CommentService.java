@@ -32,27 +32,34 @@ public class CommentService {
     public List<Comment> getCommentsByThreadId(Long threadId) {
         Thread thread = threadRepository.findById(threadId).orElse(null);
         if(thread!=null){
-            return thread.getComments();
+            return "Comments fetched successfully.";
         }
-        return null;
+        return "Thread not found.";
     }
 
     public List<CommentComponent> getCommentsByParentId(Long parentId){
         Comment parent = commentRepository.findById(parentId).orElse(null);
         if(parent!=null){
-            return parent.getReplies();
+            return "Replies fetched successfully.";
         }
-        return null;
+        return "Parent comment not found.";
     }
 
     public Comment getCommentById(Long id) {
-        return commentRepository.findById(id).orElse(null);
+        Comment comment = commentRepository.findById(id).orElse(null);
+        if(comment != null) {
+            return "Comment fetched successfully.";
+        }
+        return "Comment not found.";
     }
 
     public Comment createComment(Comment comment) {
         CreateCommentCommand createCommentCommand = new CreateCommentCommand(commentRepository, threadRepository, comment);
         createCommentCommand.execute();
-        return getCommentById(comment.getId());
+        if(getCommentById(comment.getId()) != null) {
+            return "Comment created successfully.";
+        }
+        return "Failed to create comment.";
     }
 
     public Comment updateComment(Long id, String updatedComment) {
@@ -60,27 +67,28 @@ public class CommentService {
         if(comment!=null && !comment.isDeleted()){
             comment.setContent(updatedComment);
             commentRepository.save(comment);
+            return "Comment updated successfully.";
         }
-        return comment;
+        return "Comment not found or is deleted.";
     }
 
 
     public String deleteComment(Long id) {
-        if(commentRepository.existsById(id) && !getCommentById(id).isDeleted()){
+        if(commentRepository.existsById(id) && !getCommentById(id).equals("Comment not found or is deleted.")){
             DeleteCommentCommand deleteCommentCommand = new DeleteCommentCommand(commentRepository, id);
             deleteCommentCommand.execute();
             return "Comment deleted successfully!";
         }
-        return "Comment not found";
+        return "Comment not found or already deleted.";
     }
 
     public String banComment(Long id) {
-        if(commentRepository.existsById(id) && !getCommentById(id).isDeleted()){
+        if(commentRepository.existsById(id) && !getCommentById(id).equals("Comment not found or is deleted.")){
             BanCommentCommand banCommentCommand = new BanCommentCommand(commentRepository, id);
             banCommentCommand.execute();
             return "Comment banned successfully!";
         }
-        return "Comment not found";
+        return "Comment not found or already deleted.";
     }
 
 
