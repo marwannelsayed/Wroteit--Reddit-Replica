@@ -3,6 +3,7 @@ package com.example.ThreadsApp.repository;
 import com.example.ThreadsApp.model.Thread;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 

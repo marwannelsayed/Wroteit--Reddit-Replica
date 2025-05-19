@@ -3,7 +3,9 @@ package com.example.ThreadsApp.service;
 import com.example.ThreadsApp.command.BanThreadCommand;
 import com.example.ThreadsApp.command.DeleteCommentCommand;
 import com.example.ThreadsApp.command.DeleteThreadCommand;
+import com.example.ThreadsApp.model.Comment;
 import com.example.ThreadsApp.model.Thread;
+import com.example.ThreadsApp.repository.CommentRepository;
 import com.example.ThreadsApp.repository.ThreadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,13 @@ import java.util.Optional;
 public class ThreadService {
 
     private final ThreadRepository threadRepository;
+    private final CommentRepository commentRepository;
+
 
     @Autowired
-    public ThreadService(ThreadRepository threadRepository) {
+    public ThreadService(ThreadRepository threadRepository, CommentRepository commentRepository) {
         this.threadRepository = threadRepository;
+        this.commentRepository = commentRepository;
     }
 
     public List<Thread> getAllThreads() {
@@ -108,5 +113,16 @@ public class ThreadService {
     }
 
 
+    public boolean threadExists(String parentId) {
+        return threadRepository.existsById(parentId);
+    }
+
+    public Long getAuthorIdByCommentParentId(String parentId) {
+        Thread parentThread = getThreadById(parentId);
+        if(parentThread != null) return parentThread.getAuthorId();
+        Comment parentComment = commentRepository.findById(parentId).orElse(null);
+        if(parentComment != null) return parentComment.getAuthorId();
+        return null;
+    }
 }
 

@@ -147,4 +147,8 @@ public class CommunityService {
     }
 
 
+    public boolean checkUserBanned(Long userId, String communityId) {
+        Community community = getCommunityById(communityId);
+        return community.getBannedUsers().contains(userId);
+    }
 }

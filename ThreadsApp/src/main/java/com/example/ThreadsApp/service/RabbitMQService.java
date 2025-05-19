@@ -15,8 +15,6 @@ public class RabbitMQService {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendNotification(String message) {
-        rabbitTemplate.convertAndSend(RabbitMQConfig.NOTIFICATION_QUEUE, message);
-    }
+
 }
 

@@ -15,16 +15,16 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long communityId;
+    private String communityId;
     private Long reporterId;
-    private Long reportedEntityId;
-    private String entityType;
+    private String reportedEntityId;
+    private EntityType entityType;
     private String reason;
     private LocalDateTime timestamp;
 
     public Report() {}
 
-    public Report(Long reporterId, Long reportedEntityId, String entityType, String reason, LocalDateTime timestamp) {
+    public Report(Long reporterId, String reportedEntityId, EntityType entityType, String reason, LocalDateTime timestamp) {
         this.reporterId = reporterId;
         this.reportedEntityId = reportedEntityId;
         this.entityType = entityType;
@@ -40,11 +40,11 @@ public class Report {
         return reporterId;
     }
 
-    public Long getReportedEntityId() {
+    public String getReportedEntityId() {
         return reportedEntityId;
     }
 
-    public String getEntityType() {
+    public EntityType getEntityType() {
         return entityType;
     }
 
@@ -58,11 +58,11 @@ public class Report {
         return timestamp;
     }
 
-    public Long getCommunityId() {
+    public String getCommunityId() {
         return communityId;
     }
 
-    public void setCommunityId(Long communityId) {
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
 
@@ -70,11 +70,11 @@ public class Report {
         this.reporterId = reporterId;
     }
 
-    public void setReportedEntityId(Long reportedEntityId) {
+    public void setReportedEntityId(String reportedEntityId) {
         this.reportedEntityId = reportedEntityId;
     }
 
-    public void setEntityType(String entityType) {
+    public void setEntityType(EntityType entityType) {
         this.entityType = entityType;
     }
 

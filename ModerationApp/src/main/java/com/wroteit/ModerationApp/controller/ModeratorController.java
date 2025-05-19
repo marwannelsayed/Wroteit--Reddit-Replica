@@ -2,7 +2,10 @@ package com.wroteit.ModerationApp.controller;
 
 import com.wroteit.ModerationApp.model.Report;
 import com.wroteit.ModerationApp.service.ModeratorService;
+import com.wroteit.NotificationApp.model.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -32,7 +35,27 @@ public class ModeratorController {
 
     @PostMapping("/reports")
     public Report fileReport(@RequestBody Report report) {
-        return moderatorService.fileReport(report);
+        Report savedReport = moderatorService.fileReport(report);
+
+        List<Long> moderatorIds = restTemplate.exchange(
+                baseUrl + "/moderators/community/" + report.getCommunityId(),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Long>>() {}
+        ).getBody();
+
+        for (Long modId : moderatorIds) {
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("recipientId", modId);
+            requestBody.put("message", "User with id " + report.getReporterId() +
+                    " reported " + report.getEntityType() + " with id " +
+                    report.getReportedEntityId() + " in community " + report.getCommunityId());
+            requestBody.put("deliveryMethods", List.of(Notification.DeliveryMethod.EMAIL, Notification.DeliveryMethod.IN_APP));
+
+            restTemplate.postForObject(baseUrl + "/notifications/report", requestBody, Void.class);
+        }
+
+        return savedReport;
     }
 
     @GetMapping("/reports/{communityId}")
@@ -57,8 +80,17 @@ public class ModeratorController {
         body.put("communityId", communityId);
 
         restTemplate.put(baseUrl + "/communities/ban/" + userId, body);
+
+        Map<String, Object> notificationBody = new HashMap<>();
+        notificationBody.put("recipientId", userId);
+        notificationBody.put("message", "You have been banned from community " + communityId);
+        notificationBody.put("deliveryMethods", List.of(Notification.DeliveryMethod.MOBILE_BANNER, Notification.DeliveryMethod.IN_APP));
+
+        restTemplate.postForObject(baseUrl + "/notifications/ban", notificationBody, Void.class);
+
         return "User banned";
     }
+
 
     @DeleteMapping("/user/{userId}")
     public void deleteUserRecords(@PathVariable Long userId){

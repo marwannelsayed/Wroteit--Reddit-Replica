@@ -31,7 +31,7 @@ public class VoteController {
     }
 
 
-    @GetMapping("/target/{targetType}/{targetId}")
+    @GetMapping("/target/{targetId}")
     public List<Vote> getVotesForTarget( @PathVariable String targetId) {
         return voteService.getVotesForTarget(targetId);
     }

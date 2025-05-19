@@ -120,5 +120,10 @@ public class CommunityController {
         return communityService.banCommunityForUser(userId, communityId);
     }
 
+    @GetMapping("/{userId}/checkUserBanned/{communityId}")
+    public boolean checkUserBanned(@PathVariable Long userId, @PathVariable String communityId){
+        return communityService.checkUserBanned(userId, communityId);
+    }
+
 }
 

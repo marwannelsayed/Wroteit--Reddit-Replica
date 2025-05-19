@@ -2,22 +2,33 @@ package com.example.ThreadsApp.controller;
 
 import com.example.ThreadsApp.model.Comment;
 import com.example.ThreadsApp.service.CommentService;
+import com.example.ThreadsApp.service.ThreadService;
+import com.wroteit.NotificationApp.model.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
 
     private final CommentService commentService;
+    private final ThreadService threadService;
+    RestTemplate restTemplate;
+    String baseUrl;
 
     @Autowired
-    public CommentController(CommentService commentService) {
+    public CommentController(CommentService commentService, ThreadService threadService) {
         this.commentService = commentService;
+        this.threadService = threadService;
+        restTemplate = new RestTemplate();
+        baseUrl = "http://api-gateway:8080";
     }
 
     @GetMapping("/threads/{threadId}/comments")
@@ -33,8 +44,30 @@ public class CommentController {
     // Assuming comments are created in the context of a thread
     @PostMapping("/threads/{threadId}/comments")
     public Comment createComment(@RequestBody Comment comment) {
-        return commentService.createComment(comment);
+        Comment created = commentService.createComment(comment);
+
+        String parentId = comment.getParentId();
+        String url;
+        Notification.NotificationType type;
+
+        if (threadService.threadExists(parentId)) {
+            url = "/notifications/comment";
+        } else {
+            url = "/notifications/reply";
+        }
+
+        Long recipientId = threadService.getAuthorIdByCommentParentId(parentId);
+        if (recipientId != null) {
+            Map<String, Object> body = new HashMap<>();
+            body.put("recipientId", recipientId);
+            body.put("message", "You have a new reply.");
+            body.put("deliveryMethods", List.of(Notification.DeliveryMethod.MOBILE_BANNER));
+            restTemplate.postForObject(baseUrl + url, body, Void.class);
+        }
+
+        return created;
     }
+
 
     @PutMapping("/comments/{id}")
     public Comment updateComment(@PathVariable String id, @RequestBody String commentDetails) {
