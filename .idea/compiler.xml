@@ -9,17 +9,23 @@
         <outputRelativeToContentRoot value="true" />
         <module name="NotificationApp" />
         <module name="ModerationApp" />
-        <module name="CommunitiesApp" />
+        <module name="GatewayApp" />
+        <module name="NotificationApp (2)" />
         <module name="UserApp" />
         <module name="ThreadsApp" />
+        <module name="NotificationApp (1)" />
+        <module name="CommunitiesApp" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="CommunitiesApp" options="-parameters" />
+      <module name="GatewayApp" options="-parameters" />
       <module name="ModerationApp" options="-parameters" />
       <module name="NotificationApp" options="-parameters" />
+      <module name="NotificationApp (1)" options="-parameters" />
+      <module name="NotificationApp (2)" options="-parameters" />
       <module name="ThreadsApp" options="-parameters" />
       <module name="UserApp" options="-parameters" />
     </option>
