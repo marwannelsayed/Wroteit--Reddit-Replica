@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface VoteRepository extends MongoRepository<Vote, Long> {
     List<Vote> findByTargetIdAndTargetType(Long targetId, Vote.TargetType targetType);
     Optional<Vote> findByUserIdAndTargetId(Long userId, Long targetId);
+
+    List<Vote> findByTargetId(Long targetId);
     // Custom query methods can be added here if needed
 }
 

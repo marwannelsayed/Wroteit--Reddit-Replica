@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/votes")
+@RequestMapping("/votes")
 public class VoteController {
 
     private final VoteService voteService;
@@ -20,21 +20,25 @@ public class VoteController {
         this.voteService = voteService;
     }
 
-    @PostMapping
-    public Vote castVote(@RequestBody Vote vote) {
-        return voteService.castVote(vote);
+    @PostMapping("/{userId}/upvote/{contentId}")
+    public String upvote(@PathVariable Long userId, @PathVariable Long contentId) {
+        return voteService.upvote(userId, contentId);
     }
 
+    @PostMapping("/{userId}/downvote/{contentId}")
+    public String downvote(@PathVariable Long userId, @PathVariable Long contentId) {
+        return voteService.downvote(userId, contentId);
+    }
+
+
     @GetMapping("/target/{targetType}/{targetId}")
-    public List<Vote> getVotesForTarget(@PathVariable Vote.TargetType targetType, @PathVariable String targetId) {
-        return voteService.getVotesForTarget(targetType, targetId);
+    public List<Vote> getVotesForTarget( @PathVariable Long targetId) {
+        return voteService.getVotesForTarget(targetId);
     }
-    @GetMapping("/user/{userId}")
-    public List<Vote> getVotesByUser(@PathVariable String userId) {
-        return voteService.getVotesByUser(userId);
-    }
+
+
     @DeleteMapping("/{id}")
-    public void deleteVote(@PathVariable String id) {
+    public void deleteVote(@PathVariable Long id) {
         voteService.deleteVote(id);
     }
 

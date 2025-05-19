@@ -74,28 +74,33 @@ public class CommentService {
         if(comment!=null && !comment.isDeleted()){
             comment.setContent(updatedComment);
             commentRepository.save(comment);
-            return "Comment updated successfully.";
+            System.out.println("Comment updated successfully.");
+            return comment;
         }
-        System.out.println("Comment updated successfully!");
+        System.out.println("Comment not found or already deleted.");
         return comment;
     }
 
 
     public String deleteComment(Long id) {
-        if(commentRepository.existsById(id) && !getCommentById(id).equals("Comment not found or is deleted.")){
+        if(commentRepository.existsById(id) && !getCommentById(id).isDeleted()){
             DeleteCommentCommand deleteCommentCommand = new DeleteCommentCommand(commentRepository, id);
             deleteCommentCommand.execute();
+            System.out.println("Comment deleted successfully.");
             return "Comment deleted successfully!";
         }
+        System.out.println("Comment not found or already deleted.");
         return "Comment not found or already deleted.";
     }
 
     public String banComment(Long id) {
-        if(commentRepository.existsById(id) && !getCommentById(id).equals("Comment not found or is deleted.")){
+        if(commentRepository.existsById(id) && !getCommentById(id).isDeleted()){
             BanCommentCommand banCommentCommand = new BanCommentCommand(commentRepository, id);
             banCommentCommand.execute();
+            System.out.println("Comment banned successfully.");
             return "Comment banned successfully!";
         }
+        System.out.println("Comment not found or already deleted.");
         return "Comment not found or already deleted.";
     }
 

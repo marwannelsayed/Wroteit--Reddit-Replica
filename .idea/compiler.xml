@@ -2,21 +2,25 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
-
       <profile default="true" name="Default" enabled="true" />
-
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="UserApp" />
-        <module name="CommunitiesApp" />
+        <module name="ThreadsApp" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="GatewayApp" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="CommunitiesApp" options="-parameters" />
+      <module name="GatewayApp" options="-parameters" />
+      <module name="ModerationApp" options="-parameters" />
+      <module name="NotificationApp" options="-parameters" />
+      <module name="ThreadsApp" options="-parameters" />
       <module name="UserApp" options="-parameters" />
     </option>
   </component>

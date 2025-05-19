@@ -27,14 +27,9 @@ public class ThreadService {
         return threads;
     }
 
-    public List<Thread> getCommunityThreads(Long communityId) {
-        List<Thread> threads = threadRepository.findByCommunityId(communityId);
-        System.out.println("Community threads fetched successfully");
-        return threads;
-    }
 
     public Thread getThreadById(Long id) {
-        Thread thread = threadRepository.findById(id);
+        Thread thread = threadRepository.findById(id).orElse(null);
         if(thread == null || thread.isDeleted()) {
             System.out.println("Thread not found");
             return null;
@@ -54,17 +49,21 @@ public class ThreadService {
         if(thread != null && !thread.isDeleted()) {
             thread.setContent(newContent);
             System.out.println("Thread updated successfully");
+            threadRepository.save(thread);
+            return thread;
         }
-        return "Thread not found or already deleted";
+        System.out.println("Thread not found or already deleted");
+        return thread;
     }
 
     public String deleteThread(Long id) {
         if(threadRepository.existsById(id) && !getThreadById(id).isDeleted()){
             DeleteThreadCommand deleteThreadCommand = new DeleteThreadCommand(threadRepository, id);
             deleteThreadCommand.execute();
-            System.out.println("ThreadService.deleteThread executed successfully");
+            System.out.println("Thread deleted successfully");
             return "Thread deleted successfully!";
         }
+        System.out.println("Thread not found");
         return "Thread not found";
     }
 
@@ -72,9 +71,10 @@ public class ThreadService {
         if(threadRepository.existsById(id) && !getThreadById(id).isDeleted()){
             BanThreadCommand banThreadCommand = new BanThreadCommand(threadRepository, id);
             banThreadCommand.execute();
-            System.out.println("ThreadService.banThread executed successfully");
+            System.out.println("Thread banned successfully!");
             return "Thread banned successfully!";
         }
+        System.out.println("Thread not found");
         return "Thread not found";
     }
     
@@ -87,13 +87,23 @@ public class ThreadService {
 
     public List<Thread> getThreadsByAuthorId(Long authorId) {
         List<Thread> threads = threadRepository.findByAuthorId(authorId);
-        System.out.println("Threads by author fetched successfully");
+        if(threads.isEmpty()){
+            System.out.println("No threads by author yet!");
+        }
+        else{
+            System.out.println("Threads by author fetched successfully");
+        }
         return threads;
     }
 
     public List<Thread> getThreadsByCommunityId(Long communityId) {
         List<Thread> threads = threadRepository.findByCommunityId(communityId);
-        System.out.println("Threads by community fetched successfully");
+        if(threads.isEmpty()){
+            System.out.println("No threads in community yet!");
+        }
+        else{
+            System.out.println("Threads in community fetched successfully");
+        }
         return threads;
     }
 
