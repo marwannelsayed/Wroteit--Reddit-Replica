@@ -60,9 +60,10 @@ public class UserController {
 
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
+    public User getUserById(@PathVariable("id") Long id) {
         return userService.getUserById(id);
     }
+
 
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable Long id, @RequestHeader("Authorization") String token) {
