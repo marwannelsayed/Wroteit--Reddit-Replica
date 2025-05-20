@@ -15,5 +15,7 @@ spec:
       containers:
         - name: moderatorapp
           image: moderationapp:1.0
+          imagePullPolicy: IfNotPresent
+
           ports:
             - containerPort: 8080

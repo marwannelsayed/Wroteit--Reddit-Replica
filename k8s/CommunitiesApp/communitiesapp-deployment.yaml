@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: communitiesapp
-          image: communitiesapp:latest
+          image: communitiesapp:1.0
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
           env:

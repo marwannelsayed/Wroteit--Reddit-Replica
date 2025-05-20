@@ -5,7 +5,7 @@ FROM openjdk:25-ea-4-jdk-oraclelinux9
 WORKDIR /app
 
 # Copy the specific jar file into the container
-COPY target/CommunitiesApp-0.0.1-SNAPSHOT.jar app.jar
+COPY target/GatewayApp-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the port your app runs on
 EXPOSE 8080
