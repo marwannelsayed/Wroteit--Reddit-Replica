@@ -11,8 +11,8 @@
         <module name="ModerationApp" />
         <module name="GatewayApp" />
         <module name="UserApp" />
-        <module name="ThreadsApp" />
         <module name="CommunitiesApp" />
+        <module name="ThreadsApp" />
       </profile>
     </annotationProcessing>
   </component>
