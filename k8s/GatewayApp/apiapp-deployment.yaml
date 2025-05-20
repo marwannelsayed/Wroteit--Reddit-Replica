@@ -17,5 +17,7 @@ spec:
       containers:
         - name: apiapp
           image: apiapp:latest
+          imagePullPolicy: IfNotPresent
+
           ports:
             - containerPort: 8080
