@@ -41,9 +41,8 @@ public class UserController {
         return "User created successfully";
     }
 
-
     @PostMapping("/login/{id}")
-    public ResponseEntity<?> login(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<?> login(@PathVariable("id") Long id, @RequestBody User user) {
         try {
             String result = userService.login(id, user.getPassword());
             if (!"Login successful".equals(result)) {
@@ -57,18 +56,15 @@ public class UserController {
         }
     }
 
-
-
     @GetMapping("/{id}")
     public User getUserById(@PathVariable("id") Long id) {
         return userService.getUserById(id);
     }
 
-
     @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+    public String deleteUser(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
-        if(!userService.userExists(id)) return "User does not exist!";
+        if (!userService.userExists(id)) return "User does not exist!";
         userService.deleteUser(id);
         rabbitTemplate.convertAndSend("deleteUserQueue", id);
         restTemplate.delete(baseUrl + "/moderators/user/" + id);
@@ -77,24 +73,31 @@ public class UserController {
 
     @PutMapping("/{id}/biography")
     public String updateBiography(
-            @PathVariable Long id, @RequestBody String bio, @RequestHeader("Authorization") String token) {
+            @PathVariable("id") Long id,
+            @RequestBody String bio,
+            @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
-        if(!userService.userExists(id)) return "User does not exist!";
+        if (!userService.userExists(id)) return "User does not exist!";
         userService.updateBiography(id, bio);
         return "Bio updated successfully!";
     }
 
     @PostMapping("/{id}/follow/{targetId}")
     public String followUser(
-            @PathVariable Long id, @PathVariable Long targetId, @RequestHeader("Authorization") String token) {
+            @PathVariable("id") Long id,
+            @PathVariable("targetId") Long targetId,
+            @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
-        if(!userService.userExists(targetId)) return "User does not exist!";
+        if (!userService.userExists(targetId)) return "User does not exist!";
         userService.followUser(id, targetId);
         return "User followed successfully";
     }
 
     @DeleteMapping("/{id}/unfollow/{targetId}")
-    public String unfollowUser(@PathVariable Long id, @PathVariable Long targetId, @RequestHeader("Authorization") String token) {
+    public String unfollowUser(
+            @PathVariable("id") Long id,
+            @PathVariable("targetId") Long targetId,
+            @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
         if (!userService.userExists(targetId)) return "User does not exist!";
         userService.unfollowUser(id, targetId);
@@ -102,7 +105,10 @@ public class UserController {
     }
 
     @PostMapping("/{id}/block/{targetId}")
-    public String blockUser(@PathVariable Long id, @PathVariable Long targetId, @RequestHeader("Authorization") String token) {
+    public String blockUser(
+            @PathVariable("id") Long id,
+            @PathVariable("targetId") Long targetId,
+            @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
         if (!userService.userExists(targetId)) return "User does not exist!";
         userService.blockUser(id, targetId);
@@ -110,7 +116,10 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}/unblock/{targetId}")
-    public String unblockUser(@PathVariable Long id, @PathVariable Long targetId, @RequestHeader("Authorization") String token) {
+    public String unblockUser(
+            @PathVariable("id") Long id,
+            @PathVariable("targetId") Long targetId,
+            @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
         if (!userService.userExists(targetId)) return "User does not exist!";
         userService.unblockUser(id, targetId);
@@ -118,20 +127,27 @@ public class UserController {
     }
 
     @PostMapping("/{id}/subscribe/{communityId}")
-    public String subscribeToCommunity(@PathVariable Long id, @PathVariable String communityId, @RequestHeader("Authorization") String token) {
+    public String subscribeToCommunity(
+            @PathVariable("id") Long id,
+            @PathVariable("communityId") String communityId,
+            @RequestHeader("Authorization") String token) {
+
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
 
         Object community = restTemplate.getForObject(baseUrl + "/communities/" + id, LinkedHashMap.class);
-        if(community == null) return "Community does not exist";
+        if (community == null) return "Community does not exist";
+
         userService.subscribeToCommunity(id, communityId);
         restTemplate.put(baseUrl + "/communities/subscribe/" + id, communityId);
+
         List<Long> moderatorIds = restTemplate.exchange(
                 baseUrl + "/moderators/community/" + communityId,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Long>>() {}
         ).getBody();
-        for(Long modId: moderatorIds){
+
+        for (Long modId : moderatorIds) {
             Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("recipientId", modId);
             requestBody.put("message", "User with id " + id + " just subscribed to community with id " + communityId);
@@ -139,44 +155,53 @@ public class UserController {
 
             restTemplate.postForObject(baseUrl + "/notifications/subscribe", requestBody, Void.class);
         }
+
         return "Subscribed to community successfully!";
     }
 
     @DeleteMapping("/{id}/unsubscribe/{communityId}")
-    public String unsubscribeFromCommunity(@PathVariable Long id, @PathVariable String communityId, @RequestHeader("Authorization") String token) {
+    public String unsubscribeFromCommunity(
+            @PathVariable("id") Long id,
+            @PathVariable("communityId") String communityId,
+            @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
-        if(!userService.getUserById(id).getSubscribedCommunities().contains(communityId))return "Community not in subscribed list";
+        if (!userService.getUserById(id).getSubscribedCommunities().contains(communityId))
+            return "Community not in subscribed list";
+
         userService.unsubscribeFromCommunity(id, communityId);
-        // TODO: Call Community microservice to remove the subscriber
         restTemplate.put(baseUrl + "/communities/unsubscribe/" + id, communityId);
         return "Unsubscribed from community successfully!";
     }
 
     @PostMapping("/{id}/hide/{communityId}")
-    public String hideCommunity(@PathVariable Long id, @PathVariable String communityId, @RequestHeader("Authorization") String token) {
+    public String hideCommunity(
+            @PathVariable("id") Long id,
+            @PathVariable("communityId") String communityId,
+            @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
-        // TODO: Check community exists first
+
         Object community = restTemplate.getForObject(baseUrl + "/communities" + id, LinkedHashMap.class);
-        if(community == null) return "Community does not exist";
+        if (community == null) return "Community does not exist";
+
         userService.hideCommunity(id, communityId);
         return "Community hidden successfully!";
     }
 
     @DeleteMapping("/{id}/unhide/{communityId}")
-    public String unhideCommunity(@PathVariable Long id, @PathVariable String communityId, @RequestHeader("Authorization") String token) {
+    public String unhideCommunity(
+            @PathVariable("id") Long id,
+            @PathVariable("communityId") String communityId,
+            @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
-        if(!userService.getUserById(id).getHiddenCommunities().contains(communityId))return "Community not in hidden list";
+        if (!userService.getUserById(id).getHiddenCommunities().contains(communityId))
+            return "Community not in hidden list";
+
         userService.unhideCommunity(id, communityId);
         return "Community unhidden successfully!";
     }
 
     @GetMapping("/exists/{userId}")
-    public boolean userExists(@PathVariable Long userId) {
+    public boolean userExists(@PathVariable("userId") Long userId) {
         return userService.userExists(userId);
     }
-
-
-
-
 }
-
