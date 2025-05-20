@@ -5,7 +5,9 @@ FROM openjdk:25-ea-4-jdk-oraclelinux9
 WORKDIR /app
 
 # Copy the jar file into the container
-COPY target/*.jar app.jar
+#COPY target/*.jar app.jar
+COPY target/NotificationApp-0.0.1-SNAPSHOT.jar app.jar
+
 
 # Expose the port
 EXPOSE 8080

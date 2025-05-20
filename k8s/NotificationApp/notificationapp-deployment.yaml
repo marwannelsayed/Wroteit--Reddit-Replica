@@ -15,6 +15,7 @@ spec:
       containers:
         - name: notificationapp
           image: notificationapp:1.0
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
           env:
