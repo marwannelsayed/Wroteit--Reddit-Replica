@@ -2,23 +2,23 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: user-app
-          uri: http://user-app:8080
+        - id: userapp
+          uri: http://userapp:8080
           predicates:
             - Path=/users/**
-        - id: communities-app
-          uri: http://communities-app:8080
+        - id: communitiesapp
+          uri: http://communitiesapp:8080
           predicates:
             - Path=/communities/**
-        - id: communities-app
-          uri: http://moderation-app:8080
+        - id: communitiesapp
+          uri: http://moderationapp:8080
           predicates:
             - Path=/moderators/**
-        - id: notification-app
-          uri: http://notification-app:8080
+        - id: notificationapp
+          uri: http://notificationapp:8080
           predicates:
             - Path=/notifications/**
-        - id: threads-app
-          uri: http://threads-app:8080
+        - id: threadsapp
+          uri: http://threadsapp:8080
           predicates:
             - Path=/threads/**,/votes/**,/comments/**
