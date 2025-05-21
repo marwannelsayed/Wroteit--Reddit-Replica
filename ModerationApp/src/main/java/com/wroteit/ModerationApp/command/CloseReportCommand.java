@@ -1,13 +1,9 @@
 package com.wroteit.ModerationApp.command;
 
-import com.wroteit.ModerationApp.model.Moderator;
-import com.wroteit.ModerationApp.repository.ModeratorRepository;
-import com.wroteit.ModerationApp.repository.ReportRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
-@Component
+import com.wroteit.ModerationApp.repository.ReportRepository;
+
+
 public class CloseReportCommand implements ModerationCommand {
     private final ReportRepository reportRepository;
     private final Long reportId;

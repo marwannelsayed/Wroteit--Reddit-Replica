@@ -1,12 +1,100 @@
-version: '3.8'
 services:
   mongodb:
     image: mongo:latest
-    container_name: mongodb_container
+    container_name: mongodb
     ports:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
 
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: averageSized
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  userapp:
+    build: ./UserApp
+    container_name: UserApp
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+
+  communitiesapp:
+    build: ./CommunitiesApp
+    container_name: CommunitiesApp
+    depends_on:
+      - mongodb
+      - rabbitmq
+    ports:
+      - "8082:8082"
+
+  notificationapp:
+    build: ./NotificationApp
+    container_name: NotificationApp
+    depends_on:
+      - mongodb
+    ports:
+      - "8083:8083"
+
+  threadsapp:
+    build: ./ThreadsApp
+    container_name: ThreadsApp
+    depends_on:
+      - mongodb
+    ports:
+      - "8084:8084"
+
+  moderationapp:
+    build: ./ModerationApp
+    container_name: ModerationApp
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "8085:8085"
+
+
+  gatewayapp:
+    build: ./GatewayApp
+    container_name: GatewayApp
+    depends_on:
+      - userapp
+      - communitiesapp
+      - notificationapp
+      - threadsapp
+      - moderationapp
+    ports:
+      - "8080:8080"
+
 volumes:
   mongodb_data:
+  postgres_data:
