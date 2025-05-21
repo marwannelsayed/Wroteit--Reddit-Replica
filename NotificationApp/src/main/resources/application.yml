@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/notificationdb
+      uri: ${NOTIFICATIONS_URI}
   application:
     name: notification-app
 server:

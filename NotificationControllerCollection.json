@@ -1,28 +1,27 @@
 {
-  "info": {
-    "name": "NotificationController Test Collection",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "Create Thread Reply Notification",
-      "request": {
-        "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"recipientId\": 1,\n  \"message\": \"Your thread got a reply!\",\n  \"deliveryMethods\": [\"EMAIL\", \"IN_APP\"]\n}"
-        },
-        "url": {
-          "raw": "http://localhost:8080/notifications/thread-reply",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "8080",
-          "path": ["notifications", "thread-reply"]
-        }
-      }
-    },
-    {
+  "info": {
+"name": "NotificationController Test Collection",
+"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"},
+"item": [
+{
+"name": "Create Thread Reply Notification",
+"request": {
+"method": "POST",
+"header": [{ "key": "Content-Type", "value": "application/json" }],
+"body": {
+"mode": "raw",
+"raw": "{\n  \"recipientId\": 1,\n  \"message\": \"Your thread got a reply!\",\n  \"deliveryMethods\": [\"EMAIL\", \"IN_APP\"]\n}"
+},
+"url": {
+"raw": "http://localhost:8080/notifications/thread-reply",
+"protocol": "http",
+"host": ["localhost"],
+"port": "8080",
+"path": ["notifications", "thread-reply"]
+}
+}
+},
+{
       "name": "Create Comment Reply Notification",
       "request": {
         "method": "POST",
