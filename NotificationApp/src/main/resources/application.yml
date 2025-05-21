@@ -1,8 +1,0 @@
-spring:
-  data:
-    mongodb:
-      uri: ${NOTIFICATIONS_URI}
-  application:
-    name: notification-app
-server:
-  port: 8084

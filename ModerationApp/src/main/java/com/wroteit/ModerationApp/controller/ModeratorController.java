@@ -2,7 +2,6 @@ package com.wroteit.ModerationApp.controller;
 
 import com.wroteit.ModerationApp.model.Report;
 import com.wroteit.ModerationApp.service.ModeratorService;
-import com.wroteit.NotificationApp.model.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -50,7 +49,6 @@ public class ModeratorController {
             requestBody.put("message", "User with id " + report.getReporterId() +
                     " reported " + report.getEntityType() + " with id " +
                     report.getReportedEntityId() + " in community " + report.getCommunityId());
-            requestBody.put("deliveryMethods", List.of(Notification.DeliveryMethod.EMAIL, Notification.DeliveryMethod.IN_APP));
 
             restTemplate.postForObject(baseUrl + "/notifications/report", requestBody, Void.class);
         }
@@ -81,12 +79,6 @@ public class ModeratorController {
 
         restTemplate.put(baseUrl + "/communities/ban/" + userId, body);
 
-        Map<String, Object> notificationBody = new HashMap<>();
-        notificationBody.put("recipientId", userId);
-        notificationBody.put("message", "You have been banned from community " + communityId);
-        notificationBody.put("deliveryMethods", List.of(Notification.DeliveryMethod.MOBILE_BANNER, Notification.DeliveryMethod.IN_APP));
-
-        restTemplate.postForObject(baseUrl + "/notifications/ban", notificationBody, Void.class);
 
         return "User banned";
     }

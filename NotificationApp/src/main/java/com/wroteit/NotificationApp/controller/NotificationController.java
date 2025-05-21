@@ -27,28 +27,28 @@ public class NotificationController {
     }
 
     @PostMapping("/comment")
-    public Notification createPostCommentNotification(@RequestBody Long recipientId, @RequestBody String message,  @RequestBody List<Notification.DeliveryMethod> deliveryMethods) { // Call to parent when commenting on post
-        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.THREAD_REPLY, deliveryMethods);
+    public Notification createPostCommentNotification(@RequestBody Long recipientId, @RequestBody String message) { // Call to parent when commenting on post
+        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.THREAD_REPLY, List.of(Notification.DeliveryMethod.MOBILE_BANNER));
     }
 
     @PostMapping("/reply")
-    public Notification createCommentReplyNotification(@RequestBody Long recipientId, @RequestBody String message,  @RequestBody List<Notification.DeliveryMethod> deliveryMethods) { // Call to parent when commenting on comment
-        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.COMMENT_REPLY, deliveryMethods);
+    public Notification createCommentReplyNotification(@RequestBody Long recipientId, @RequestBody String message) { // Call to parent when commenting on comment
+        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.COMMENT_REPLY, List.of(Notification.DeliveryMethod.MOBILE_BANNER));
     }
 
     @PostMapping("/ban")
-    public Notification createBanNotification(@RequestBody Long recipientId, @RequestBody String message,  @RequestBody List<Notification.DeliveryMethod> deliveryMethods) { // Call to user when banned via ModerationApp
-        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.BAN, deliveryMethods);
+    public Notification createBanNotification(@RequestBody Long recipientId, @RequestBody String message) { // Call to user when banned via ModerationApp
+        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.BAN, List.of(Notification.DeliveryMethod.EMAIL, Notification.DeliveryMethod.IN_APP));
     }
 
     @PostMapping("/subscribe")
-    public Notification createSubscriptionNotification(@RequestBody Long recipientId, @RequestBody String message,  @RequestBody List<Notification.DeliveryMethod> deliveryMethods) { // Call to each moderator of community when user subscribes
-        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.SUBSCRIPTION, deliveryMethods);
+    public Notification createSubscriptionNotification(@RequestBody Long recipientId, @RequestBody String message) { // Call to each moderator of community when user subscribes
+        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.SUBSCRIPTION, List.of(Notification.DeliveryMethod.EMAIL, Notification.DeliveryMethod.MOBILE_BANNER));
     }
 
     @PostMapping("/report")
-    public Notification createReportNotification(@RequestBody Long recipientId, @RequestBody String message,  @RequestBody List<Notification.DeliveryMethod> deliveryMethods) { // Call to each moderator of community when thread is reported in their community
-        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.REPORT, deliveryMethods);
+    public Notification createReportNotification(@RequestBody Long recipientId, @RequestBody String message) { // Call to each moderator of community when thread is reported in their community
+        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.REPORT, List.of(Notification.DeliveryMethod.EMAIL, Notification.DeliveryMethod.IN_APP));
     }
 
 

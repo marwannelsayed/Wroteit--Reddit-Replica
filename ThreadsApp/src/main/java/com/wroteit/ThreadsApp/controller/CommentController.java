@@ -3,7 +3,6 @@ package com.wroteit.ThreadsApp.controller;
 import com.wroteit.ThreadsApp.model.Comment;
 import com.wroteit.ThreadsApp.service.CommentService;
 import com.wroteit.ThreadsApp.service.ThreadService;
-import com.wroteit.NotificationApp.model.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -46,7 +45,6 @@ public class CommentController {
 
         String parentId = comment.getParentId();
         String url;
-        Notification.NotificationType type;
 
         if (threadService.threadExists(parentId)) {
             url = "/notifications/comment";
@@ -59,7 +57,6 @@ public class CommentController {
             Map<String, Object> body = new HashMap<>();
             body.put("recipientId", recipientId);
             body.put("message", "You have a new reply.");
-            body.put("deliveryMethods", List.of(Notification.DeliveryMethod.MOBILE_BANNER));
             restTemplate.postForObject(baseUrl + url, body, Void.class);
         }
 

@@ -1,6 +1,5 @@
 package com.wroteit.UserApp.controller;
 
-import com.wroteit.NotificationApp.model.Notification;
 import com.wroteit.UserApp.model.User;
 import com.wroteit.UserApp.security.TokenManager;
 import com.wroteit.UserApp.service.UserService;
@@ -151,7 +150,6 @@ public class UserController {
             Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("recipientId", modId);
             requestBody.put("message", "User with id " + id + " just subscribed to community with id " + communityId);
-            requestBody.put("deliveryMethods", List.of(Notification.DeliveryMethod.EMAIL, Notification.DeliveryMethod.MOBILE_BANNER));
 
             restTemplate.postForObject(baseUrl + "/notifications/subscribe", requestBody, Void.class);
         }
