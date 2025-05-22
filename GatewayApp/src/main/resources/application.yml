@@ -10,7 +10,7 @@ spring:
           uri: http://communitiesapp:8080
           predicates:
             - Path=/communities/**
-        - id: communitiesapp
+        - id: moderationapp
           uri: http://moderationapp:8080
           predicates:
             - Path=/moderators/**
