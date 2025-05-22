@@ -32,12 +32,57 @@ spec:
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               valueFrom:
-                configMapKeyRef:
-                  name: postgres-config
+                secretKeyRef:
+                  name: postgres-secret
                   key: POSTGRES_DB
+
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
       volumes:
         - name: postgres-storage
-          emptyDir: {}  # Replace with PersistentVolumeClaim in production
+          emptyDir: {}   # For dev only! Use PersistentVolumeClaim in prod
+
+#apiVersion: apps/v1
+#kind: StatefulSet
+#metadata:
+#  name: postgres
+#spec:
+#  serviceName: "postgres-service"
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: postgres
+#  template:
+#    metadata:
+#      labels:
+#        app: postgres
+#    spec:
+#      containers:
+#        - name: postgres
+#          image: postgres:13
+#          ports:
+#            - name: postgres
+#              containerPort: 5432
+#          env:
+#            - name: POSTGRES_USER
+#              valueFrom:
+#                secretKeyRef:
+#                  name: postgres-secret
+#                  key: POSTGRES_USER
+#            - name: POSTGRES_PASSWORD
+#              valueFrom:
+#                secretKeyRef:
+#                  name: postgres-secret
+#                  key: POSTGRES_PASSWORD
+#            - name: POSTGRES_DB
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: postgres-config
+#                  key: POSTGRES_DB
+#          volumeMounts:
+#            - name: postgres-storage
+#              mountPath: /var/lib/postgresql/data
+#      volumes:
+#        - name: postgres-storage
+#          emptyDir: {}  # Replace with PersistentVolumeClaim in production
