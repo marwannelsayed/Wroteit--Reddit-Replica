@@ -1,5 +1,6 @@
 package com.wroteit.NotificationApp.controller;
 
+import com.wroteit.NotificationApp.dto.NotificationRequest;
 import com.wroteit.NotificationApp.model.Notification;
 import com.wroteit.NotificationApp.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,28 +28,28 @@ public class NotificationController {
     }
 
     @PostMapping("/comment")
-    public Notification createPostCommentNotification(@RequestBody Long recipientId, @RequestBody String message) { // Call to parent when commenting on post
-        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.THREAD_REPLY, List.of(Notification.DeliveryMethod.MOBILE_BANNER));
+    public Notification createPostCommentNotification(@RequestBody NotificationRequest request) { // Call to parent when commenting on post
+        return notificationService.sendNotification(request.getRecipientId(), request.getMessage(), Notification.NotificationType.THREAD_REPLY, List.of(Notification.DeliveryMethod.MOBILE_BANNER));
     }
 
     @PostMapping("/reply")
-    public Notification createCommentReplyNotification(@RequestBody Long recipientId, @RequestBody String message) { // Call to parent when commenting on comment
-        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.COMMENT_REPLY, List.of(Notification.DeliveryMethod.MOBILE_BANNER));
+    public Notification createCommentReplyNotification(@RequestBody NotificationRequest request) { // Call to parent when commenting on comment
+        return notificationService.sendNotification(request.getRecipientId(), request.getMessage(), Notification.NotificationType.COMMENT_REPLY, List.of(Notification.DeliveryMethod.MOBILE_BANNER));
     }
 
     @PostMapping("/ban")
-    public Notification createBanNotification(@RequestBody Long recipientId, @RequestBody String message) { // Call to user when banned via ModerationApp
-        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.BAN, List.of(Notification.DeliveryMethod.EMAIL, Notification.DeliveryMethod.IN_APP));
+    public Notification createBanNotification(@RequestBody NotificationRequest request) { // Call to user when banned via ModerationApp
+        return notificationService.sendNotification(request.getRecipientId(), request.getMessage(), Notification.NotificationType.BAN, List.of(Notification.DeliveryMethod.EMAIL, Notification.DeliveryMethod.IN_APP));
     }
 
     @PostMapping("/subscribe")
-    public Notification createSubscriptionNotification(@RequestBody Long recipientId, @RequestBody String message) { // Call to each moderator of community when user subscribes
-        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.SUBSCRIPTION, List.of(Notification.DeliveryMethod.EMAIL, Notification.DeliveryMethod.MOBILE_BANNER));
+    public Notification createSubscriptionNotification(@RequestBody NotificationRequest request) { // Call to each moderator of community when user subscribes
+        return notificationService.sendNotification(request.getRecipientId(), request.getMessage(), Notification.NotificationType.SUBSCRIPTION, List.of(Notification.DeliveryMethod.EMAIL, Notification.DeliveryMethod.MOBILE_BANNER));
     }
 
     @PostMapping("/report")
-    public Notification createReportNotification(@RequestBody Long recipientId, @RequestBody String message) { // Call to each moderator of community when thread is reported in their community
-        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.REPORT, List.of(Notification.DeliveryMethod.EMAIL, Notification.DeliveryMethod.IN_APP));
+    public Notification createReportNotification(@RequestBody NotificationRequest request) { // Call to each moderator of community when thread is reported in their community
+        return notificationService.sendNotification(request.getRecipientId(), request.getMessage(), Notification.NotificationType.REPORT, List.of(Notification.DeliveryMethod.EMAIL, Notification.DeliveryMethod.IN_APP));
     }
 
 
@@ -127,7 +128,7 @@ public class NotificationController {
 //        List<String> deliveryMethodsRaw = (List<String>) payload.get("deliveryMethods");
 //        List<Notification.DeliveryMethod> deliveryMethods = parseDeliveryMethods(deliveryMethodsRaw);
 //
-//        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.THREAD_REPLY, deliveryMethods);
+//        return notificationService.sendNotification(request.getRecipientId(), request.getMessage(), Notification.NotificationType.THREAD_REPLY, deliveryMethods);
 //    }
 //
 //    @PostMapping("/reply")
@@ -138,7 +139,7 @@ public class NotificationController {
 //        List<String> deliveryMethodsRaw = (List<String>) payload.get("deliveryMethods");
 //        List<Notification.DeliveryMethod> deliveryMethods = parseDeliveryMethods(deliveryMethodsRaw);
 //
-//        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.COMMENT_REPLY, deliveryMethods);
+//        return notificationService.sendNotification(request.getRecipientId(), request.getMessage(), Notification.NotificationType.COMMENT_REPLY, deliveryMethods);
 //    }
 //
 //    @PostMapping("/ban")
@@ -149,7 +150,7 @@ public class NotificationController {
 //        List<String> deliveryMethodsRaw = (List<String>) payload.get("deliveryMethods");
 //        List<Notification.DeliveryMethod> deliveryMethods = parseDeliveryMethods(deliveryMethodsRaw);
 //
-//        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.BAN, deliveryMethods);
+//        return notificationService.sendNotification(request.getRecipientId(), request.getMessage(), Notification.NotificationType.BAN, deliveryMethods);
 //    }
 //
 //    @PostMapping("/subscribe")
@@ -160,7 +161,7 @@ public class NotificationController {
 //        List<String> deliveryMethodsRaw = (List<String>) payload.get("deliveryMethods");
 //        List<Notification.DeliveryMethod> deliveryMethods = parseDeliveryMethods(deliveryMethodsRaw);
 //
-//        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.SUBSCRIPTION, deliveryMethods);
+//        return notificationService.sendNotification(request.getRecipientId(), request.getMessage(), Notification.NotificationType.SUBSCRIPTION, deliveryMethods);
 //    }
 //
 //    @PostMapping("/report")
@@ -171,7 +172,7 @@ public class NotificationController {
 //        List<String> deliveryMethodsRaw = (List<String>) payload.get("deliveryMethods");
 //        List<Notification.DeliveryMethod> deliveryMethods = parseDeliveryMethods(deliveryMethodsRaw);
 //
-//        return notificationService.sendNotification(recipientId, message, Notification.NotificationType.REPORT, deliveryMethods);
+//        return notificationService.sendNotification(request.getRecipientId(), request.getMessage(), Notification.NotificationType.REPORT, deliveryMethods);
 //    }
 //
 //    @GetMapping("/{userId}")

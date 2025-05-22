@@ -1,5 +1,6 @@
 package com.wroteit.CommunitiesApp.controller;
 
+import com.wroteit.CommunitiesApp.dto.CommunityRequest;
 import com.wroteit.CommunitiesApp.model.Community;
 import com.wroteit.CommunitiesApp.model.CommunityType;
 import com.wroteit.CommunitiesApp.service.CommunityService;
@@ -27,14 +28,13 @@ public class CommunityController {
         baseUrl = "http://api-gateway:8080";
     }
 
-    @PostMapping("/creatorID")
-    public Community createCommunity(@PathVariable Long creatorID, @RequestBody String name, @RequestBody String description, @RequestBody CommunityType type){
-        Community community = communityService.createCommunity(creatorID, name, description, type);
-        // TODO: Add api call to make record in moderator table for new community and moderator
+    @PostMapping("/creatorID/{creatorID}")
+    public Community createCommunity(@PathVariable Long creatorID, @RequestBody CommunityRequest communityData) {
+        Community community = communityService.createCommunity(creatorID, communityData.getName(), communityData.getDescription(), communityData.getType());
+
         Map<String, Object> body = new HashMap<>();
         body.put("userId", creatorID);
         body.put("communityId", community.getId());
-
         restTemplate.postForObject(baseUrl + "/moderators/assign", body, String.class);
 
         return community;

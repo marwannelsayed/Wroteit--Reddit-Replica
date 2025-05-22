@@ -1,5 +1,6 @@
 package com.wroteit.ModerationApp.controller;
 
+import com.wroteit.ModerationApp.dto.UserCommunityRequest;
 import com.wroteit.ModerationApp.model.Report;
 import com.wroteit.ModerationApp.service.ModeratorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,16 +69,16 @@ public class ModeratorController {
     }
 
     @PostMapping("/assign")
-    public String assignModerator(@RequestBody Long userId, @RequestBody String communityId) {
-        return moderatorService.assignModerator(userId, communityId);
+    public String assignModerator(@RequestBody UserCommunityRequest request) {
+        return moderatorService.assignModerator(request.getUserId(), request.getCommunityId());
     }
 
     @PostMapping("/ban")
-    public String banUser(@RequestBody Long userId, @RequestBody String communityId) {
+    public String banUser(@RequestBody UserCommunityRequest request) {
         Map<String, String> body = new HashMap<>();
-        body.put("communityId", communityId);
+        body.put("communityId", request.getCommunityId());
 
-        restTemplate.put(baseUrl + "/communities/ban/" + userId, body);
+        restTemplate.put(baseUrl + "/communities/ban/" + request.getUserId(), body);
 
 
         return "User banned";
