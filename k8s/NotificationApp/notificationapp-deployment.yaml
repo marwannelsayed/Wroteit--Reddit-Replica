@@ -18,9 +18,15 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+#          env:
+#            - name: NOTIFICATIONS_URI
+#              valueFrom:
+#                secretKeyRef:
+#                  name: mongo-secret
+#                  key: NOTIFICATIONS_URI
           env:
-            - name: NOTIFICATIONS_URI
+            - name: SPRING_DATA_MONGODB_URI
               valueFrom:
                 secretKeyRef:
                   name: mongo-secret
-                  key: NOTIFICATIONS_URI
+                  key: SPRING_DATA_MONGODB_URI
