@@ -2,6 +2,7 @@ package com.wroteit.ThreadsApp.service;
 
 import com.wroteit.ThreadsApp.command.BanThreadCommand;
 import com.wroteit.ThreadsApp.command.DeleteThreadCommand;
+import com.wroteit.ThreadsApp.dto.ThreadRequest;
 import com.wroteit.ThreadsApp.model.Comment;
 import com.wroteit.ThreadsApp.model.Thread;
 import com.wroteit.ThreadsApp.repository.CommentRepository;
@@ -41,8 +42,8 @@ public class ThreadService {
         return thread;
     }
 
-    public Thread createThread(Thread thread) {
-        Thread createdThread = threadRepository.save(thread);
+    public Thread createThread(ThreadRequest thread) {
+        Thread createdThread = threadRepository.save(new Thread(thread.getTitle(), thread.getContent(), thread.getAuthorId(), thread.getCommunityId()));
         System.out.println("Thread created successfully");
         return createdThread;
     }

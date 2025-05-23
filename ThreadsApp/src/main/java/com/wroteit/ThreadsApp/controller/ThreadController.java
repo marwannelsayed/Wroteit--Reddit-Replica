@@ -1,5 +1,6 @@
 package com.wroteit.ThreadsApp.controller;
 
+import com.wroteit.ThreadsApp.dto.ThreadRequest;
 import com.wroteit.ThreadsApp.model.Thread;
 import com.wroteit.ThreadsApp.service.ThreadService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -39,7 +40,7 @@ public class ThreadController {
     }
 
     @PostMapping
-    public Thread createThread(@RequestBody Thread thread) {
+    public Thread createThread(@RequestBody ThreadRequest thread) {
         Boolean isBanned = restTemplate.getForObject(baseUrl + "/communities/" + thread.getAuthorId() + "/checkUserBanned/" + thread.getCommunityId(), Boolean.class);
         if(isBanned)return null;
         Thread createdThread = threadService.createThread(thread);
