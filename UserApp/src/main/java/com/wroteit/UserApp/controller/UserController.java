@@ -133,7 +133,7 @@ public class UserController {
 
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
 
-        Object community = restTemplate.getForObject(baseUrl + "/communities/" + id, LinkedHashMap.class);
+        Object community = restTemplate.getForObject(baseUrl + "/communities/" + communityId, LinkedHashMap.class);
         if (community == null) return "Community does not exist";
 
         userService.subscribeToCommunity(id, communityId);
@@ -178,7 +178,7 @@ public class UserController {
             @RequestHeader("Authorization") String token) {
         if (!TokenManager.getInstance().isValid(id, token) && !token.equals("BYPASSTOKEN")) return "Unauthorized";
 
-        Object community = restTemplate.getForObject(baseUrl + "/communities" + id, LinkedHashMap.class);
+        Object community = restTemplate.getForObject(baseUrl + "/communities/" + communityId, LinkedHashMap.class);
         if (community == null) return "Community does not exist";
 
         userService.hideCommunity(id, communityId);
