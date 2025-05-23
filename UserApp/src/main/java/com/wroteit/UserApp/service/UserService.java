@@ -26,6 +26,8 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
+        System.out.println("RAW: " + password);
+
         if (!BCrypt.checkpw(password, user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }

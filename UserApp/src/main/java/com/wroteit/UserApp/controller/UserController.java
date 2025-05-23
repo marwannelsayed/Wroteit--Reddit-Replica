@@ -41,9 +41,9 @@ public class UserController {
     }
 
     @PostMapping("/login/{id}")
-    public ResponseEntity<?> login(@PathVariable("id") Long id, @RequestBody User user) {
+    public ResponseEntity<?> login(@PathVariable("id") Long id, @RequestBody String password) {
         try {
-            String result = userService.login(id, user.getPassword());
+            String result = userService.login(id, password);
             if (!"Login successful".equals(result)) {
                 return ResponseEntity.status(401).body("{\"message\": \"Invalid credentials\"}");
             }
