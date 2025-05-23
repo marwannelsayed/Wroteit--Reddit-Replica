@@ -20,8 +20,13 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: THREADS_URI
+#            - name: THREADS_URI
+#              valueFrom:
+#                secretKeyRef:
+#                  name: mongo-secret
+#                  key: THREADS_URI
+            - name: SPRING_DATA_MONGODB_THREAD_URI
               valueFrom:
                 secretKeyRef:
                   name: mongo-secret
-                  key: THREADS_URI
+                  key: SPRING_DATA_MONGODB_THREAD_URI
