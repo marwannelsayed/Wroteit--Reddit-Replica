@@ -30,7 +30,7 @@ public class ModeratorController {
     }
 
     @GetMapping("/community/{communityId}")
-    public List<Long> getAllModeratorsOfCommunity(String communityId){
+    public List<Long> getAllModeratorsOfCommunity(@PathVariable(name="communityId") String communityId){
         return moderatorService.getAllModeratorsOfCommunity(communityId);
     }
 
@@ -59,13 +59,13 @@ public class ModeratorController {
     }
 
     @GetMapping("/reports/{communityId}")
-    public List<Report> findByCommunityId(String communityId){
+    public List<Report> findByCommunityId(@PathVariable(name="communityId") String communityId){
         return moderatorService.findByCommunityId(communityId);
     }
 
 
     @DeleteMapping("/reports/{id}")
-    public String closeReport(@PathVariable Long id) {
+    public String closeReport(@PathVariable(name = "id") Long id) {
         return moderatorService.closeReport(id);
     }
 
@@ -83,17 +83,17 @@ public class ModeratorController {
 
 
     @DeleteMapping("/user/{userId}")
-    public void deleteUserRecords(@PathVariable Long userId){
+    public void deleteUserRecords(@PathVariable(name = "userId") Long userId){
         moderatorService.deleteUserRecords(userId);
     }
 
     @DeleteMapping("/thread/{postId}")
-    public String deleteThread(@PathVariable Long postId) {
+    public String deleteThread(@PathVariable(name = "postId") Long postId) {
        return "Not implemented";
     }
 
     @GetMapping("/{userId}/isModerator/{communityId}")
-    public boolean checkUserIsModerator(@PathVariable Long userId, @PathVariable String communityId){
+    public boolean checkUserIsModerator(@PathVariable(name = "userId") Long userId, @PathVariable(name = "communityId") String communityId){
         return moderatorService.getAllModeratorsOfCommunity(communityId).contains(userId);
     }
 }
