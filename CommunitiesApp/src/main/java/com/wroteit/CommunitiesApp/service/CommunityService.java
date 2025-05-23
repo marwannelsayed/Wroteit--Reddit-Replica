@@ -34,7 +34,7 @@ public class CommunityService {
 
     public Community getCommunityById(String id) {
         return communityRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Community not found"));
+                .orElse(null);
     }
 
 
@@ -72,7 +72,8 @@ public class CommunityService {
     }
 
     public Community addTags(String communityId, List<String> tags) {
-        Community c = getCommunityById(communityId);
+        Community c = communityRepository.findById(communityId)
+                .orElse(null);
         if (c == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Community not found");
         }
@@ -86,7 +87,8 @@ public class CommunityService {
     }
 
     public Community removeTags(String communityId, List<String> tags) {
-        Community c = getCommunityById(communityId);
+        Community c = communityRepository.findById(communityId)
+                .orElse(null);
         if (c == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Community not found");
         }
@@ -100,7 +102,8 @@ public class CommunityService {
     }
 
     public Community subscribeUser(String communityId, Long userId) {
-        Community c = getCommunityById(communityId);
+        Community c = communityRepository.findById(communityId)
+                .orElse(null);
         if (c == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Community not found");
         }
@@ -112,7 +115,8 @@ public class CommunityService {
     }
 
     public Community unsubscribeUser(String communityId, Long userId) {
-        Community c = getCommunityById(communityId);
+        Community c = communityRepository.findById(communityId)
+                .orElse(null);
         if (c == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Community not found");
         }
@@ -122,7 +126,8 @@ public class CommunityService {
     }
 
     public Community hideCommunityForUser(Long userId, String communityId) {
-        Community c = getCommunityById(communityId);
+        Community c = communityRepository.findById(communityId)
+                .orElse(null);
         if (!c.getHiddenByUsers().contains(userId)) {
             c.getHiddenByUsers().add(userId);
             communityRepository.save(c);
@@ -131,14 +136,17 @@ public class CommunityService {
     }
 
     public Community unhideCommunityForUser(Long userId, String communityId) {
-        Community c = getCommunityById(communityId);
+        Community c = communityRepository.findById(communityId)
+                .orElse(null);
         c.getHiddenByUsers().remove(userId);
         communityRepository.save(c);
         return c;
     }
 
     public Community banCommunityForUser(Long userId, String communityId) {
-        Community c = getCommunityById(communityId);
+        Community c = communityRepository.findById(communityId)
+                .orElse(null);
+        if(c==null)return null;
         if (!c.getBannedUsers().contains(userId)) {
             c.getBannedUsers().add(userId);
             communityRepository.save(c);
@@ -148,7 +156,8 @@ public class CommunityService {
 
 
     public boolean checkUserBanned(Long userId, String communityId) {
-        Community community = getCommunityById(communityId);
+        Community community = communityRepository.findById(communityId)
+                .orElse(null);
         return community.getBannedUsers().contains(userId);
     }
 }

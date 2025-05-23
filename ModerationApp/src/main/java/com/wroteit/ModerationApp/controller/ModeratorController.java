@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class ModeratorController {
     public ModeratorController(ModeratorService moderatorService) {
         this.moderatorService = moderatorService;
         restTemplate = new RestTemplate();
-        baseUrl = "http://api-gateway:8080";
+        baseUrl = "http://gatewayapp:8080";
     }
 
     @GetMapping("/community/{communityId}")
@@ -75,11 +76,7 @@ public class ModeratorController {
 
     @PostMapping("/ban")
     public String banUser(@RequestBody UserCommunityRequest request) {
-        Map<String, String> body = new HashMap<>();
-        body.put("communityId", request.getCommunityId());
-
-        restTemplate.put(baseUrl + "/communities/ban/" + request.getUserId(), body);
-
+        restTemplate.put(baseUrl + "/communities/ban/" + request.getUserId(), request.getCommunityId());
 
         return "User banned";
     }

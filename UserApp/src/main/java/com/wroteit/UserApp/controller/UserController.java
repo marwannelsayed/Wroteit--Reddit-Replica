@@ -27,7 +27,7 @@ public class UserController {
         this.userService = userService;
         this.rabbitTemplate = rabbitTemplate;
         restTemplate = new RestTemplate();
-        baseUrl = "http://api-gateway:8080";
+        baseUrl = "http://gatewayapp:8080";
     }
 
     @PostMapping("/register")

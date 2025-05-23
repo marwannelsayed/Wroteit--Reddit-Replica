@@ -25,7 +25,7 @@ public class ThreadController {
     public ThreadController(ThreadService threadService) {
         this.threadService = threadService;
         restTemplate = new RestTemplate();
-        baseUrl = "http://api-gateway:8080";
+        baseUrl = "http://gatewayapp:8080";
     }
 
     @GetMapping

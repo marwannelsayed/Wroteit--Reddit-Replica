@@ -25,7 +25,7 @@ public class CommentController {
         this.commentService = commentService;
         this.threadService = threadService;
         restTemplate = new RestTemplate();
-        baseUrl = "http://api-gateway:8080";
+        baseUrl = "http://gatewayapp:8080";
     }
 
     @GetMapping("/threads/{threadId}/comments")

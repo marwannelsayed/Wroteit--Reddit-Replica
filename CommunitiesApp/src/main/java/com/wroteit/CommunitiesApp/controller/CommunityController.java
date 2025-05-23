@@ -25,11 +25,11 @@ public class CommunityController {
     public CommunityController(CommunityService communityService) {
         this.communityService = communityService;
         restTemplate = new RestTemplate();
-        baseUrl = "http://api-gateway:8080";
+        baseUrl = "http://gatewayapp:8080";
     }
 
     @PostMapping("/creatorID/{creatorID}")
-    public Community createCommunity(@PathVariable Long creatorID, @RequestBody CommunityRequest communityData) {
+    public Community createCommunity(@PathVariable(name = "creatorID") Long creatorID, @RequestBody CommunityRequest communityData) {
         Community community = communityService.createCommunity(creatorID, communityData.getName(), communityData.getDescription(), communityData.getType());
 
         Map<String, Object> body = new HashMap<>();
@@ -41,70 +41,70 @@ public class CommunityController {
     }
 
     @GetMapping("/{id}")
-    public Community getCommunityById(@PathVariable String id) {
+    public Community getCommunityById(@PathVariable(name = "id") String id) {
         return communityService.getCommunityById(id);
     }
 
     @GetMapping("/tags/{userId}")
-    public List<Community> getCommunitiesByTags(@RequestBody List<String> tags, @PathVariable Long userId){
+    public List<Community> getCommunitiesByTags(@RequestBody List<String> tags, @PathVariable(name = "userId") Long userId) {
         return communityService.getCommunitiesByTags(tags, userId);
     }
 
-    @GetMapping("/subtag/{userId}")
-    public List<Community> getCommunitiesBySubtag(@RequestBody String subtag, @PathVariable Long userId){
+    @PostMapping("/subtag/{userId}")
+    public List<Community> getCommunitiesBySubtag(@RequestBody String subtag, @PathVariable(name = "userId") Long userId) {
         return communityService.getCommunitiesByTagsCointain(subtag, userId);
     }
 
     @PutMapping("/{userId}")
-    public Community updateCommunity(@RequestBody String communityId, @RequestBody Community newCommunity, @PathVariable Long userId){
+    public Community updateCommunity(@RequestBody String communityId, @RequestBody Community newCommunity, @PathVariable(name = "userId") Long userId) {
         Boolean isModerator = restTemplate.getForObject(baseUrl + "/moderators/" + userId + "/isModerator/" + communityId, Boolean.class);
         if (isModerator == null || !isModerator) return null;
         return communityService.updateCommunity(communityId, newCommunity);
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteCommunity(@RequestBody String communityId, @PathVariable Long userId){
+    public void deleteCommunity(@RequestBody String communityId, @PathVariable(name = "userId") Long userId) {
         Boolean isModerator = restTemplate.getForObject(baseUrl + "/moderators/" + userId + "/isModerator/" + communityId, Boolean.class);
         if (isModerator == null || !isModerator) return;
         communityService.deleteCommunity(communityId);
     }
 
     @PutMapping("/addTags/{userId}")
-    public Community addTags(@RequestBody String communityId, @RequestBody List<String> tags, @PathVariable Long userId){
+    public Community addTags(@RequestBody String communityId, @RequestBody List<String> tags, @PathVariable(name = "userId") Long userId) {
         Boolean isModerator = restTemplate.getForObject(baseUrl + "/moderators/" + userId + "/isModerator/" + communityId, Boolean.class);
         if (isModerator == null || !isModerator) return null;
         return communityService.addTags(communityId, tags);
     }
 
     @PutMapping("/removeTags/{userId}")
-    public Community removeTags(@RequestBody String communityId, @RequestBody List<String> tags, @PathVariable Long userId){
+    public Community removeTags(@RequestBody String communityId, @RequestBody List<String> tags, @PathVariable(name = "userId") Long userId) {
         Boolean isModerator = restTemplate.getForObject(baseUrl + "/moderators/" + userId + "/isModerator/" + communityId, Boolean.class);
         if (isModerator == null || !isModerator) return null;
         return communityService.removeTags(communityId, tags);
     }
 
     @PutMapping("/subscribe/{userId}")
-    public Community subscribeUser(@RequestBody String communityId, @PathVariable Long userId){
+    public Community subscribeUser(@RequestBody String communityId, @PathVariable(name = "userId") Long userId) {
         return communityService.subscribeUser(communityId, userId);
     }
 
     @PutMapping("/unsubscribe/{userId}")
-    public Community unsubscribeUser(@RequestBody String communityId, @PathVariable Long userId){
+    public Community unsubscribeUser(@RequestBody String communityId, @PathVariable(name = "userId") Long userId) {
         return communityService.unsubscribeUser(communityId, userId);
     }
 
     @PutMapping("/hide/{userId}")
-    public Community hideCommunityForUser(@RequestBody String communityId, @PathVariable Long userId){
+    public Community hideCommunityForUser(@RequestBody String communityId, @PathVariable(name = "userId") Long userId) {
         return communityService.hideCommunityForUser(userId, communityId);
     }
 
     @PutMapping("/unhide/{userId}")
-    public Community unhideCommunityForUser(@RequestBody String communityId, @PathVariable Long userId){
+    public Community unhideCommunityForUser(@RequestBody String communityId, @PathVariable(name = "userId") Long userId) {
         return communityService.unhideCommunityForUser(userId, communityId);
     }
 
     @PutMapping("/ban/{userId}")
-    public Community banCommunityForUser(@RequestBody String communityId, @PathVariable Long userId){
+    public Community banCommunityForUser(@RequestBody String communityId, @PathVariable(name = "userId") Long userId) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -119,7 +119,7 @@ public class CommunityController {
     }
 
     @GetMapping("/{userId}/checkUserBanned/{communityId}")
-    public boolean checkUserBanned(@PathVariable Long userId, @PathVariable String communityId){
+    public boolean checkUserBanned(@PathVariable(name = "userId") Long userId, @PathVariable(name = "communityId") String communityId){
         return communityService.checkUserBanned(userId, communityId);
     }
 
