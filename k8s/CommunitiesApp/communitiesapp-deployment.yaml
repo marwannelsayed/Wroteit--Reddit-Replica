@@ -19,8 +19,13 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: COMMUNITIES_URI
+#            - name: COMMUNITIES_URI
+#              valueFrom:
+#                secretKeyRef:
+#                  name: mongo-secret
+#                  key: COMMUNITIES_URI
+            - name: SPRING_DATA_MONGODB_COMMUNITY_URI
               valueFrom:
                 secretKeyRef:
                   name: mongo-secret
-                  key: COMMUNITIES_URI
+                  key: SPRING_DATA_MONGODB_COMMUNITY_URI
