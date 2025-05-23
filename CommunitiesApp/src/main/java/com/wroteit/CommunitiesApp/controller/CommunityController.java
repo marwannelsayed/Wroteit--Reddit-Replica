@@ -1,6 +1,7 @@
 package com.wroteit.CommunitiesApp.controller;
 
 import com.wroteit.CommunitiesApp.dto.CommunityRequest;
+import com.wroteit.CommunitiesApp.dto.TagsRequest;
 import com.wroteit.CommunitiesApp.model.Community;
 import com.wroteit.CommunitiesApp.model.CommunityType;
 import com.wroteit.CommunitiesApp.service.CommunityService;
@@ -45,9 +46,9 @@ public class CommunityController {
         return communityService.getCommunityById(id);
     }
 
-    @GetMapping("/tags/{userId}")
-    public List<Community> getCommunitiesByTags(@RequestBody List<String> tags, @PathVariable(name = "userId") Long userId) {
-        return communityService.getCommunitiesByTags(tags, userId);
+    @PostMapping("/tags/{userId}")
+    public List<Community> getCommunitiesByTags(@RequestBody TagsRequest request, @PathVariable(name = "userId") Long userId) {
+        return communityService.getCommunitiesByTags(request.tags, userId);
     }
 
     @PostMapping("/subtag/{userId}")
@@ -55,11 +56,11 @@ public class CommunityController {
         return communityService.getCommunitiesByTagsCointain(subtag, userId);
     }
 
-    @PutMapping("/{userId}")
-    public Community updateCommunity(@RequestBody String communityId, @RequestBody Community newCommunity, @PathVariable(name = "userId") Long userId) {
+    @PutMapping("/{userId}/update/{communityId}")
+    public Community updateCommunity(@PathVariable(name = "communityId") String communityId, @RequestBody String newDescription, @PathVariable(name = "userId") Long userId) {
         Boolean isModerator = restTemplate.getForObject(baseUrl + "/moderators/" + userId + "/isModerator/" + communityId, Boolean.class);
         if (isModerator == null || !isModerator) return null;
-        return communityService.updateCommunity(communityId, newCommunity);
+        return communityService.updateCommunity(communityId, newDescription);
     }
 
     @DeleteMapping("/{userId}")
@@ -69,18 +70,18 @@ public class CommunityController {
         communityService.deleteCommunity(communityId);
     }
 
-    @PutMapping("/addTags/{userId}")
-    public Community addTags(@RequestBody String communityId, @RequestBody List<String> tags, @PathVariable(name = "userId") Long userId) {
+    @PutMapping("/{userId}/addTags/{communityId}")
+    public Community addTags(@PathVariable(name = "communityId") String communityId, @RequestBody TagsRequest request, @PathVariable(name = "userId") Long userId) {
         Boolean isModerator = restTemplate.getForObject(baseUrl + "/moderators/" + userId + "/isModerator/" + communityId, Boolean.class);
         if (isModerator == null || !isModerator) return null;
-        return communityService.addTags(communityId, tags);
+        return communityService.addTags(communityId, request.tags);
     }
 
-    @PutMapping("/removeTags/{userId}")
-    public Community removeTags(@RequestBody String communityId, @RequestBody List<String> tags, @PathVariable(name = "userId") Long userId) {
+    @PutMapping("/{userId}/removeTags/{communityId}")
+    public Community removeTags(@PathVariable(name = "communityId") String communityId, @RequestBody TagsRequest request, @PathVariable(name = "userId") Long userId) {
         Boolean isModerator = restTemplate.getForObject(baseUrl + "/moderators/" + userId + "/isModerator/" + communityId, Boolean.class);
         if (isModerator == null || !isModerator) return null;
-        return communityService.removeTags(communityId, tags);
+        return communityService.removeTags(communityId, request.tags);
     }
 
     @PutMapping("/subscribe/{userId}")

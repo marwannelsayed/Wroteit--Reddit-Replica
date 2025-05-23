@@ -1,0 +1,429 @@
+{
+	"info": {
+		"_postman_id": "e6ad418d-9919-4802-9e28-3fbd5eb8ae4f",
+		"name": "CommunitiesApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45053231",
+		"_collection_link": "https://crimson-satellite-883734.postman.co/workspace/workspace~e4769974-3ea1-411a-b2d7-f88d1ad711bc/collection/45053231-e6ad418d-9919-4802-9e28-3fbd5eb8ae4f?action=share&source=collection_link&creator=45053231"
+	},
+	"item": [
+		{
+			"name": "Create Community",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"AAAAAAAA Fans\",\n  \"description\": \"All about AAAAAAAA\",\n  \"type\": \"GAMING\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/communities/creatorID/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"communities",
+						"creatorID",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Community by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/communities/6830ee182c494908d604c2dc",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"communities",
+						"6830ee182c494908d604c2dc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search by Tags",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"tags\": [\"important\", \"gaming\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/communities/tags/3",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"communities",
+						"tags",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search by Subtag",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "imp",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/communities/subtag/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"communities",
+						"subtag",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Community",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "Totally original"
+				},
+				"url": {
+					"raw": "{{base_url}}/communities/3/update/6830ee182c494908d604c2dc",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"communities",
+						"3",
+						"update",
+						"6830ee182c494908d604c2dc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Community",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "6830f33b309bbd11bfc209a3"
+				},
+				"url": {
+					"raw": "{{base_url}}/communities/3",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"communities",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Tags",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"tags\": [\"cloud\", \"microservices\"]\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/communities/3/addTags/6830ee182c494908d604c2dc",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"communities",
+						"3",
+						"addTags",
+						"6830ee182c494908d604c2dc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Tags",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"tags\": [\"cloud\", \"microservices\"]\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/communities/3/removeTags/6830ee182c494908d604c2dc",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"communities",
+						"3",
+						"removeTags",
+						"6830ee182c494908d604c2dc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subscribe User",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "6830ee182c494908d604c2dc"
+				},
+				"url": {
+					"raw": "{{base_url}}/communities/subscribe/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"communities",
+						"subscribe",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unsubscribe User",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "6830ee182c494908d604c2dc"
+				},
+				"url": {
+					"raw": "{{base_url}}/communities/unsubscribe/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"communities",
+						"unsubscribe",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Hide Community",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "6830ee182c494908d604c2dc",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/communities/hide/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"communities",
+						"hide",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unhide Community",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "6830ee182c494908d604c2dc"
+				},
+				"url": {
+					"raw": "{{base_url}}/communities/unhide/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"communities",
+						"unhide",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ban",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "6830ee182c494908d604c2dc",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/communities/ban/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"communities",
+						"ban",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check Banned",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/communities/3/checkUserBanned/6830ee182c494908d604c2dc",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"communities",
+						"3",
+						"checkUserBanned",
+						"6830ee182c494908d604c2dc"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "communityId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "tags",
+			"value": "[\"tag1\", \"tag2\"]",
+			"type": "string"
+		},
+		{
+			"key": "subtag",
+			"value": "\"subtag\"",
+			"type": "string"
+		}
+	]
+}

@@ -46,19 +46,15 @@ public class CommunityService {
 
 
     public List<Community> getCommunitiesByTagsCointain(String subtag, Long userId) {
-        List<Community> matched = communityRepository.findByTagsContaining(subtag);
+        List<Community> matched = communityRepository.findByTagSubstring(subtag);
         matched.removeIf(c -> c.getHiddenByUsers().contains(userId));
         return matched;
     }
 
 
-    public Community updateCommunity(String id, Community updated) {
+    public Community updateCommunity(String id, String newDescription) {
         Community existing = getCommunityById(id);
-        existing.setDescription(updated.getDescription());
-        existing.setTags(updated.getTags());
-        existing.setSubscribers(updated.getSubscribers());
-        existing.setThreads(updated.getThreads());
-        existing.setHiddenByUsers(updated.getHiddenByUsers());
+        existing.setDescription(newDescription);
         return communityRepository.save(existing);
     }
 
