@@ -1,5 +1,6 @@
 package com.wroteit.ThreadsApp.controller;
 
+import com.wroteit.ThreadsApp.dto.CommentRequest;
 import com.wroteit.ThreadsApp.model.Comment;
 import com.wroteit.ThreadsApp.service.CommentService;
 import com.wroteit.ThreadsApp.service.ThreadService;
@@ -39,8 +40,8 @@ public class CommentController {
     }
 
     // Assuming comments are created in the context of a thread
-    @PostMapping("/threads/{threadId}/comments")
-    public Comment createComment(@RequestBody Comment comment) {
+    @PostMapping
+    public Comment createComment(@RequestBody CommentRequest comment) {
         Comment created = commentService.createComment(comment);
 
         String parentId = comment.getParentId();

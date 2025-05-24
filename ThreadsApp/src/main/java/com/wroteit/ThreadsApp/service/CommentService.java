@@ -4,6 +4,7 @@ import com.wroteit.ThreadsApp.command.BanCommentCommand;
 import com.wroteit.ThreadsApp.command.CreateCommentCommand;
 import com.wroteit.ThreadsApp.command.DeleteCommentCommand;
 import com.wroteit.ThreadsApp.composite.CommentComponent;
+import com.wroteit.ThreadsApp.dto.CommentRequest;
 import com.wroteit.ThreadsApp.model.Comment;
 import com.wroteit.ThreadsApp.model.Thread;
 import com.wroteit.ThreadsApp.repository.CommentRepository;
@@ -58,7 +59,8 @@ public class CommentService {
         return null;
     }
 
-    public Comment createComment(Comment comment) {
+    public Comment createComment(CommentRequest commentRequest) {
+        Comment comment = new Comment(commentRequest.getParentId(), commentRequest.getAuthorId(), commentRequest.getContent());
         CreateCommentCommand createCommentCommand = new CreateCommentCommand(commentRepository, threadRepository, comment);
         createCommentCommand.execute();
         Comment created = getCommentById(comment.getId());
