@@ -27,9 +27,10 @@ public class CreateCommentCommand implements Command {
         Optional<Thread> threadOpt = threadRepository.findById(parentId);
         if (threadOpt.isPresent()) {
             Thread thread = threadOpt.get();
-            thread.addComment(comment);
+            Comment saveComment = commentRepository.save(comment);
+            thread.addComment(saveComment);
             threadRepository.save(thread);
-            commentRepository.save(comment);
+
             return;
         }
 
@@ -37,8 +38,8 @@ public class CreateCommentCommand implements Command {
         Optional<Comment> parentCommentOpt = commentRepository.findById(parentId);
         if (parentCommentOpt.isPresent()) {
             Comment parentComment = parentCommentOpt.get();
-            parentComment.addReply(comment);
-            commentRepository.save(comment);
+            Comment saveComment = commentRepository.save(comment);
+            parentComment.addReply(saveComment);
             commentRepository.save(parentComment);
         }
     }
