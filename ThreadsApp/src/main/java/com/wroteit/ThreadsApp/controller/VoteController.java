@@ -19,24 +19,24 @@ public class VoteController {
     }
 
     @PostMapping("/{userId}/upvote/{contentId}")
-    public String upvote(@PathVariable Long userId, @PathVariable String contentId) {
+    public String upvote(@PathVariable(name = "userId") Long userId, @PathVariable(name = "contentId") String contentId) {
         return voteService.upvote(userId, contentId);
     }
 
     @PostMapping("/{userId}/downvote/{contentId}")
-    public String downvote(@PathVariable Long userId, @PathVariable String contentId) {
+    public String downvote(@PathVariable(name = "userId") Long userId, @PathVariable(name = "contentId") String contentId) {
         return voteService.downvote(userId, contentId);
     }
 
 
     @GetMapping("/target/{targetId}")
-    public List<Vote> getVotesForTarget( @PathVariable String targetId) {
+    public List<Vote> getVotesForTarget( @PathVariable(name = "targetId") String targetId) {
         return voteService.getVotesForTarget(targetId);
     }
 
 
     @DeleteMapping("/{id}")
-    public void deleteVote(@PathVariable String id) {
+    public void deleteVote(@PathVariable(name = "id") String id) {
         voteService.deleteVote(id);
     }
 

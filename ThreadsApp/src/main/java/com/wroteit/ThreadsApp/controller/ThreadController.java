@@ -35,7 +35,7 @@ public class ThreadController {
     }
 
     @GetMapping("/{id}")
-    public Thread getThreadById(@PathVariable String id) {
+    public Thread getThreadById(@PathVariable(name = "id") String id) {
         return threadService.getThreadById(id);
     }
 
@@ -48,32 +48,32 @@ public class ThreadController {
     }
 
     @PutMapping("/{id}")
-    public Thread updateThread(@PathVariable String id, @RequestBody String threadDetails) {
+    public Thread updateThread(@PathVariable(name = "id") String id, @RequestBody String threadDetails) {
         return threadService.updateThread(id, threadDetails);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteThread(@PathVariable String id) {
+    public String deleteThread(@PathVariable(name = "id") String id) {
         return threadService.deleteThread(id);
     }
 
     @DeleteMapping("/ban/{id}")
-    public String ban(@PathVariable String id) {
+    public String ban(@PathVariable(name = "id") String id) {
         return threadService.banThread(id);
     }
 
     @GetMapping("/author/{authorId}")
-    public List<Thread> getThreadsByAuthorId(@PathVariable Long authorId) {
+    public List<Thread> getThreadsByAuthorId(@PathVariable(name = "authorId") Long authorId) {
         return threadService.getThreadsByAuthorId(authorId);
     }
 
     @GetMapping("/community/{communityId}")
-    public List<Thread> getThreadsByCommunityId(@PathVariable String communityId) {
+    public List<Thread> getThreadsByCommunityId(@PathVariable(name = "communityId") String communityId) {
         return threadService.getThreadsByCommunityId(communityId);
     }
 
     @PostMapping("/report/{threadId}")
-    public String reportThread(@PathVariable String threadId, @RequestParam Long reporterId, @RequestParam String reason) {
+    public String reportThread(@PathVariable(name = "threadId") String threadId, @RequestParam Long reporterId, @RequestParam String reason) {
         Thread thread = threadService.getThreadById(threadId);
         if (thread == null) return "Thread not found";
 
