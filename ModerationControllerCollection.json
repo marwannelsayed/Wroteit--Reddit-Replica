@@ -1,0 +1,195 @@
+{
+    "info": {
+        "name": "ModeratorController API Tests",
+        "_postman_id": "1f3e5a02-68a0-493c-9e8e-d3e5d729aef9",
+        "description": "Test endpoints for the ModeratorController",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "File Report",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "http://localhost:8080/moderators/reports",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8080",
+                    "path": [
+                        "moderators",
+                        "reports"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"reporterId\": 1,\n  \"reportedEntityId\": \"99\",\n  \"entityType\": \"THREAD\",\n  \"communityId\": \"abc123\",\n  \"reason\": \"Inappropriate content\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Get All Moderators of Community",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8080/moderators/community/abc123",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8080",
+                    "path": [
+                        "moderators",
+                        "community",
+                        "abc123"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Find Reports by Community",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8080/moderators/reports/abc123",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8080",
+                    "path": [
+                        "moderators",
+                        "reports",
+                        "abc123"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Close Report",
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8080/moderators/reports/1",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8080",
+                    "path": [
+                        "moderators",
+                        "reports",
+                        "1"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Assign Moderator",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "http://localhost:8080/moderators/assign",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8080",
+                    "path": [
+                        "moderators",
+                        "assign"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"userId\": 1,\n  \"communityId\": \"abc123\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Ban User",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "http://localhost:8080/moderators/ban",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8080",
+                    "path": [
+                        "moderators",
+                        "ban"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"userId\": 1,\n  \"communityId\": \"abc123\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Delete User Records",
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8080/moderators/user/1",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8080",
+                    "path": [
+                        "moderators",
+                        "user",
+                        "1"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Check if User is Moderator",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8080/moderators/1/isModerator/abc123",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8080",
+                    "path": [
+                        "moderators",
+                        "1",
+                        "isModerator",
+                        "abc123"
+                    ]
+                }
+            }
+        }
+    ]
+}

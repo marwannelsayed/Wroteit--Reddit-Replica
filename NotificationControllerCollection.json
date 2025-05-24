@@ -1,0 +1,266 @@
+{
+  "info": {
+    "name": "NotificationApp API Tests",
+    "_postman_id": "12345678-1234-1234-1234-123456789abc",
+    "description": "Postman collection for testing all NotificationController endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET /test",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/notifications/test",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "notifications",
+            "test"
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /comment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"recipientId\": 1,\n  \"message\": \"New comment on your thread!\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/notifications/comment",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "notifications",
+            "comment"
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /reply",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"recipientId\": 1,\n  \"message\": \"Someone replied to your comment.\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/notifications/reply",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "notifications",
+            "reply"
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /ban",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"recipientId\": 1,\n  \"message\": \"You have been banned due to policy violations.\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/notifications/ban",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "notifications",
+            "ban"
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /subscribe",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"recipientId\": 1,\n  \"message\": \"A new user has subscribed to your community.\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/notifications/subscribe",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "notifications",
+            "subscribe"
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /report",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"recipientId\": 1,\n  \"message\": \"A thread was reported in your community.\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/notifications/report",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "notifications",
+            "report"
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /dummy",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/notifications/dummy",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "notifications",
+            "dummy"
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /{userId}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/notifications/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "notifications",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /unread/{userId}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/notifications/unread/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "notifications",
+            "unread",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "PUT /{id}/read",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/notifications/{{notificationId}}/read",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "notifications",
+            "{{notificationId}}",
+            "read"
+          ]
+        }
+      }
+    },
+    {
+      "name": "DELETE /{id}",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/notifications/{{notificationId}}",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "notifications",
+            "{{notificationId}}"
+          ]
+        }
+      }
+    }
+  ]
+}
