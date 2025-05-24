@@ -244,7 +244,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/comments/threads/682b95c784e3b85bd6660751/comments",
+					"raw": "http://localhost:8080/comments",
 					"protocol": "http",
 					"host": [
 						"localhost"
